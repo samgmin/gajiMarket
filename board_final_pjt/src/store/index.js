@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import http from "@/api/http";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -13,10 +13,8 @@ export default new Vuex.Store({
     endPage: "",
     board: {},
     Clist: [],
-
   },
-  getters: {
-  },
+  getters: {},
   mutations: {
     BOARD_GET_LIST(state, payload) {
       state.boardList = payload.boardList;
@@ -29,26 +27,33 @@ export default new Vuex.Store({
     BOARD_GET_ONE(state, payload) {
       state.Clist = payload.Clist;
       state.board = payload.board;
-    }
+    },
   },
   actions: {
     boardGetList({ commit }, payload) {
       console.log(payload);
       http.get("/board?page=" + payload).then(({ data }) => {
-        console.log('data : ', data);
-        console.log('commit : ', commit);
+        console.log("data : ", data);
+        console.log("commit : ", commit);
         commit("BOARD_GET_LIST", data);
       });
     },
     boardGetOne({ commit }, payload) {
       console.log(payload);
-      console.log('commit : ', commit);
+      console.log("commit : ", commit);
       http.get("/board/read?bno=" + payload).then(({ data }) => {
         console.log(data);
         commit("BOARD_GET_ONE", data);
       });
     },
+    boardGetSearch({ commit }, payload) {
+      console.log(payload);
+      console.log("commit : ", commit);
+      http.post("/board/list", payload).then(({ data }) => {
+        console.log(data);
+        commit("BOARD_GET_LIST", data);
+      });
+    },
   },
-  modules: {
-  }
-})
+  modules: {},
+});

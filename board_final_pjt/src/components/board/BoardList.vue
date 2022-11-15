@@ -1,5 +1,21 @@
 <template>
   <div>
+    <div>
+      <select v-model="sort">
+        <option value="bno">글번호</option>
+        <option value="readCount">조회수</option>
+      </select>
+      <select v-model="category">
+        <option value="전체">전체</option>
+        <!-- <option :value="other">조회수</option> -->
+      </select>
+      <select v-model="key">
+        <option value="title">제목</option>
+        <option value="writer">작성자</option>
+      </select>
+      <input type="text" id="word" name="word" v-model="word" ref="word" />
+      <b-button variant="outline-primary" @click="selectList">검색</b-button>
+    </div>
     <div v-if="boardList.length">
       <table id="book-list">
         <thead>
@@ -47,6 +63,15 @@ export default {
   created() {
     this.movePage(1);
   },
+  data() {
+    return {
+      sort: "",
+      category: "",
+      word: "",
+      key: "",
+    };
+  },
+
   methods: {
     movePage(page) {
       this.boardGetList(page);
@@ -54,7 +79,17 @@ export default {
     titleClick(bno) {
       this.$router.push({ name: "boardread", query: { bno } });
     },
-    ...mapActions(["boardGetList"]),
+    selectList() {
+      this.boardGetSearch({
+        pg: 1,
+        spp: 10,
+        category: this.category,
+        sort: this.sort,
+        key: this.key,
+        word: this.word,
+      });
+    },
+    ...mapActions(["boardGetList", "boardGetSearch"]),
   },
   computed: {
     ...mapState(["boardList", "startPage", "totalPage", "endPage", "currPage"]),
