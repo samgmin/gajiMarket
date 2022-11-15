@@ -1,51 +1,104 @@
 <template>
   <div>
     <div>
-      <select v-model="sort">
-        <option value="bno">글번호</option>
-        <option value="readCount">조회수</option>
-      </select>
-      <select v-model="category">
-        <option value="전체">전체</option>
-        <!-- <option :value="other">조회수</option> -->
-      </select>
-      <select v-model="key">
-        <option value="title">제목</option>
-        <option value="writer">작성자</option>
-      </select>
-      <input type="text" id="word" name="word" v-model="word" ref="word" />
-      <b-button variant="outline-primary" @click="selectList">검색</b-button>
+      <v-row align="center">
+        <v-col class="d-flex" cols="12" sm="6">
+          <v-select
+            v-model="sort"
+            :items="[
+              { name: '최신순', value: 'bno' },
+              { name: '조회수', value: 'readCount' },
+            ]"
+            item-text="name"
+            item-value="value"
+            label="최신순"
+            dense
+            solo
+          >
+            <!-- <option value="bno">최신순</option>
+            <option value="readCount">조회수</option> -->
+          </v-select>
+        </v-col>
+        <v-col class="d-flex" cols="12" sm="6">
+          <v-select
+            v-model="category"
+            :items="[
+              { name: '전체', value: '전체' },
+              { name: '의류', value: '의류' },
+            ]"
+            item-text="name"
+            item-value="value"
+            label="전체"
+            dense
+            solo
+          >
+            <!-- <option value="전체">전체</option> -->
+            <!-- <option :value="other">조회수</option> -->
+          </v-select>
+        </v-col>
+      </v-row>
+
+      <v-row align="center">
+        <v-col class="d-flex" cols="12" sm="6">
+          <v-select
+            v-model="key"
+            :items="[
+              { name: '제목', value: 'title' },
+              { name: '작성자', value: 'writer' },
+            ]"
+            item-text="name"
+            item-value="value"
+            label="제목"
+            dense
+            solo
+          >
+            <!-- <option value="title">제목</option>
+            <option value="writer">작성자</option> -->
+          </v-select>
+        </v-col>
+        <v-col class="d-flex" cols="12" sm="6">
+          <v-text-field
+            type="text"
+            id="word"
+            name="word"
+            v-model="word"
+            ref="word"
+            label="검색어"
+          ></v-text-field>
+          <v-btn variant="outline-primary" @click="selectList">검색</v-btn>
+        </v-col>
+      </v-row>
     </div>
+
     <div v-if="boardList.length">
-      <table id="book-list">
-        <thead>
-          <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
-            <th>작성일시</th>
-            <th>조회수</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(board, index) in boardList" :key="index">
-            <td>{{ board.bno }}</td>
-            <td>
-              <a @click="titleClick(board.bno)">{{ board.title }}</a>
-            </td>
-            <td>{{ board.writer }}</td>
-            <td>{{ board.writeDate }}</td>
-            <td>{{ board.readCount }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <v-simple-table>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-center">번호</th>
+              <th class="text-center">제목</th>
+              <th class="text-center">작성자</th>
+              <th class="text-center">작성일시</th>
+              <th class="text-center">조회수</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(board, index) in boardList" :key="index">
+              <td>{{ board.bno }}</td>
+              <td>
+                <a @click="titleClick(board.bno)">{{ board.title }}</a>
+              </td>
+              <td>{{ board.writer }}</td>
+              <td>{{ board.writeDate }}</td>
+              <td>{{ board.readCount }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
       <div>
         <a v-if="startPage > 1" @click="movePage(startPage - 1)">[이전]</a>
         <a v-for="i in endPage" :key="i">
-          <a
-            v-if="i + startPage - 1 <= endPage"
-            @click="movePage(i + startPage - 1)"
-          >
+          <a v-if="i + startPage - 1 <= endPage" @click="movePage(i + startPage - 1)">
             [ {{ i + startPage - 1 }} ]
           </a>
         </a>
@@ -97,5 +150,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -1,8 +1,14 @@
 <template>
-  <div id="app">
-    <the-header-navbar />
-    <router-view />
-  </div>
+  <v-app ref="app">
+    <v-card class="overflow-hidden">
+      <the-header-navbar />
+      <v-sheet id="scrolling-techniques-2" class="overflow-y-auto" max-height="1500">
+        <v-container style="height: 1000px; margin-top: 300px">
+          <router-view />
+        </v-container>
+      </v-sheet>
+    </v-card>
+  </v-app>
 </template>
 
 <script>
@@ -17,7 +23,7 @@ export default {
 </script>
 
 <style>
-#app {
+/* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -36,5 +42,5 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
-}
+} */
 </style>
