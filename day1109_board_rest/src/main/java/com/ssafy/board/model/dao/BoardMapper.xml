@@ -57,7 +57,7 @@
 	</select>
 	
 	<select id="selectOne" resultMap="rrrr">
-		SELECT BNO, TITLE, WRITER, WRITE_DATE, READ_COUNT, CONTENT
+		SELECT BNO, TITLE, WRITER, WRITE_DATE, READ_COUNT, CONTENT, CATEGORY
 		FROM BOARD_TB
 		WHERE BNO = #{bno}
 	</select>

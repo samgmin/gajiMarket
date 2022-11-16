@@ -33,6 +33,19 @@ const routes = [
     ],
   },
   {
+    path: "/apt",
+    name: "apt",
+    component: () => import("@/views/AppApt"),
+    redirect: "/apt/search",
+    children: [
+      {
+        path: "search",
+        name: "aptsearch",
+        component: () => import("@/components/apt/AptSearch"),
+      },
+    ],
+  },
+  {
     path: "/user",
     name: "user",
     component: () => import("@/views/AppUser"),

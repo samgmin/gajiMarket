@@ -1,30 +1,57 @@
 <template>
-  <div class="regist">
-    <h1 class="underline">SSAFY 글 정보</h1>
-    <div class="regist_form" v-if="board">
-      <label for="bno">글번호</label>
-      <div class="view">{{ board.bno }}</div>
-      <label for="title">제목</label>
-      <div class="view">{{ board.title }}</div>
-      <label for="writer">작성자</label>
-      <div class="view">{{ board.writer }}</div>
-      <label for="content">내용</label>
-      <div class="view" v-html="board.content"></div>
-      <label for="content">작성일자</label>
-      <div class="view">{{ board.writeDate }}</div>
-      <label for="content">조회수</label>
-      <div class="view">{{ board.readCount }}</div>
-      <div class="regist_form" v-if="cList">
-        <h1 class="underline">댓글</h1>
-        <table id="book-list">
-          <colgroup>
-            <col style="width: 30%" />
-            <col style="width: 70%" />
-          </colgroup>
+  <div>
+    <!-- 상세 글 -->
+    <div v-if="board">
+      <v-row align="center">
+        <v-col class="d-flex" cols="12" sm="12" style="font-size: 20px">
+          <span style="color: #b39ddb">{{ board.category }} &nbsp;</span>
+          <span
+            ><b>{{ board.title }}</b></span
+          >
+        </v-col>
+      </v-row>
+      <v-row justify="space-between">
+        <v-col class="d-flex" cols="6" sm="6">
+          <span>
+            <v-icon color="green darken-2"> mdi-domain </v-icon>
+            {{ board.writer }} | &nbsp;
+          </span>
+          <span style="font-size: 15px">{{ board.writeDate }}</span>
+        </v-col>
+        <v-col class="d-flex" cols="4" sm="4"></v-col>
+        <v-col class="d-flex align-end" cols="2" sm="2">
+          <span style="font-size: 15px">{{ board.readCount }}</span>
+          <span
+            ><v-btn icon color="deep-orange">
+              <v-icon>mdi-thumb-up</v-icon>
+            </v-btn></span
+          >
+        </v-col>
+      </v-row>
+      <hr />
+      <v-row align="center">
+        <v-col class="d-flex" cols="12" sm="12">
+          <div class="view" v-html="board.content"></div>
+        </v-col>
+      </v-row>
+    </div>
+
+    <!-- 수정 삭제 버튼 -->
+    <div style="padding-top: 15px">
+      <v-btn variant="outline-primary" v-on:click="updateBoard">수정</v-btn>
+      &nbsp;&nbsp;
+      <v-btn variant="outline-primary" v-on:click="deleteBoard">삭제</v-btn>
+    </div>
+    <br />
+
+    <!-- 댓글 목록 -->
+    <div v-if="cList.length">
+      <v-simple-table>
+        <template v-slot:default>
           <thead>
             <tr>
-              <th>작성자</th>
-              <th>내용</th>
+              <th>댓글</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -33,32 +60,26 @@
               <td>{{ comment.ccontent }}</td>
             </tr>
           </tbody>
-        </table>
-      </div>
-      <div style="padding-top: 15px">
-        <b-button v-on:click="updateBoard">수정</b-button>
-        <b-button v-on:click="deleteBoard">삭제</b-button>
-      </div>
-      <b-form v-if="show">
-        <b-form-group id="input-group-1" label="댓글작성자" label-for="input-1">
-          <b-form-input
-            id="input-1"
-            v-model="comment.cwriter"
-            placeholder="Enter cwriter"
-            required
-          ></b-form-input>
-        </b-form-group>
+        </template>
+      </v-simple-table>
+      <hr />
+      <br />
 
-        <b-form-group id="input-group-2" label="댓글내용" label-for="input-2">
-          <b-form-input
-            id="input-2"
-            v-model="comment.ccontent"
-            placeholder="Enter ccontent"
+      <!-- 댓글 작성 -->
+      <div class="comment">
+        <v-form ref="form" lazy-validation v-if="show">
+          <v-text-field
+            v-model="comment.cwriter"
+            label="작성자"
             required
-          ></b-form-input>
-        </b-form-group>
-        <b-button @click="writecomment" variant="primary">Submit</b-button>
-      </b-form>
+          ></v-text-field>
+          <v-text-field v-model="comment.ccontent" label="내용" required
+            ><v-icon slot="append" color="red" @click="writecomment">
+              mdi-plus
+            </v-icon></v-text-field
+          >
+        </v-form>
+      </div>
     </div>
   </div>
 </template>
@@ -97,6 +118,8 @@ export default {
     },
     writecomment() {
       this.commentWrite(this.comment);
+      this.comment.cwriter = "";
+      this.comment.ccontent = "";
     },
     updateBoard() {
       this.$router.push({ name: "boardupdate" });
@@ -114,4 +137,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.comment {
+  border: 1px solid rgb(190, 190, 190);
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+</style>

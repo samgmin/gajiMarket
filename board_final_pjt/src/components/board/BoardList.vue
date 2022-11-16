@@ -38,7 +38,7 @@
         </v-col>
 
         <v-col class="d-flex" cols="2" sm="2"></v-col>
-        <v-col class="d-flex" cols="2" sm="2"></v-col>
+        <!-- <v-col class="d-flex" cols="2" sm="2"></v-col> -->
 
         <v-col class="d-flex" cols="2" sm="2">
           <v-select
@@ -57,7 +57,7 @@
             <option value="writer">작성자</option> -->
           </v-select>
         </v-col>
-        <v-col class="d-flex" cols="2" sm="2">
+        <v-col class="d-flex" cols="4" sm="4">
           <v-text-field
             type="text"
             id="word"
@@ -66,7 +66,14 @@
             ref="word"
             label="검색어"
           ></v-text-field>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <v-btn variant="outline-primary" @click="selectList">검색</v-btn>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <v-btn tile color="success" to="/board/create">
+            <v-icon left> mdi-pencil </v-icon>
+            작성
+          </v-btn>
+          <!-- <v-btn variant="outline-primary" to="/board/create">작성</v-btn> -->
         </v-col>
       </v-row>
     </div>
