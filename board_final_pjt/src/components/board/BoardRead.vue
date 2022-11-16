@@ -14,7 +14,7 @@
       <div class="view">{{ board.writeDate }}</div>
       <label for="content">조회수</label>
       <div class="view">{{ board.readCount }}</div>
-      <div class="regist_form" v-if="Clist.length">
+      <div class="regist_form" v-if="cList">
         <h1 class="underline">댓글</h1>
         <table id="book-list">
           <colgroup>
@@ -28,14 +28,17 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(comment, index) in Clist" :key="index">
+            <tr v-for="(comment, index) in cList" :key="index">
               <td>{{ comment.cwriter }}</td>
               <td>{{ comment.ccontent }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-
+      <div style="padding-top: 15px">
+        <b-button v-on:click="updateBoard">수정</b-button>
+        <b-button v-on:click="deleteBoard">삭제</b-button>
+      </div>
       <b-form v-if="show">
         <b-form-group id="input-group-1" label="댓글작성자" label-for="input-1">
           <b-form-input
@@ -87,9 +90,18 @@ export default {
       // 문자열에 enter값을 <br />로 변경.(html상에서 줄바꿈 처리)
       return str.replace(/(?:\r\n|\r|\n)/g, "<br />");
     },
-    deleteBoard() {},
-    writecomment() {},
-    ...mapActions(["boardGetOne"]),
+    deleteBoard() {
+      console.log(this.$route.query.bno);
+      this.boardDelete(this.$route.query.bno);
+      this.$router.push({ name: "boardlist" });
+    },
+    writecomment() {
+      this.commentWrite(this.comment);
+    },
+    updateBoard() {
+      this.$router.push({ name: "boardupdate" });
+    },
+    ...mapActions(["boardGetOne", "boardDelete", "commentWrite"]),
   },
   filters: {
     numberWithCommas(x) {
@@ -97,7 +109,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["board", "Clist"]),
+    ...mapState(["board", "cList"]),
   },
 };
 </script>

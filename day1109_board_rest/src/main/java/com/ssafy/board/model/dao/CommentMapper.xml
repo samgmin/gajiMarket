@@ -11,4 +11,9 @@
 		FROM COMMENT_TB
 		WHERE BNO = #{bno}
 	</select>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM COMMENT_TB
+		WHERE BNO = #{bno}
+	</delete>
 </mapper>

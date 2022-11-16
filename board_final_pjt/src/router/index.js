@@ -20,6 +20,16 @@ const routes = [
         name: "boardread",
         component: () => import("@/components/board/BoardRead"),
       },
+      {
+        path: "create",
+        name: "boardcreate",
+        component: () => import("@/components/board/BoardCreate"),
+      },
+      {
+        path: "update",
+        name: "boardupdate",
+        component: () => import("@/components/board/BoardUpdate"),
+      },
     ],
   },
   {

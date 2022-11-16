@@ -133,6 +133,7 @@ public class BoardService {
 	}
 	
 	public boolean delete(int bno) {
+		cdao.delete(bno);
 		if(dao.delete(bno) == 1)
 			return true;
 		
@@ -172,11 +173,11 @@ public class BoardService {
 	
 	public Map<String, Object> makeRead(int bno) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		
+		dao.updateReadCount(bno);
 		result.put("board", dao.selectOne(bno));
-		result.put("comment", cdao.selectList(bno));
+		result.put("cList", cdao.selectList(bno));
 		result.put("file", fdao.selectFiles(bno));
-		
+		System.out.println(result);
 		return result;
 	}
 }

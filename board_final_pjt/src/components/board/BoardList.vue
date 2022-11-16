@@ -1,8 +1,8 @@
 <template>
   <div>
     <div>
-      <v-row align="center">
-        <v-col class="d-flex" cols="12" sm="6">
+      <v-row align="center" justify="space-between">
+        <v-col class="d-flex" cols="2" sm="2">
           <v-select
             v-model="sort"
             :items="[
@@ -19,7 +19,7 @@
             <option value="readCount">조회수</option> -->
           </v-select>
         </v-col>
-        <v-col class="d-flex" cols="12" sm="6">
+        <v-col class="d-flex" cols="2" sm="2">
           <v-select
             v-model="category"
             :items="[
@@ -36,10 +36,11 @@
             <!-- <option :value="other">조회수</option> -->
           </v-select>
         </v-col>
-      </v-row>
 
-      <v-row align="center">
-        <v-col class="d-flex" cols="12" sm="6">
+        <v-col class="d-flex" cols="2" sm="2"></v-col>
+        <v-col class="d-flex" cols="2" sm="2"></v-col>
+
+        <v-col class="d-flex" cols="2" sm="2">
           <v-select
             v-model="key"
             :items="[
@@ -56,7 +57,7 @@
             <option value="writer">작성자</option> -->
           </v-select>
         </v-col>
-        <v-col class="d-flex" cols="12" sm="6">
+        <v-col class="d-flex" cols="2" sm="2">
           <v-text-field
             type="text"
             id="word"
@@ -84,12 +85,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(board, index) in boardList" :key="index">
+            <tr
+              v-for="(board, index) in boardList"
+              :key="index"
+              @click="titleClick(board.bno)"
+            >
               <td>{{ board.bno }}</td>
               <td>{{ board.category }}</td>
-              <td>
-                <a @click="titleClick(board.bno)">{{ board.title }}</a>
-              </td>
+              <td>{{ board.title }}</td>
               <td>{{ board.writer }}</td>
               <td>{{ board.writeDate }}</td>
               <td>{{ board.readCount }}</td>
@@ -97,8 +100,16 @@
           </tbody>
         </template>
       </v-simple-table>
-      <div>
-        <a v-if="startPage > 1" @click="movePage(startPage - 1)">[이전]</a>
+      <div class="text-center">
+        <v-pagination
+          v-model="page"
+          :length="totalPage"
+          :total-visible="8"
+          prev-icon="mdi-menu-left"
+          next-icon="mdi-menu-right"
+          @input="movePage(page)"
+        ></v-pagination>
+        <!-- <a v-if="startPage > 1" @click="movePage(startPage - 1)">[이전]</a>
         <a v-for="i in endPage" :key="i">
           <a
             v-if="i + startPage - 1 <= endPage"
@@ -107,7 +118,7 @@
             [ {{ i + startPage - 1 }} ]
           </a>
         </a>
-        <a v-if="endPage < totalPage" @click="movePage(endPage + 1)">[다음]</a>
+        <a v-if="endPage < totalPage" @click="movePage(endPage + 1)">[다음]</a> -->
       </div>
     </div>
     <div v-else class="text-center">게시글이 없습니다.</div>
@@ -127,6 +138,7 @@ export default {
       category: "전체",
       word: "",
       key: "title",
+      page: 1,
     };
   },
 

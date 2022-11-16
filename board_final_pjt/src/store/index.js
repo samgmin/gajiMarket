@@ -1,8 +1,8 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue'
+import Vuex from 'vuex'
 import http from "@/api/http";
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
@@ -12,9 +12,13 @@ export default new Vuex.Store({
     totalPage: "",
     endPage: "",
     board: {},
-    Clist: [],
+    cList: [],
   },
-  getters: {},
+  getters: {
+    getBoard(state) {
+      return state.board;
+    },
+  },
   mutations: {
     BOARD_GET_LIST(state, payload) {
       state.boardList = payload.boardList;
@@ -22,38 +26,78 @@ export default new Vuex.Store({
       state.currPage = payload.currPage;
       state.totalPage = payload.totalPage;
       state.endPage = payload.endPage;
-      console.log(state);
     },
     BOARD_GET_ONE(state, payload) {
-      state.Clist = payload.Clist;
+      state.cList = payload.cList;
       state.board = payload.board;
+    },
+    BOARD_UPDATE(state, payload) {
+      state.board = payload;
+    },
+    COMMENT_WRITE(state, payload) {
+      console.log("작성댓글", payload);
+      state.cList = payload;
+      console.log(state.cList);
+      // state.Clist.push(payload);
     },
   },
   actions: {
     boardGetList({ commit }, payload) {
       console.log(payload);
       http.get("/board?page=" + payload).then(({ data }) => {
-        console.log("data : ", data);
-        console.log("commit : ", commit);
+        console.log('data : ', data);
+        console.log('commit : ', commit);
         commit("BOARD_GET_LIST", data);
       });
     },
     boardGetOne({ commit }, payload) {
-      console.log(payload);
-      console.log("commit : ", commit);
       http.get("/board/read?bno=" + payload).then(({ data }) => {
         console.log(data);
         commit("BOARD_GET_ONE", data);
       });
     },
     boardGetSearch({ commit }, payload) {
-      console.log(payload);
-      console.log("commit : ", commit);
       http.post("/board/list", payload).then(({ data }) => {
-        console.log(data);
         commit("BOARD_GET_LIST", data);
       });
     },
+    boardCreate({ commit }, payload) {
+      console.log(commit);
+      http.post("/board", payload).then(({ data }) => {
+        console.log(data);
+        alert(data);
+      });
+    },
+    boardDelete({ commit }, payload) {
+      console.log(commit);
+      http.delete("/board/" + payload).then(({ data }) => {
+        console.log(data);
+        alert(data);
+      });
+    },
+    boardUpdate({ commit }, payload) {
+      console.log(payload);
+      http.put("/board/modify", payload).then(({ data }) => {
+        console.log(data);
+        alert(data);
+        commit("BOARD_UPDATE", payload);
+      });
+    },
+    commentWrite({ commit }, payload) {
+      console.log(payload);
+      console.log('commit : ', commit);
+      http.post(`/board/comment`, payload).then(({ data }) => {
+        let msg = "댓글 처리 중 문제 발생 ~_~";
+        if (data.msg === "success") {
+          msg = "댓글 작성 성공~_~_~_~~";
+          console.log(data);
+          commit("COMMENT_WRITE", data.cList);
+        }
+        alert(msg);
+      });
+    },
+
   },
-  modules: {},
-});
+  modules: {
+  }
+})

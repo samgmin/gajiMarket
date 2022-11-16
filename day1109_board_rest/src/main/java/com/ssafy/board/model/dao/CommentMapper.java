@@ -7,4 +7,5 @@ import com.ssafy.board.model.dto.CommentDTO;
 public interface CommentMapper {
 	public int insert(CommentDTO comment);
 	public List<CommentDTO> selectList(int bno);
+	public int delete(int bno);
 }
