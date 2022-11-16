@@ -6,8 +6,8 @@
           <v-select
             v-model="sort"
             :items="[
-              { name: '최신순', value: 'bno' },
-              { name: '조회수', value: 'readCount' },
+              { name: '최신순', value: 'BNO' },
+              { name: '조회수', value: 'READ_COUNT' },
             ]"
             item-text="name"
             item-value="value"
@@ -76,6 +76,7 @@
           <thead>
             <tr>
               <th class="text-center">번호</th>
+              <th class="text-center">분류</th>
               <th class="text-center">제목</th>
               <th class="text-center">작성자</th>
               <th class="text-center">작성일시</th>
@@ -85,6 +86,7 @@
           <tbody>
             <tr v-for="(board, index) in boardList" :key="index">
               <td>{{ board.bno }}</td>
+              <td>{{ board.category }}</td>
               <td>
                 <a @click="titleClick(board.bno)">{{ board.title }}</a>
               </td>
@@ -98,7 +100,10 @@
       <div>
         <a v-if="startPage > 1" @click="movePage(startPage - 1)">[이전]</a>
         <a v-for="i in endPage" :key="i">
-          <a v-if="i + startPage - 1 <= endPage" @click="movePage(i + startPage - 1)">
+          <a
+            v-if="i + startPage - 1 <= endPage"
+            @click="movePage(i + startPage - 1)"
+          >
             [ {{ i + startPage - 1 }} ]
           </a>
         </a>
@@ -118,16 +123,23 @@ export default {
   },
   data() {
     return {
-      sort: "",
-      category: "",
+      sort: "BNO",
+      category: "전체",
       word: "",
-      key: "",
+      key: "title",
     };
   },
 
   methods: {
     movePage(page) {
-      this.boardGetList(page);
+      this.boardGetSearch({
+        pg: page,
+        spp: 10,
+        category: this.category,
+        sort: this.sort,
+        key: this.key,
+        word: this.word,
+      });
     },
     titleClick(bno) {
       this.$router.push({ name: "boardread", query: { bno } });
@@ -146,6 +158,14 @@ export default {
   },
   computed: {
     ...mapState(["boardList", "startPage", "totalPage", "endPage", "currPage"]),
+  },
+  watch: {
+    sort() {
+      this.selectList();
+    },
+    category() {
+      this.selectList();
+    },
   },
 };
 </script>
