@@ -38,9 +38,16 @@
 
     <!-- 수정 삭제 버튼 -->
     <div style="padding-top: 15px">
-      <v-btn variant="outline-primary" v-on:click="updateBoard">수정</v-btn>
+      <v-row align="center" justify="end">
+        <v-col class="d-flex" cols="12" sm="2">
+          <v-btn variant="outline-primary" v-on:click="updateBoard">수정</v-btn>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <v-btn variant="outline-primary" v-on:click="deleteBoard">삭제</v-btn>
+        </v-col>
+      </v-row>
+      <!-- <v-btn variant="outline-primary" v-on:click="updateBoard">수정</v-btn>
       &nbsp;&nbsp;
-      <v-btn variant="outline-primary" v-on:click="deleteBoard">삭제</v-btn>
+      <v-btn variant="outline-primary" v-on:click="deleteBoard">삭제</v-btn> -->
     </div>
     <br />
 
@@ -68,11 +75,7 @@
       <!-- 댓글 작성 -->
       <div class="comment">
         <v-form ref="form" lazy-validation v-if="show">
-          <v-text-field
-            v-model="comment.cwriter"
-            label="작성자"
-            required
-          ></v-text-field>
+          <v-text-field v-model="comment.cwriter" label="작성자" required></v-text-field>
           <v-text-field v-model="comment.ccontent" label="내용" required
             ><v-icon slot="append" color="red" @click="writecomment">
               mdi-plus

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.board.model.dao.BoardMapper">
 	<insert id="insert" parameterType="com.ssafy.board.model.dto.BoardDTO" useGeneratedKeys="true" keyProperty="bno" keyColumn="BNO">
-		INSERT INTO BOARD_TB(TITLE, WRITER, CONTENT, WRITE_DATE)
-		VALUES(#{title}, #{writer}, #{content}, NOW())
+		INSERT INTO BOARD_TB(TITLE, WRITER, CONTENT, WRITE_DATE, CATEGORY)
+		VALUES(#{title}, #{writer}, #{content}, NOW(), #{category})
 	</insert>
 	
 	<update id="updateReadCount" parameterType="int">

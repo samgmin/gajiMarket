@@ -1,6 +1,7 @@
 <template>
   <div>
     <div>
+      <!-- 조건 -->
       <v-row align="center" justify="space-between">
         <v-col class="d-flex" cols="2" sm="2">
           <v-select
@@ -78,6 +79,7 @@
       </v-row>
     </div>
 
+    <!-- 게시글 목록 -->
     <div v-if="boardList.length">
       <v-simple-table>
         <template v-slot:default>
@@ -92,11 +94,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(board, index) in boardList"
-              :key="index"
-              @click="titleClick(board.bno)"
-            >
+            <tr v-for="(board, index) in boardList" :key="index" @click="titleClick(board.bno)">
               <td>{{ board.bno }}</td>
               <td>{{ board.category }}</td>
               <td>{{ board.title }}</td>
@@ -107,6 +105,9 @@
           </tbody>
         </template>
       </v-simple-table>
+      <br />
+
+      <!-- 페이지 처리 -->
       <div class="text-center">
         <v-pagination
           v-model="page"

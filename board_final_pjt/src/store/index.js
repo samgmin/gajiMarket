@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import http from "@/api/http";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -20,15 +20,18 @@ export default new Vuex.Store({
     sidoList: [],
     gugunList: [],
     dongList: [],
-    aptSearchList: []
+    aptSearchList: [],
   },
   getters: {
     getBoard(state) {
       return state.board;
     },
+    getAptSearchList(state) {
+      return state.aptSearchList;
+    },
   },
   mutations: {
-    /////////////////////////////////////////////////////////////////////    
+    /////////////////////////////////////////////////////////////////////
     //여기부터 게시판 관련
     BOARD_GET_LIST(state, payload) {
       state.boardList = payload.boardList;
@@ -69,8 +72,8 @@ export default new Vuex.Store({
     boardGetList({ commit }, payload) {
       console.log(payload);
       http.get("/board?page=" + payload).then(({ data }) => {
-        console.log('data : ', data);
-        console.log('commit : ', commit);
+        console.log("data : ", data);
+        console.log("commit : ", commit);
         commit("BOARD_GET_LIST", data);
       });
     },
@@ -109,7 +112,7 @@ export default new Vuex.Store({
     },
     commentWrite({ commit }, payload) {
       console.log(payload);
-      console.log('commit : ', commit);
+      console.log("commit : ", commit);
       http.post(`/board/comment`, payload).then(({ data }) => {
         let msg = "댓글 처리 중 문제 발생 ~_~";
         if (data.msg === "success") {
@@ -123,37 +126,46 @@ export default new Vuex.Store({
     /////////////////////////////////////////////////////////////////////
     //여기부터 아파트 관련
     getSidoNames({ commit }) {
-      http.get('/apt/sido').then(({ data }) => {
+      http.get("/apt/sido").then(({ data }) => {
         console.log(data);
         commit("GET_SIDO_NAMES", data);
       });
     },
     getGugunNames({ commit }, payload) {
-      http.get('/apt/gugun?sidoName=' + payload).then(({ data }) => {
+      http.get("/apt/gugun?sidoName=" + payload).then(({ data }) => {
         console.log(data);
         commit("GET_GUGUN_NAMES", data);
       });
     },
     getDongNames({ commit }, payload) {
       console.log(payload);
-      http.get('/apt/dong?sidoName=' + payload.sidoName + '&gugunName=' + payload.gugunName).then(({ data }) => {
-        console.log(data);
-        commit("GET_DONG_NAMES", data);
-      });
+      http
+        .get("/apt/dong?sidoName=" + payload.sidoName + "&gugunName=" + payload.gugunName)
+        .then(({ data }) => {
+          console.log(data);
+          commit("GET_DONG_NAMES", data);
+        });
     },
     getSearchList({ commit }, payload) {
       console.log(payload.sido);
       console.log(payload.dong);
 
-      http.get('/apt/search?sido=' + payload.sido + '&dong=' + payload.dong +
-        '&dealYear=' + payload.year + '&dealMonth=' + payload.month)
+      http
+        .get(
+          "/apt/search?sido=" +
+            payload.sido +
+            "&dong=" +
+            payload.dong +
+            "&dealYear=" +
+            payload.year +
+            "&dealMonth=" +
+            payload.month
+        )
         .then(({ data }) => {
           console.log(data);
           commit("GET_SEARCH_LIST", data);
         });
     },
-
   },
-  modules: {
-  }
-})
+  modules: {},
+});
