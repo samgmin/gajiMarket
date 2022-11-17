@@ -1,53 +1,107 @@
 package com.ssafy.board.model.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "MemberDto : 회원정보", description = "회원의 상세 정보를 나타낸다.")
 public class MemberDTO {
-	private String id;
-	private String name;
-	private String password;
-	private String phone;
+
+	@ApiModelProperty(value = "회원 아이디")
+	private String userid;
+	@ApiModelProperty(value = "회원 이름")
+	private String username;
+	@ApiModelProperty(value = "회원 비밀번호")
+	private String userpwd;
+	@ApiModelProperty(value = "회원 이메일")
 	private String email;
+	@ApiModelProperty(value = "회원 가입일")
+	private String joindate;
+
+	private int age;
+	private String gender;
+	private String celebrity;
 	
-	public MemberDTO(String id, String name, String password, String phone, String email) {
-		this.id = id;
-		this.name = name;
-		this.password = password;
-		this.phone = phone;
+	public MemberDTO(String userid, String username, String userpwd, String email, String joindate, int age,
+			String gender, String celebrity) {
+		super();
+		this.userid = userid;
+		this.username = username;
+		this.userpwd = userpwd;
 		this.email = email;
+		this.joindate = joindate;
+		this.age = age;
+		this.gender = gender;
+		this.celebrity = celebrity;
 	}
-	public MemberDTO() {}
-	public String getId() {
-		return id;
+
+	public String getUserid() {
+		return userid;
 	}
-	public void setId(String id) {
-		this.id = id;
+
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
-	public String getName() {
-		return name;
+
+	public String getUsername() {
+		return username;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	public String getPassword() {
-		return password;
+
+	public String getUserpwd() {
+		return userpwd;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+
+	public void setUserpwd(String userpwd) {
+		this.userpwd = userpwd;
 	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getJoindate() {
+		return joindate;
+	}
+
+	public void setJoindate(String joindate) {
+		this.joindate = joindate;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getCelebrity() {
+		return celebrity;
+	}
+
+	public void setCelebrity(String celebrity) {
+		this.celebrity = celebrity;
+	}
+
 	@Override
 	public String toString() {
-		return "Member [id=" + id + ", name=" + name + ", password=" + password + ", phone=" + phone + ", email="
-				+ email + "]";
+		return "MemberDTO [userid=" + userid + ", username=" + username + ", userpwd=" + userpwd + ", email=" + email
+				+ ", joindate=" + joindate + ", age=" + age + ", gender=" + gender + ", celebrity=" + celebrity + "]";
 	}
+	
 }

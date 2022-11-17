@@ -34,7 +34,7 @@
       </template>
 
       <v-list>
-        <v-list-item>
+        <v-list-item :to="{ name: 'user' }">
           <v-list-item-title>로그인</v-list-item-title>
         </v-list-item>
         <v-list-item>

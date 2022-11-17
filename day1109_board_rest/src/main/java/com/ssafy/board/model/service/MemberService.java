@@ -1,17 +1,13 @@
 package com.ssafy.board.model.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.ssafy.board.model.dao.MemberMapper;
 import com.ssafy.board.model.dto.MemberDTO;
 
-@Service
-public class MemberService {
-	@Autowired
-	private MemberMapper memberDao;
+public interface MemberService {
+
+	public MemberDTO login(MemberDTO memberDto) throws Exception;
+	public MemberDTO userInfo(String userid) throws Exception;
+	public void saveRefreshToken(String userid, String refreshToken) throws Exception;
+	public Object getRefreshToken(String userid) throws Exception;
+	public void deleRefreshToken(String userid) throws Exception;
 	
-	public MemberDTO login(String id, String pw) {
-		return memberDao.selectOne(id, pw);
-	}
 }

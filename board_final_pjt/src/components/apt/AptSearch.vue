@@ -4,7 +4,12 @@
     <v-container fluid>
       <v-row align="center">
         <v-col class="d-flex">
-          <v-select :items="sidoList" label="시도 선택" v-model="selectSido" solo></v-select>
+          <v-select
+            :items="sidoList"
+            label="시도 선택"
+            v-model="selectSido"
+            solo
+          ></v-select>
         </v-col>
         <v-col class="d-flex">
           <v-select
@@ -16,13 +21,31 @@
           ></v-select>
         </v-col>
         <v-col class="d-flex">
-          <v-select :items="dongList" label="동 선택" v-model="selectDong" dense solo></v-select>
+          <v-select
+            :items="dongList"
+            label="동 선택"
+            v-model="selectDong"
+            dense
+            solo
+          ></v-select>
         </v-col>
         <v-col class="d-flex">
-          <v-select :items="yearList" label="년 선택" v-model="selectYear" dense solo></v-select>
+          <v-select
+            :items="yearList"
+            label="년 선택"
+            v-model="selectYear"
+            dense
+            solo
+          ></v-select>
         </v-col>
         <v-col class="d-flex" cols="3" sm="3">
-          <v-select :items="monthList" label="월 선택" v-model="selectMonth" dense solo></v-select>
+          <v-select
+            :items="monthList"
+            label="월 선택"
+            v-model="selectMonth"
+            dense
+            solo
+          ></v-select>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <v-btn variant="outline-primary" @click="selectList"> 검색</v-btn>
         </v-col>
@@ -42,7 +65,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(apt, index) in aptSearchList" :key="index" @click="titleClick(apt.dno)">
+            <tr
+              v-for="(apt, index) in aptSearchList"
+              :key="index"
+              @click="titleClick(apt.dno)"
+            >
               <td>{{ apt.apartmentName }}</td>
               <td>{{ apt.dongName }}</td>
               <td>{{ apt.dealAmount }}</td>
@@ -53,9 +80,13 @@
         </template>
       </v-simple-table>
       <div>
-        <v-card :loading="loading" class="mx-auto my-12" max-width="374">
+        <v-card class="mx-auto my-12" max-width="374">
           <template slot="progress">
-            <v-progress-linear color="deep-purple" height="6" indeterminate></v-progress-linear>
+            <v-progress-linear
+              color="deep-purple"
+              height="6"
+              indeterminate
+            ></v-progress-linear>
           </template>
 
           <v-card-title>Cafe Badilico</v-card-title>
@@ -73,8 +104,8 @@
             </v-row>
 
             <div>
-              Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus
-              patio seating.
+              Small plates, salads & sandwiches - an intimate setting with 12
+              indoor seats plus patio seating.
             </div>
           </v-card-text>
 
@@ -83,7 +114,7 @@
           <v-card-title>Tonight's availability</v-card-title>
 
           <v-card-actions>
-            <v-btn color="deep-purple lighten-2" text @click="reserve"> Reserve </v-btn>
+            <v-btn color="deep-purple lighten-2" text> Reserve </v-btn>
           </v-card-actions>
         </v-card>
       </div>
@@ -102,7 +133,8 @@ export default {
   data() {
     return {
       yearList: [
-        2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009,
+        2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011,
+        2010, 2009,
       ],
       monthList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       selectSido: "",
@@ -123,6 +155,20 @@ export default {
       let data = { sidoName: this.selectSido, gugunName: this.selectGugun };
       this.getDongNames(data);
     },
+    aptSearchList() {
+      console.log("agtList 변경됨");
+      console.log(this.aptSearchList);
+      if (window.kakao && window.kakao.maps) {
+        this.loadMap();
+      } else {
+        const script = document.createElement("script");
+        /* global kakao */
+        script.onload = () => kakao.maps.load(this.loadMap);
+        script.src =
+          "//dapi.kakao.com/v2/maps/sdk.js?appkey=78b26667d20a38aa946ea1f6a8384730&autoload=false";
+        document.head.appendChild(script);
+      }
+    },
   },
   methods: {
     selectList() {
@@ -133,72 +179,55 @@ export default {
         month: this.selectMonth,
       };
       this.getSearchList(data);
-
-      console.log(this.aptSearchList);
-      console.log(this.mylist);
-
-      console.log(this.lat);
-      console.log(this.lng);
-
-      // if (window.kakao && window.kakao.maps) {
-      //   this.loadMap();
-      // } else {
-      //   const script = document.createElement("script");
-      //   /* global kakao */
-      //   script.onload = () => kakao.maps.load(this.loadMap);
-      //   script.src =
-      //     "//dapi.kakao.com/v2/maps/sdk.js?appkey=78b26667d20a38aa946ea1f6a8384730";
-      //   document.head.appendChild(script);
-      // }
     },
-    // loadMaker() {
-    //   // 마커 이미지의 이미지 주소입니다
-    //   var imageSrc =
-    //     "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+    loadMaker() {
+      // 마커 이미지의 이미지 주소입니다
+      var imageSrc =
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
-    //   for (var i = 0; i < this.aptSearchList.length; i++) {
-    //     // 마커 이미지의 이미지 크기 입니다
-    //     var imageSize = new kakao.maps.Size(24, 35);
+      for (var i = 0; i < this.aptSearchList.length; i++) {
+        // 마커 이미지의 이미지 크기 입니다
+        var imageSize = new kakao.maps.Size(24, 35);
 
-    //     // 마커 이미지를 생성합니다
-    //     var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-    //     let latlng = new kakao.maps.LatLng(
-    //       this.mylist[i].let,
-    //       this.mylist[i].lng
-    //     );
-    //     // 마커를 생성합니다
-    //     var marker = new kakao.maps.Marker({
-    //       map: this.map, // 마커를 표시할 지도
-    //       position: latlng, // 마커를 표시할 위치
-    //       title: this.mylist[i].apartmentName, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-    //       image: markerImage, // 마커 이미지
-    //     });
-    //     marker.setMap(this.map);
-    //   }
-    // },
+        // 마커 이미지를 생성합니다
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+        let latlng = new kakao.maps.LatLng(
+          this.aptSearchList[i].let,
+          this.aptSearchList[i].lng
+        );
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+          map: this.map, // 마커를 표시할 지도
+          position: latlng, // 마커를 표시할 위치
+          title: this.aptSearchList[i].apartmentName, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: markerImage, // 마커 이미지
+        });
+        marker.setMap(this.map);
+      }
+    },
+    loadMap() {
+      window.kakao.maps.load(() => {
+        const container = document.getElementById("map");
+        const options = {
+          center: new kakao.maps.LatLng(
+            this.aptSearchList[0].let,
+            this.aptSearchList[0].lng
+          ),
+          level: 5,
+        };
 
-    // loadScript() {
-    //   const script = document.createElement("script");
-    //   script.src =
-    //     "//dapi.kakao.com/v2/maps/sdk.js?appkey=5a6bdeb81a6739353275d43b7d0526f4";
-    //   script.onload = () => window.kakao.maps.load(this.loadMap);
-    //   document.head.appendChild(script);
-    // },
-    // loadMap() {
-    //   const container = document.getElementById("map");
-    //   const options = {
-    //     center: new kakao.maps.LatLng(this.mylist[0].let, this.mylist[0].lng), // 지도의 중심좌표
-    //     level: 3, // 지도의 확대 레벨
-    //   };
-    //   this.map = new window.kakao.maps.Map(container, options);
-    //   this.loadMaker();
-    // },
-    ...mapActions(["getSidoNames", "getGugunNames", "getDongNames", "getSearchList"]),
+        this.map = new window.kakao.maps.Map(container, options);
+        this.loadMaker();
+      });
+    },
+    ...mapActions([
+      "getSidoNames",
+      "getGugunNames",
+      "getDongNames",
+      "getSearchList",
+    ]),
   },
   mounted() {},
-  // watch: {
-  //   aptSearchList() {},
-  // },
   computed: {
     ...mapState(["sidoList", "gugunList", "dongList", "aptSearchList"]),
     ...mapGetters([]),

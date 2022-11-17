@@ -1,11 +1,19 @@
 package com.ssafy.board.model.dao;
 
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import java.sql.SQLException;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.board.model.dto.MemberDTO;
 
-@Repository
+@Mapper
 public interface MemberMapper {
-	public MemberDTO selectOne(@Param("id")String id, @Param("pw")String pw);
+
+	public MemberDTO login(MemberDTO memberDto) throws SQLException;
+	public MemberDTO userInfo(String userid) throws SQLException;
+	public void saveRefreshToken(Map<String, String> map) throws SQLException;
+	public Object getRefreshToken(String userid) throws SQLException;
+	public void deleteRefreshToken(Map<String, String> map) throws SQLException;
+	
 }

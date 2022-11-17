@@ -1,8 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.board.model.dao.MemberMapper">
-	<select id="selectOne" resultType="com.ssafy.board.model.dto.MemberDTO">
-		SELECT ID, NAME FROM MEMBER_TB
-		WHERE ID = #{id} AND PASSWORD = #{pw}
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.board.model.mapper.MemberMapper">
+
+	<select id="login" parameterType="com.ssafy.board.model.dto.MemberDTO" resultType="com.ssafy.board.model.dto.MemberDTO">
+		select username, userid, email
+		from ssafy_member
+		where userid = #{userid} and userpwd = #{userpwd}
 	</select>
+	
+	<select id="userInfo" parameterType="string" resultType="com.ssafy.board.model.dto.MemberDTO">
+		select username, userid, email, joindate
+		from ssafy_member
+		where userid = #{userid}
+	</select>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from ssafy_member
+		where userid = #{userid}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update ssafy_member
+		set token = #{token}
+		where userid = #{userid}
+	</update>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update ssafy_member
+		set token = #{token, jdbcType=VARCHAR}
+		where userid = #{userid}
+	</update>
+	
 </mapper>
