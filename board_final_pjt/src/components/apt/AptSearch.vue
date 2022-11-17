@@ -124,7 +124,8 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions } from "vuex";
+const aptStore = "aptStore";
 
 export default {
   created() {
@@ -220,7 +221,7 @@ export default {
         this.loadMaker();
       });
     },
-    ...mapActions([
+    ...mapActions(aptStore, [
       "getSidoNames",
       "getGugunNames",
       "getDongNames",
@@ -229,8 +230,12 @@ export default {
   },
   mounted() {},
   computed: {
-    ...mapState(["sidoList", "gugunList", "dongList", "aptSearchList"]),
-    ...mapGetters([]),
+    ...mapState(aptStore, [
+      "sidoList",
+      "gugunList",
+      "dongList",
+      "aptSearchList",
+    ]),
   },
 };
 </script>

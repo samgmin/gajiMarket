@@ -75,7 +75,11 @@
       <!-- 댓글 작성 -->
       <div class="comment">
         <v-form ref="form" lazy-validation v-if="show">
-          <v-text-field v-model="comment.cwriter" label="작성자" required></v-text-field>
+          <v-text-field
+            v-model="comment.cwriter"
+            label="작성자"
+            required
+          ></v-text-field>
           <v-text-field v-model="comment.ccontent" label="내용" required
             ><v-icon slot="append" color="red" @click="writecomment">
               mdi-plus
@@ -88,6 +92,7 @@
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+const boardStore = "boardStore";
 
 export default {
   data: function () {
@@ -127,7 +132,7 @@ export default {
     updateBoard() {
       this.$router.push({ name: "boardupdate" });
     },
-    ...mapActions(["boardGetOne", "boardDelete", "commentWrite"]),
+    ...mapActions(boardStore, ["boardGetOne", "boardDelete", "commentWrite"]),
   },
   filters: {
     numberWithCommas(x) {
@@ -135,7 +140,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["board", "cList"]),
+    ...mapState(boardStore, ["board", "cList"]),
   },
 };
 </script>

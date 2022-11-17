@@ -94,7 +94,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(board, index) in boardList" :key="index" @click="titleClick(board.bno)">
+            <tr
+              v-for="(board, index) in boardList"
+              :key="index"
+              @click="titleClick(board.bno)"
+            >
               <td>{{ board.bno }}</td>
               <td>{{ board.category }}</td>
               <td>{{ board.title }}</td>
@@ -135,6 +139,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+const boardStore = "boardStore";
 
 export default {
   created() {
@@ -174,10 +179,16 @@ export default {
         word: this.word,
       });
     },
-    ...mapActions(["boardGetList", "boardGetSearch"]),
+    ...mapActions(boardStore, ["boardGetList", "boardGetSearch"]),
   },
   computed: {
-    ...mapState(["boardList", "startPage", "totalPage", "endPage", "currPage"]),
+    ...mapState(boardStore, [
+      "boardList",
+      "startPage",
+      "totalPage",
+      "endPage",
+      "currPage",
+    ]),
   },
   watch: {
     sort() {

@@ -27,7 +27,11 @@
         <tr>
           <th colspan="1">제목</th>
           <td colspan="11">
-            <v-text-field v-model="board.title" label="제목을 입력하세요." required></v-text-field>
+            <v-text-field
+              v-model="board.title"
+              label="제목을 입력하세요."
+              required
+            ></v-text-field>
           </td>
         </tr>
         <tr>
@@ -36,7 +40,11 @@
         <tr>
           <th colspan="1" style="padding-bottom: 40px">내용</th>
           <td colspan="11">
-            <v-textarea outlined name="input-7-4" v-model="board.content"></v-textarea>
+            <v-textarea
+              outlined
+              name="input-7-4"
+              v-model="board.content"
+            ></v-textarea>
           </td>
         </tr>
       </template>
@@ -85,6 +93,8 @@
 <script>
 import { mapState, mapActions } from "vuex";
 
+const boardStore = "boardStore";
+
 export default {
   data() {
     return {
@@ -100,10 +110,10 @@ export default {
       this.$router.push({ name: "boardlist" });
     },
     onReset() {},
-    ...mapActions(["boardUpdate"]),
+    ...mapActions(boardStore, ["boardUpdate"]),
   },
   computed: {
-    ...mapState(["board"]),
+    ...mapState(boardStore, ["board"]),
   },
 };
 </script>
