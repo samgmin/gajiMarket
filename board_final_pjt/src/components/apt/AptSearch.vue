@@ -51,74 +51,109 @@
         </v-col>
       </v-row>
     </v-container>
-    여기부터 검색결과
     <div v-if="aptSearchList.length">
-      <v-simple-table>
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="text-center">아파트이름</th>
-              <th class="text-center">동이름</th>
-              <th class="text-center">거래가격</th>
-              <th class="text-center">거래년월</th>
-              <th class="text-center">층</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(apt, index) in aptSearchList"
-              :key="index"
-              @click="titleClick(apt.dno)"
-            >
-              <td>{{ apt.apartmentName }}</td>
-              <td>{{ apt.dongName }}</td>
-              <td>{{ apt.dealAmount }}</td>
-              <td>{{ apt.dealYear }}/{{ apt.dealMonth }}</td>
-              <td>{{ apt.floor }}</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-      <div>
-        <v-card class="mx-auto my-12" max-width="374">
-          <template slot="progress">
-            <v-progress-linear
-              color="deep-purple"
-              height="6"
-              indeterminate
-            ></v-progress-linear>
-          </template>
+      <v-row>
+        <v-col>
+          <h3>검색결과</h3>
+          <div style="overflow: scroll; height: 500px">
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-center">아파트이름</th>
+                    <th class="text-center">동이름</th>
+                    <th class="text-center">거래가격</th>
+                    <th class="text-center">거래년월</th>
+                    <th class="text-center">층</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(apt, index) in aptSearchList"
+                    :key="index"
+                    @click="showDialog(index)"
+                  >
+                    <td>{{ apt.apartmentName }}</td>
+                    <td>{{ apt.dongName }}</td>
+                    <td>{{ apt.dealAmount }}</td>
+                    <td>{{ apt.dealYear }}/{{ apt.dealMonth }}</td>
+                    <td>{{ apt.floor }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </div>
+        </v-col>
+        <v-col>
+          <div
+            id="map"
+            style="width: 500px; height: 500px; margin-top: 47px"
+          ></div>
+        </v-col>
+      </v-row>
+    </div>
+    <!--     상세보기 dialog          -->
+    <div class="text-center">
+      <v-dialog v-model="dialog" width="1000px" height="1000">
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            아파트 거래내역 상세보기
+          </v-card-title>
+          <v-row>
+            <v-col style="margin-top: 50px">
+              <v-simple-table>
+                <template v-slot:default>
+                  <tr>
+                    <th class="text-center">아파트이름</th>
+                    <td>{{ currentDialogItem.apartmentName }}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-center">동이름</th>
+                    <td>{{ currentDialogItem.dongName }}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-center">거래가격</th>
 
-          <v-card-title>Cafe Badilico</v-card-title>
+                    <td>{{ currentDialogItem.dealAmount }}</td>
+                  </tr>
+                  <tr>
+                    <th class="text-center">거래년월</th>
+                    <td>
+                      {{ currentDialogItem.dealYear }}/{{
+                        currentDialogItem.dealMonth
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-center">층</th>
+                    <td>{{ currentDialogItem.floor }}</td>
+                  </tr>
+                </template>
+              </v-simple-table>
+            </v-col>
+            <v-col>
+              <div
+                id="roadview"
+                style="
+                  width: 500px;
+                  height: 500px;
+                  margin-top: 47px;
+                  margin-right: 47px;
+                "
+              ></div>
+            </v-col>
+          </v-row>
 
-          <v-card-text>
-            <v-row align="center" class="mx-0">
-              <v-rating
-                :value="4.5"
-                color="amber"
-                dense
-                half-increments
-                readonly
-                size="14"
-              ></v-rating>
-            </v-row>
-
-            <div>
-              Small plates, salads & sandwiches - an intimate setting with 12
-              indoor seats plus patio seating.
-            </div>
-          </v-card-text>
-
-          <v-divider class="mx-4"></v-divider>
-
-          <v-card-title>Tonight's availability</v-card-title>
+          <v-divider></v-divider>
 
           <v-card-actions>
-            <v-btn color="deep-purple lighten-2" text> Reserve </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="dialog = false">
+              돌아가기
+            </v-btn>
           </v-card-actions>
         </v-card>
-      </div>
-      <div id="map" style="width: 500px; height: 400px"></div>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -143,9 +178,9 @@ export default {
       selectDong: "",
       selectYear: "",
       selectMonth: "",
-      lat: [],
-      lng: [],
       map: null,
+      dialog: false,
+      currentDialogItem: {},
     };
   },
   watch: {
@@ -157,8 +192,6 @@ export default {
       this.getDongNames(data);
     },
     aptSearchList() {
-      console.log("agtList 변경됨");
-      console.log(this.aptSearchList);
       if (window.kakao && window.kakao.maps) {
         this.loadMap();
       } else {
@@ -207,18 +240,36 @@ export default {
       }
     },
     loadMap() {
-      window.kakao.maps.load(() => {
-        const container = document.getElementById("map");
-        const options = {
-          center: new kakao.maps.LatLng(
-            this.aptSearchList[0].let,
-            this.aptSearchList[0].lng
-          ),
-          level: 5,
-        };
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(
+          this.aptSearchList[0].let,
+          this.aptSearchList[0].lng
+        ),
+        level: 5,
+      };
 
-        this.map = new window.kakao.maps.Map(container, options);
-        this.loadMaker();
+      this.map = new window.kakao.maps.Map(container, options);
+      this.loadMaker();
+    },
+    showDialog(no) {
+      this.dialog = true;
+      this.currentDialogItem = this.aptSearchList[no];
+      setTimeout(this.loadView, 100);
+    },
+    loadView() {
+      var roadviewContainer = document.getElementById("roadview"); //로드뷰를 표시할 div
+      var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+      var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+
+      var position = new kakao.maps.LatLng(
+        this.currentDialogItem.let,
+        this.currentDialogItem.lng
+      );
+
+      // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
+      roadviewClient.getNearestPanoId(position, 150, function (panoId) {
+        roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
       });
     },
     ...mapActions(aptStore, [

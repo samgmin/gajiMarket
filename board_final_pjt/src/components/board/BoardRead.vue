@@ -37,7 +37,7 @@
     </div>
 
     <!-- 수정 삭제 버튼 -->
-    <div style="padding-top: 15px">
+    <div style="padding-top: 15px" v-if="board.writer === userInfo.username">
       <v-row align="center" justify="end">
         <v-col class="d-flex" cols="12" sm="2">
           <v-btn variant="outline-primary" v-on:click="updateBoard">수정</v-btn>
@@ -71,28 +71,29 @@
       </v-simple-table>
       <hr />
       <br />
+    </div>
 
-      <!-- 댓글 작성 -->
-      <div class="comment">
-        <v-form ref="form" lazy-validation v-if="show">
-          <v-text-field
-            v-model="comment.cwriter"
-            label="작성자"
-            required
-          ></v-text-field>
-          <v-text-field v-model="comment.ccontent" label="내용" required
-            ><v-icon slot="append" color="red" @click="writecomment">
-              mdi-plus
-            </v-icon></v-text-field
-          >
-        </v-form>
-      </div>
+    <!-- 댓글 작성 -->
+    <div class="comment">
+      <v-form ref="form" lazy-validation v-if="show">
+        <!-- <v-text-field
+          v-model="comment.cwriter"
+          label="작성자"
+          required
+        ></v-text-field> -->
+        <v-text-field v-model="comment.ccontent" label="내용" required
+          ><v-icon slot="append" color="red" @click="writecomment">
+            mdi-plus
+          </v-icon></v-text-field
+        >
+      </v-form>
     </div>
   </div>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
 const boardStore = "boardStore";
+const userStore = "userStore";
 
 export default {
   data: function () {
@@ -109,6 +110,7 @@ export default {
   // props: ["money"],
   created() {
     this.findboard(this.$route.query.bno);
+    this.comment.cwriter = this.userInfo.username;
   },
 
   methods: {
@@ -141,6 +143,7 @@ export default {
   },
   computed: {
     ...mapState(boardStore, ["board", "cList"]),
+    ...mapState(userStore, ["userInfo"]),
   },
 };
 </script>

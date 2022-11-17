@@ -29,14 +29,14 @@
             >
             </v-select>
           </td>
-          <th colspan="1">작성자</th>
+          <!-- <th colspan="1">작성자</th>
           <td colspan="9">
             <v-text-field
               v-model="board.writer"
               label="작성자를 입력하세요."
               required
             ></v-text-field>
-          </td>
+          </td> -->
         </tr>
         <tr>
           <th colspan="1">제목</th>
@@ -72,7 +72,9 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
+
+const userStore = "userStore";
 const boardStore = "boardStore";
 
 export default {
@@ -86,6 +88,10 @@ export default {
       },
       show: true,
     };
+  },
+  created() {
+    console.log(this.userInfo.username);
+    this.board.writer = this.userInfo.username;
   },
   methods: {
     async onSubmit() {
@@ -101,6 +107,9 @@ export default {
     },
     onReset() {},
     ...mapActions(boardStore, ["boardCreate"]),
+  },
+  computed: {
+    ...mapState(userStore, ["userInfo"]),
   },
 };
 </script>

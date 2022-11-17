@@ -6,30 +6,30 @@
 
 	<select id="login" parameterType="com.ssafy.board.model.dto.MemberDTO" resultType="com.ssafy.board.model.dto.MemberDTO">
 		select username, userid, email
-		from ssafy_member
+		from member_tb
 		where userid = #{userid} and userpwd = #{userpwd}
 	</select>
 	
 	<select id="userInfo" parameterType="string" resultType="com.ssafy.board.model.dto.MemberDTO">
 		select username, userid, email, joindate
-		from ssafy_member
+		from member_tb
 		where userid = #{userid}
 	</select>
 	
 	<select id="getRefreshToken" parameterType="string" resultType="string">
 		select token
-		from ssafy_member
+		from member_tb
 		where userid = #{userid}
 	</select>
 	
 	<update id="saveRefreshToken" parameterType="map">
-		update ssafy_member
+		update member_tb
 		set token = #{token}
 		where userid = #{userid}
 	</update>
 	
 	<update id="deleteRefreshToken" parameterType="map">
-		update ssafy_member
+		update member_tb
 		set token = #{token, jdbcType=VARCHAR}
 		where userid = #{userid}
 	</update>

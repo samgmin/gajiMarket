@@ -21,6 +21,10 @@ public class MemberDTO {
 	private String gender;
 	private String celebrity;
 	
+	public MemberDTO() {
+		super();
+	}
+
 	public MemberDTO(String userid, String username, String userpwd, String email, String joindate, int age,
 			String gender, String celebrity) {
 		super();

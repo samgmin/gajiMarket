@@ -12,9 +12,9 @@
       <v-img v-bind="props"></v-img>
     </template>
 
-    <v-app-bar-nav-icon> 안녕하세요~!</v-app-bar-nav-icon>
+    <v-app-bar-nav-icon>뿡</v-app-bar-nav-icon>
 
-    <v-app-bar-title>HAPPY</v-app-bar-title>
+    <v-app-bar-title>HAPPY HAPPY</v-app-bar-title>
 
     <v-spacer></v-spacer>
 
@@ -33,7 +33,18 @@
         </v-btn>
       </template>
 
-      <v-list>
+      <!-- 로그인 되었을 때 -->
+      <v-list v-if="userInfo">
+        <v-list-item>
+          <v-list-item-title>마이페이지</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click.prevent="onClickLogout">
+          <v-list-item-title>로그아웃</v-list-item-title>
+        </v-list-item>
+      </v-list>
+
+      <!-- 로그인 안되었을 때 -->
+      <v-list v-else>
         <v-list-item :to="{ name: 'user' }">
           <v-list-item-title>로그인</v-list-item-title>
         </v-list-item>
@@ -54,10 +65,36 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from "vuex";
+
+const userStore = "userStore";
+
 export default {
   name: "TheHeaderNavbar",
   data() {
     return {};
+  },
+  computed: {
+    ...mapState(userStore, ["isLogin", "userInfo"]),
+    ...mapGetters(["checkUserInfo"]),
+  },
+  methods: {
+    ...mapActions(userStore, ["userLogout"]),
+    // ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    onClickLogout() {
+      // this.SET_IS_LOGIN(false);
+      // this.SET_USER_INFO(null);
+      // sessionStorage.removeItem("access-token");
+      // if (this.$route.path != "/") this.$router.push({ name: "main" });
+      console.log(this.userInfo.userid);
+      //vuex actions에서 userLogout 실행(Backend에 저장 된 리프레시 토큰 없애기
+      //+ satate에 isLogin, userInfo 정보 변경)
+      // this.$store.dispatch("userLogout", this.userInfo.userid);
+      this.userLogout(this.userInfo.userid);
+      sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
+      sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
+      if (this.$route.path != "/") this.$router.push({ name: "main" });
+    },
   },
 };
 </script>

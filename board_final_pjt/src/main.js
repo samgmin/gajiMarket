@@ -4,7 +4,7 @@ import router from "./router";
 import store from "./store";
 import "@/api/fontAwesomeIcon.js"; // fontAwesomeIcon.js 불러옴
 import "@/api/vueBootstrap.js";
-import vuetify from "./plugins/vuetify";
+import vuetify from "./api/vuetify";
 
 Vue.config.productionTip = false;
 

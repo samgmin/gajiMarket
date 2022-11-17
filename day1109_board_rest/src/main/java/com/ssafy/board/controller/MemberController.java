@@ -121,6 +121,7 @@ public class MemberController {
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refreshToken(@RequestBody MemberDTO memberDto, HttpServletRequest request)
 			throws Exception {
+		System.out.println("토큰 재발급 하러 왔다 " + memberDto);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		String token = request.getHeader("refresh-token");
