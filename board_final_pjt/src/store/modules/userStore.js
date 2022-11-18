@@ -34,8 +34,8 @@ const userStore = {
     },
   },
   actions: {
-    userConfirm({ commit }, user) {
-      http
+    async userConfirm({ commit }, user) {
+      await http
         .post(`/user/login`, JSON.stringify(user))
         .then(({ data }) => {
           if (data.message === "success") {
@@ -57,11 +57,11 @@ const userStore = {
           console.log(error);
         });
     },
-    getUserInfo({ commit, dispatch }, token) {
+    async getUserInfo({ commit, dispatch }, token) {
       let decodeToken = jwtDecode(token);
       console.log("2. getUserInfo() decodeToken :: ", decodeToken);
       http.defaults.headers["access-token"] = sessionStorage.getItem("access-token");
-      http
+      await http
         .get(`/user/info/${decodeToken.userid}`)
         .then(({ data }) => {
           if (data.message === "success") {
@@ -71,16 +71,19 @@ const userStore = {
             console.log("유저 정보 없음!!!!");
           }
         })
-        .catch((error) => {
-          console.log("getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
+        .catch(async (error) => {
+          console.log(
+            "getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
+            error.response.status
+          );
           commit("SET_IS_VALID_TOKEN", false);
-          dispatch("tokenRegeneration");
+          await dispatch("tokenRegeneration");
         });
     },
-    tokenRegeneration({ commit, state }) {
+    async tokenRegeneration({ commit, state }) {
       console.log("토큰 재발급 >> 기존 토큰 정보 : {}", sessionStorage.getItem("access-token"));
       http.defaults.headers["refresh-token"] = sessionStorage.getItem("refresh-token"); //axios header에 refresh-token 셋팅
-      http
+      await http
         .post(`/user/refresh`, JSON.stringify(state.userInfo))
         .then(({ data }) => {
           if (data.message === "success") {
@@ -90,12 +93,12 @@ const userStore = {
             commit("SET_IS_VALID_TOKEN", true);
           }
         })
-        .catch((error) => {
+        .catch(async (error) => {
           // HttpStatus.UNAUTHORIZE(401) : RefreshToken 기간 만료 >> 다시 로그인!!!!
           if (error.response.status === 401) {
             console.log("갱신 실패");
             // 다시 로그인 전 DB에 저장된 RefreshToken 제거.
-            http
+            await http
               .get(`/user/logout/${state.userInfo.userid}`)
               .then(({ data }) => {
                 if (data.message === "success") {
@@ -117,8 +120,8 @@ const userStore = {
           }
         });
     },
-    userLogout({ commit }, userid) {
-      http
+    async userLogout({ commit }, userid) {
+      await http
         .get(`/user/logout/${userid}`)
         .then(({ data }) => {
           if (data.message === "success") {
