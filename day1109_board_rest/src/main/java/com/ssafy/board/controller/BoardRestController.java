@@ -102,12 +102,51 @@ public class BoardRestController {
 		}
 	}
 	
+	@GetMapping("/recommend")
+	public ResponseEntity<Integer> recommend(String userid, int bno) {
+		System.out.println("추천수 업데이트 : " + userid + " " + bno);
+		return new ResponseEntity<Integer>(bservice.updateRecommend(userid, bno), HttpStatus.OK);
+	}
+	
 	@PostMapping("/comment")
 	public ResponseEntity<Map<String, Object>> comment(@RequestBody CommentDTO comment) {
-		Map<String, Object> result = new HashMap<String, Object>();;
+		Map<String, Object> result = new HashMap<String, Object>();
 		System.out.println(comment);
 		if(bservice.writeComment(comment)) {
 			List<CommentDTO> list = bservice.getComments(comment.getBno());
+			System.out.println(list);
+			result.put("cList", list);
+			result.put("msg", "success");
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.ACCEPTED);
+		} else {
+			result.put("msg", "error");
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PostMapping("/comment/update")
+	public ResponseEntity<Map<String, Object>> commentUpdate(@RequestBody CommentDTO comment) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		System.out.println("업데이트 댓글 : " + comment);
+		if(bservice.modifyComment(comment)) {
+			List<CommentDTO> list = bservice.getComments(comment.getBno());
+			System.out.println("리스트 다시 불러오기 : " + list);
+			result.put("cList", list);
+			result.put("msg", "success");
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.ACCEPTED);
+		} else {
+			result.put("msg", "error");
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@DeleteMapping("/comment/delete")
+	public ResponseEntity<Map<String, Object>> deleteComment(int bno, int cno) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		System.out.println("게시물 : " + bno + " 댓글 삭제 : " + cno);
+		if(bservice.deleteCemment(cno)) {
+			System.out.println(cno + " 댓글 삭제했음!");
+			List<CommentDTO> list = bservice.getComments(bno);
 			System.out.println(list);
 			result.put("cList", list);
 			result.put("msg", "success");

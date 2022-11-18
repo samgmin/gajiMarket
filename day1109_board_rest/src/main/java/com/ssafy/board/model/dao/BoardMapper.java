@@ -17,6 +17,12 @@ public interface BoardMapper {
 	public int selectConditionCount(BoardParameterDto boardParameterDto);
     public BoardDTO selectOne(int bno);
     public int updateReadCount(int bno);
+    public int selectRecommendCount(String userid, int bno);
+    public int selectTotalRecommendCount(int bno);
+    public int updateRecommendPlus(int bno);
+    public int updateRecommendMinus(int bno);
+    public int insertRecommend(String userid, int bno);
+    public int deleteRecommend(String userid, int bno);
     public int update(BoardDTO board);
     public int delete(int bno);
 }

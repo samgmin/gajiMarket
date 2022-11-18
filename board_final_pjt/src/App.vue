@@ -2,11 +2,7 @@
   <v-app ref="app">
     <v-card class="overflow-hidden">
       <the-header-navbar />
-      <v-sheet
-        id="scrolling-techniques-2"
-        class="overflow-y-auto"
-        max-height="auto"
-      >
+      <v-sheet id="scrolling-techniques-2" class="overflow-y-auto" max-height="auto">
         <v-container style="height: 1000px; margin-top: 300px">
           <router-view />
         </v-container>

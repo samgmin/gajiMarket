@@ -140,6 +140,21 @@ public class BoardService {
 		return false;
 	}
 	
+	// 추천수
+	public int updateRecommend(String userid, int bno) {
+		if(dao.selectRecommendCount(userid, bno) == 0) {
+			if(dao.insertRecommend(userid, bno) == 1 && dao.updateRecommendPlus(bno) == 1) {
+				return dao.selectTotalRecommendCount(bno);
+			}
+		} else {
+			if(dao.deleteRecommend(userid, bno) == 1 && dao.updateRecommendMinus(bno) == 1) {
+				return dao.selectTotalRecommendCount(bno);
+			}
+		}
+		
+		return dao.selectTotalRecommendCount(bno);
+	}
+	
 	///////////////////////////////////////////
 //	public int writeComment(CommentDTO comment) {
 //		return cdao.insert(comment);
@@ -156,6 +171,21 @@ public class BoardService {
 	
 	public List<CommentDTO> getComments(int bno) {
 		return cdao.selectList(bno);
+	}
+	
+	public boolean modifyComment(CommentDTO comment) {
+		if(comment.getCwriter().length() == 0 || comment.getCcontent().length() == 0)
+			return false;
+		
+		if(cdao.update(comment) == 1)
+			return true;
+		return false;
+	}
+	
+	public boolean deleteCemment(int cno) {
+		if(cdao.deleteComment(cno) == 1)
+			return true;
+		return false;
 	}
 	
 	// 파일 업로드 관련, 파일 복잡해지면 별도의 FileService로 분리시킬 수 있음

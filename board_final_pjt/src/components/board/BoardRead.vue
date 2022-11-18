@@ -18,14 +18,15 @@
           </span>
           <span style="font-size: 15px">{{ board.writeDate }}</span>
         </v-col>
-        <v-col class="d-flex" cols="4" sm="4"></v-col>
-        <v-col class="d-flex align-end" cols="2" sm="2">
+        <v-col class="d-flex" cols="2" sm="2"></v-col>
+        <v-col class="d-flex align-end" cols="4" sm="4">
           <span style="font-size: 15px">{{ board.readCount }}</span>
           <span
-            ><v-btn icon color="deep-orange">
+            ><v-btn icon color="deep-orange" @click="updateRecommend">
               <v-icon>mdi-thumb-up</v-icon>
             </v-btn></span
           >
+          <span style="font-size: 15px">{{ board.recommend }}</span>
         </v-col>
       </v-row>
       <hr />
@@ -65,6 +66,14 @@
             <tr v-for="(comment, index) in cList" :key="index">
               <td>{{ comment.cwriter }}</td>
               <td>{{ comment.ccontent }}</td>
+              <v-btn @click="updateComment(comment)" v-if="comment.cwriter === userInfo.username"
+                >수정</v-btn
+              >
+              <v-btn
+                @click="deleteComment(comment.cno)"
+                v-if="comment.cwriter === userInfo.username"
+                >삭제</v-btn
+              >
             </tr>
           </tbody>
         </template>
@@ -82,9 +91,7 @@
           required
         ></v-text-field> -->
         <v-text-field v-model="comment.ccontent" label="내용" required
-          ><v-icon slot="append" color="red" @click="writecomment">
-            mdi-plus
-          </v-icon></v-text-field
+          ><v-icon slot="append" color="red" @click="writecomment"> mdi-plus </v-icon></v-text-field
         >
       </v-form>
     </div>
@@ -131,10 +138,37 @@ export default {
       this.comment.cwriter = "";
       this.comment.ccontent = "";
     },
+    updateComment(comment) {
+      this.commentUpdate(comment);
+    },
+    deleteComment(cno) {
+      let data = {
+        bno: this.$route.query.bno,
+        cno: cno,
+      };
+      console.log(data);
+      this.commentDelete(data);
+    },
     updateBoard() {
       this.$router.push({ name: "boardupdate" });
     },
-    ...mapActions(boardStore, ["boardGetOne", "boardDelete", "commentWrite"]),
+    updateRecommend() {
+      console.log(this.userInfo.userid);
+      console.log(this.$route.query.bno);
+      let data = {
+        userid: this.userInfo.userid,
+        bno: this.$route.query.bno,
+      };
+      this.boardRecommendUpdate(data);
+    },
+    ...mapActions(boardStore, [
+      "boardGetOne",
+      "boardDelete",
+      "boardRecommendUpdate",
+      "commentWrite",
+      "commentUpdate",
+      "commentDelete",
+    ]),
   },
   filters: {
     numberWithCommas(x) {

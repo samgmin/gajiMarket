@@ -30,6 +30,9 @@ const boardStore = {
     COMMENT_WRITE(state, payload) {
       state.cList = payload;
     },
+    BOARD_RECOMMEND_UPDATE(state, payload) {
+      state.board.recommend = payload;
+    },
   },
   actions: {
     boardGetList({ commit }, payload) {
@@ -73,6 +76,16 @@ const boardStore = {
         commit("BOARD_UPDATE", payload);
       });
     },
+    boardRecommendUpdate({ commit }, payload) {
+      console.log("조회수 업데이트");
+      console.log(payload);
+      http
+        .get("/board/recommend?userid=" + payload.userid + "&bno=" + payload.bno)
+        .then(({ data }) => {
+          console.log(data);
+          commit("BOARD_RECOMMEND_UPDATE", data);
+        });
+    },
     commentWrite({ commit }, payload) {
       console.log(payload);
       console.log("commit : ", commit);
@@ -85,6 +98,33 @@ const boardStore = {
         }
         alert(msg);
       });
+    },
+    commentUpdate({ commit }, payload) {
+      console.log(payload);
+      http.post(`board/comment/update`, payload).then(({ data }) => {
+        let msg = "댓글 처리 중 문제 발생 ~_~";
+        if (data.msg === "success") {
+          msg = "댓글 수정 성공~_~_~_~~";
+          console.log(data);
+          commit("COMMENT_WRITE", data.cList);
+        }
+        alert(msg);
+      });
+    },
+    commentDelete({ commit }, payload) {
+      console.log(commit);
+      console.log(payload);
+      http
+        .delete("/board/comment/delete?bno=" + payload.bno + "&cno=" + payload.cno)
+        .then(({ data }) => {
+          let msg = "댓글 처리 중 문제 발생 ~_~";
+          if (data.msg === "success") {
+            msg = "댓글 삭제 성공~_~_~_~~";
+            console.log(data);
+            commit("COMMENT_WRITE", data.cList);
+          }
+          alert(msg);
+        });
     },
   },
 };

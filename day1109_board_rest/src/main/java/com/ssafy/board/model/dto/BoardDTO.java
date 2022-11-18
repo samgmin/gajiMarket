@@ -8,9 +8,10 @@ public class BoardDTO {
 	private String writeDate;
 	private int readCount;
 	private String category;
+	private int recommend;
 	
 //////////////////////////////////////////////////////////	
-	public BoardDTO(int bno, String title, String writer, String content, String writeDate, int readCount, String category) {
+	public BoardDTO(int bno, String title, String writer, String content, String writeDate, int readCount, String category, int recommend) {
 		this.bno = bno;
 		this.title = title;
 		this.writer = writer;
@@ -18,6 +19,7 @@ public class BoardDTO {
 		this.writeDate = writeDate;
 		this.readCount = readCount;
 		this.category = category;
+		this.recommend = recommend;
 	}
 	
 	public BoardDTO(String title, String writer, String content) {
@@ -84,9 +86,18 @@ public class BoardDTO {
 		this.category = category;
 	}
 
+	public int getRecommend() {
+		return recommend;
+	}
+
+	public void setRecommend(int recommend) {
+		this.recommend = recommend;
+	}
+
 	@Override
 	public String toString() {
 		return "BoardDTO [bno=" + bno + ", title=" + title + ", writer=" + writer + ", content=" + content
-				+ ", writeDate=" + writeDate + ", readCount=" + readCount + ", category=" + category + "]";
+				+ ", writeDate=" + writeDate + ", readCount=" + readCount + ", category=" + category + ", recommend="
+				+ recommend + "]";
 	}
 }

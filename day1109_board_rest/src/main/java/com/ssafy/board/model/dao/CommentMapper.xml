@@ -16,4 +16,15 @@
 		DELETE FROM COMMENT_TB
 		WHERE BNO = #{bno}
 	</delete>
+	
+	<update id="update" parameterType="com.ssafy.board.model.dto.CommentDTO">
+		UPDATE COMMENT_TB
+		SET ccontent = #{ccontent}
+		WHERE CNO = #{cno}
+	</update>
+	
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM COMMENT_TB
+		WHERE CNO = #{cno}
+	</delete>
 </mapper>
