@@ -1,9 +1,11 @@
 package com.ssafy.board.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.board.model.dto.BoardDTO;
 import com.ssafy.board.model.dto.BoardParameterDto;
 import com.ssafy.board.model.dto.CommentDTO;
+import com.ssafy.board.model.dto.FileDTO;
 import com.ssafy.board.model.service.BoardService;
 
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -43,8 +47,8 @@ public class BoardRestController {
 	}
 	
 	@PostMapping
-//	public ResponseEntity<String> write(BoardDTO board, MultipartFile[] uploadFile) throws IllegalStateException, IOException {
-	public ResponseEntity<String> write(@RequestBody BoardDTO board) throws IllegalStateException, IOException {
+	public ResponseEntity<String> write(BoardDTO board, MultipartFile[] uploadFile) throws IllegalStateException, IOException {
+//	public ResponseEntity<String> write(@RequestBody BoardDTO board) throws IllegalStateException, IOException {
 		System.out.println("글 쓰기에 왔어요");
 		// 일단 글이 DB에 저장되야 글번호를 파일 업로드에 넣을 수 있음
 		System.out.println("before write: " + board);
@@ -52,23 +56,24 @@ public class BoardRestController {
 		System.out.println("after write: " + board);
 		
 		// 글쓰기에 파일 첨부 기능 추가
-//		if(uploadFile != null && uploadFile.length > 0) {
-//			String uploadPath = "c:/SSAFY/upload";
-//			File uploadDir = new File(uploadPath);
-//			
-//			if(!uploadDir.exists()) { // 업로드 파일 저장 폴더 없으면 생성
-//				uploadDir.mkdir();
-//			}
-//			
-//			for(MultipartFile file : uploadFile) { // 파일 개수만큼 반복
-//				String savedName = new Random().nextInt(1000000000) + "";
-//				File savedFile = new File(uploadPath + "/" + savedName);
-//				file.transferTo(savedFile); // profile.png -> c:/SSAFY/upload/2145346434
-//				
-//				FileDTO dto = new FileDTO(board.getBno(), file.getOriginalFilename(), savedFile.getAbsolutePath());
-//				bservice.addFile(dto);
-//			}
-//		}
+		if(uploadFile != null && uploadFile.length > 0) {
+			String uploadPath = "C:/SSAFY/workspace/board_final_pjt/board_final_pjt/src/assets/boardImg";
+			File uploadDir = new File(uploadPath);
+			
+			if(!uploadDir.exists()) { // 업로드 파일 저장 폴더 없으면 생성
+				uploadDir.mkdir();
+			}
+			
+			for(MultipartFile file : uploadFile) { // 파일 개수만큼 반복
+				String savedName = new Random().nextInt(1000000000) + "." + file.getOriginalFilename().split("\\.")[1];
+				System.out.println(savedName);
+				File savedFile = new File(uploadPath + "/" + savedName);
+				file.transferTo(savedFile); // profile.png -> c:/SSAFY/upload/2145346434
+				
+				FileDTO dto = new FileDTO(board.getBno(), file.getOriginalFilename(), savedName);
+				bservice.addFile(dto);
+			}
+		}
 		
 		if(writeResult) {
 			return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);

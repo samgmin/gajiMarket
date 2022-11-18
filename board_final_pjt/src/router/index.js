@@ -80,6 +80,11 @@ const routes = [
         name: "userlogin",
         component: () => import("@/components/user/UserLogin"),
       },
+      {
+        path: "signup",
+        name: "usersignup",
+        component: () => import("@/components/user/UserSignup"),
+      },
     ],
   },
 ];

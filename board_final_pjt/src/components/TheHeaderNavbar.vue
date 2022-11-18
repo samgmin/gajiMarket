@@ -48,7 +48,7 @@
         <v-list-item :to="{ name: 'user' }">
           <v-list-item-title>로그인</v-list-item-title>
         </v-list-item>
-        <v-list-item>
+        <v-list-item :to="{ name: 'usersignup' }">
           <v-list-item-title>회원가입</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -99,5 +99,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

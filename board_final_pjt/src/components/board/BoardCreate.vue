@@ -13,23 +13,24 @@
         </v-col>
       </v-row>
     </div> -->
-
-    <v-simple-table v-if="show">
-      <template v-slot:default>
-        <tr>
-          <th colspan="1">분류</th>
-          <td colspan="1">
-            <v-select
-              style="max-width: 100px; padding-top: 25px"
-              v-model="board.category"
-              :items="['전체', '기타']"
-              label="전체"
-              dense
-              solo
-            >
-            </v-select>
-          </td>
-          <!-- <th colspan="1">작성자</th>
+    <v-form id="sendForm" ref="sendFrom" enctype="multipart/form-data">
+      <v-simple-table v-if="show">
+        <template v-slot:default>
+          <tr>
+            <th colspan="1">분류</th>
+            <td colspan="1">
+              <v-select
+                style="max-width: 100px; padding-top: 25px"
+                name="category"
+                v-model="board.category"
+                :items="['전체', '기타']"
+                label="전체"
+                dense
+                solo
+              >
+              </v-select>
+            </td>
+            <!-- <th colspan="1">작성자</th>
           <td colspan="9">
             <v-text-field
               v-model="board.writer"
@@ -37,32 +38,37 @@
               required
             ></v-text-field>
           </td> -->
-        </tr>
-        <tr>
-          <th colspan="1">제목</th>
-          <td colspan="11">
-            <v-text-field
-              v-model="board.title"
-              label="제목을 입력하세요."
-              required
-            ></v-text-field>
-          </td>
-        </tr>
-        <tr>
-          <br /><br />
-        </tr>
-        <tr>
-          <th colspan="1" style="padding-bottom: 40px">내용</th>
-          <td colspan="11">
-            <v-textarea
-              outlined
-              name="input-7-4"
-              v-model="board.content"
-            ></v-textarea>
-          </td>
-        </tr>
-      </template>
-    </v-simple-table>
+          </tr>
+          <tr>
+            <th colspan="1">제목</th>
+            <td colspan="11">
+              <v-text-field
+                name="title"
+                v-model="board.title"
+                label="제목을 입력하세요."
+                required
+              ></v-text-field>
+            </td>
+          </tr>
+          <tr>
+            <br /><br />
+          </tr>
+          <tr>
+            <th colspan="1" style="padding-bottom: 40px">내용</th>
+            <td colspan="11">
+              <v-textarea outlined name="content" v-model="board.content"></v-textarea>
+            </td>
+          </tr>
+
+          <tr>
+            <th colspan="1">이미지 첨부</th>
+            <td colspan="11">
+              <v-file-input type="file" name="uploadFile" v-model="file" />
+            </td>
+          </tr>
+        </template>
+      </v-simple-table>
+    </v-form>
 
     <v-row align="center" justify="end">
       <v-col class="d-flex" cols="12" sm="1">
@@ -86,6 +92,7 @@ export default {
         content: "",
         category: "전체",
       },
+      file: [],
       show: true,
     };
   },
@@ -95,16 +102,25 @@ export default {
   },
   methods: {
     async onSubmit() {
-      let request = {
-        title: this.board.title,
-        writer: this.board.writer,
-        content: this.board.content,
-        category: this.board.category,
-      };
-      console.log(request);
-      await this.boardCreate(request);
+      var fd = new FormData();
+      fd.append("uploadFile", this.file);
+      fd.append("title", this.board.title);
+      fd.append("writer", this.board.writer);
+      fd.append("content", this.board.content);
+      fd.append("category", this.board.category);
+      // let request = {
+      //   title: this.board.title,
+      //   writer: this.board.writer,
+      //   content: this.board.content,
+      //   category: this.board.category,
+      // };
+      // console.log(request);
+      // fd.append("board", request);
+      console.log(fd);
+      await this.boardCreate(fd);
       this.$router.push({ name: "boardlist" });
     },
+
     onReset() {},
     ...mapActions(boardStore, ["boardCreate"]),
   },

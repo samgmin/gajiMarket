@@ -7,7 +7,7 @@
 	</insert>
 	
 	<select id="selectFiles" resultType="com.ssafy.board.model.dto.FileDTO">
-		SELECT FNO, BNO, ORIGINAL_NAME AS 'originalName'
+		SELECT FNO, BNO, ORIGINAL_NAME AS 'originalName', SAVED_PATH as 'savedPath'
 		FROM FILE_TB
 		WHERE BNO = #{bno}
 	</select>

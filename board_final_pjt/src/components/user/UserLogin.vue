@@ -44,7 +44,7 @@
         </thead>
       </v-simple-table>
       <v-btn @click="confirm">로그인</v-btn>
-      <v-btn @click="movePage">회원가입</v-btn>
+      <v-btn :to="{ name: 'usersignup' }">회원가입</v-btn>
     </div>
   </div>
 </template>
@@ -88,5 +88,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

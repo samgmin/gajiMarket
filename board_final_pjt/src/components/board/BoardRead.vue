@@ -35,6 +35,7 @@
           <div class="view" v-html="board.content"></div>
         </v-col>
       </v-row>
+      <v-img :src="require(`@/assets/boardImg/${image}`)" />
     </div>
 
     <!-- 수정 삭제 버튼 -->
@@ -105,6 +106,7 @@ const userStore = "userStore";
 export default {
   data: function () {
     return {
+      // tmp: "test.png",
       comment: {
         bno: this.$route.query.bno,
         cwriter: "",
@@ -176,7 +178,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(boardStore, ["board", "cList"]),
+    ...mapState(boardStore, ["board", "cList", "image"]),
     ...mapState(userStore, ["userInfo"]),
   },
 };
