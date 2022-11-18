@@ -35,7 +35,11 @@
           <div class="view" v-html="board.content"></div>
         </v-col>
       </v-row>
-      <v-img :src="require(`@/assets/boardImg/${image}`)" />
+      <v-img
+        v-if="image != ''"
+        :src="require(`@/assets/boardImg/${image}`)"
+        style="width=200px; height-200px"
+      />
     </div>
 
     <!-- 수정 삭제 버튼 -->
@@ -67,7 +71,9 @@
             <tr v-for="(comment, index) in cList" :key="index">
               <td>{{ comment.cwriter }}</td>
               <td>{{ comment.ccontent }}</td>
-              <v-btn @click="updateComment(comment)" v-if="comment.cwriter === userInfo.username"
+              <v-btn
+                @click="updateComment(comment)"
+                v-if="comment.cwriter === userInfo.username"
                 >수정</v-btn
               >
               <v-btn
@@ -92,7 +98,9 @@
           required
         ></v-text-field> -->
         <v-text-field v-model="comment.ccontent" label="내용" required
-          ><v-icon slot="append" color="red" @click="writecomment"> mdi-plus </v-icon></v-text-field
+          ><v-icon slot="append" color="red" @click="writecomment">
+            mdi-plus
+          </v-icon></v-text-field
         >
       </v-form>
     </div>

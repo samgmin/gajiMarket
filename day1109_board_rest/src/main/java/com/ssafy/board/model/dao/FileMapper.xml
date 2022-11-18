@@ -17,4 +17,9 @@
 		FROM FILE_TB
 		WHERE FNO = #{fno}
 	</select>
+	
+	<insert id="mfileinsert" parameterType="com.ssafy.board.model.dto.MemberFileDTO">
+		insert into mfile_tb (userid, ORIGINAL_NAME, SAVED_PATH)
+		VALUES(#{userid}, #{originalName}, #{savedPath})
+	</insert>
 </mapper>

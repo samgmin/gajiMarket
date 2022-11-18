@@ -34,4 +34,10 @@
 		where userid = #{userid}
 	</update>
 	
+	<insert id="userSignup" parameterType="com.ssafy.board.model.dto.MemberDTO">
+		insert into member_tb
+		values (#{userid}, #{username}, #{userpwd}, #{email}, now(), #{age}, 
+		#{gender}, #{celebrity}, null)
+	</insert>
+	
 </mapper>

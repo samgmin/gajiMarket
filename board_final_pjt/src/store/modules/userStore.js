@@ -1,6 +1,7 @@
 import jwtDecode from "jwt-decode";
 import router from "@/router";
 import http from "@/api/http";
+import axios from "axios";
 
 const userStore = {
   namespaced: true,
@@ -34,6 +35,14 @@ const userStore = {
     },
   },
   actions: {
+    userSignup({ commit }, payload) {
+      console.log(commit);
+      console.log(payload);
+      axios.post("http://localhost:8888/board/user/signup", payload).then(({ data }) => {
+        console.log(data);
+        alert(data);
+      });
+    },
     async userConfirm({ commit }, user) {
       await http
         .post(`/user/login`, JSON.stringify(user))

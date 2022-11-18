@@ -11,6 +11,7 @@ const boardStore = {
     endPage: "",
     board: {},
     cList: [],
+    image:"",
   },
   getters: {},
   mutations: {
@@ -24,7 +25,12 @@ const boardStore = {
     BOARD_GET_ONE(state, payload) {
       state.cList = payload.cList;
       state.board = payload.board;
-      state.image = payload.file[0].savedPath;
+      if (payload.file.length != 0) {
+        state.image = payload.file[0].savedPath;
+      }
+      else {
+        state.image = "";
+      }
     },
     BOARD_UPDATE(state, payload) {
       state.board = payload;
@@ -58,7 +64,6 @@ const boardStore = {
     },
     boardCreate({ commit }, payload) {
       console.log(commit);
-      console.log(payload);
       axios.post("http://localhost:8888/board/board", payload).then(({ data }) => {
         console.log(data);
         alert(data);

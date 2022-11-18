@@ -4,7 +4,12 @@
     <v-container fluid>
       <v-row align="center">
         <v-col class="d-flex">
-          <v-select :items="sidoList" label="시도 선택" v-model="selectSido" solo></v-select>
+          <v-select
+            :items="sidoList"
+            label="시도 선택"
+            v-model="selectSido"
+            solo
+          ></v-select>
         </v-col>
         <v-col class="d-flex">
           <v-select
@@ -16,13 +21,31 @@
           ></v-select>
         </v-col>
         <v-col class="d-flex">
-          <v-select :items="dongList" label="동 선택" v-model="selectDong" dense solo></v-select>
+          <v-select
+            :items="dongList"
+            label="동 선택"
+            v-model="selectDong"
+            dense
+            solo
+          ></v-select>
         </v-col>
         <v-col class="d-flex">
-          <v-select :items="yearList" label="년 선택" v-model="selectYear" dense solo></v-select>
+          <v-select
+            :items="yearList"
+            label="년 선택"
+            v-model="selectYear"
+            dense
+            solo
+          ></v-select>
         </v-col>
         <v-col class="d-flex" cols="3" sm="3">
-          <v-select :items="monthList" label="월 선택" v-model="selectMonth" dense solo></v-select>
+          <v-select
+            :items="monthList"
+            label="월 선택"
+            v-model="selectMonth"
+            dense
+            solo
+          ></v-select>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <v-btn variant="outline-primary" @click="selectList"> 검색</v-btn>
         </v-col>
@@ -45,7 +68,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(apt, index) in aptSearchList" :key="index" @click="showDialog(index)">
+                  <tr
+                    v-for="(apt, index) in aptSearchList"
+                    :key="index"
+                    @click="showDialog(index)"
+                  >
                     <td>{{ apt.apartmentName }}</td>
                     <td>{{ apt.dongName }}</td>
                     <td>{{ apt.dealAmount }}</td>
@@ -58,7 +85,10 @@
           </div>
         </v-col>
         <v-col>
-          <div id="map" style="width: 500px; height: 500px; margin-top: 47px"></div>
+          <div
+            id="map"
+            style="width: 500px; height: 500px; margin-top: 47px"
+          ></div>
         </v-col>
       </v-row>
     </div>
@@ -66,7 +96,9 @@
     <div class="text-center">
       <v-dialog v-model="dialog" width="1000px" height="1000px">
         <v-card>
-          <v-card-title class="text-h5 grey lighten-2"> 아파트 거래내역 상세보기 </v-card-title>
+          <v-card-title class="text-h5 grey lighten-2">
+            아파트 거래내역 상세보기
+          </v-card-title>
           <v-row>
             <v-col style="margin-top: 50px">
               <v-simple-table>
@@ -86,7 +118,11 @@
                   </tr>
                   <tr>
                     <th class="text-center">거래년월</th>
-                    <td>{{ currentDialogItem.dealYear }}/{{ currentDialogItem.dealMonth }}</td>
+                    <td>
+                      {{ currentDialogItem.dealYear }}/{{
+                        currentDialogItem.dealMonth
+                      }}
+                    </td>
                   </tr>
                   <tr>
                     <th class="text-center">층</th>
@@ -96,22 +132,38 @@
               </v-simple-table>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" text @click="dialog = false"> 돌아가기 </v-btn>
+                <v-btn color="primary" text @click="dialog = false">
+                  돌아가기
+                </v-btn>
               </v-card-actions>
             </v-col>
             <v-col>
-              <v-btn color="primary" text @click="showLoadmap"> 로드뷰 보기 </v-btn>
-              <v-btn color="primary" text @click="showSangmap"> 주변 상권정보 보기 </v-btn>
+              <v-btn color="primary" text @click="showLoadmap">
+                로드뷰 보기
+              </v-btn>
+              <v-btn color="primary" text @click="showSangmap">
+                주변 상권정보 보기
+              </v-btn>
               <div
                 v-show="mapswitch"
                 id="roadview"
-                style="width: 500px; height: 500px; margin-top: 20px; margin-right: 47px"
+                style="
+                  width: 500px;
+                  height: 500px;
+                  margin-top: 20px;
+                  margin-right: 47px;
+                "
               ></div>
 
               <div class="map_wrap" v-show="!mapswitch">
                 <div
                   id="sangview"
-                  style="width: 500px; height: 500px; margin-top: 20px; margin-right: 47px"
+                  style="
+                    width: 500px;
+                    height: 500px;
+                    margin-top: 20px;
+                    margin-right: 47px;
+                  "
                 ></div>
                 <ul id="category">
                   <li id="BK9" @click="id = 'BK9'" data-order="0">
@@ -161,7 +213,8 @@ export default {
   data() {
     return {
       yearList: [
-        2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009,
+        2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011,
+        2010, 2009,
       ],
       monthList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       selectSido: "",
@@ -226,7 +279,8 @@ export default {
     },
     loadMaker() {
       // 마커 이미지의 이미지 주소입니다
-      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+      var imageSrc =
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
 
       for (var i = 0; i < this.aptSearchList.length; i++) {
         // 마커 이미지의 이미지 크기 입니다
@@ -234,7 +288,10 @@ export default {
 
         // 마커 이미지를 생성합니다
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-        let latlng = new kakao.maps.LatLng(this.aptSearchList[i].let, this.aptSearchList[i].lng);
+        let latlng = new kakao.maps.LatLng(
+          this.aptSearchList[i].let,
+          this.aptSearchList[i].lng
+        );
         // 마커를 생성합니다
         var marker = new kakao.maps.Marker({
           map: this.map, // 마커를 표시할 지도
@@ -248,7 +305,10 @@ export default {
     loadMap() {
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(this.aptSearchList[0].let, this.aptSearchList[0].lng),
+        center: new kakao.maps.LatLng(
+          this.aptSearchList[0].let,
+          this.aptSearchList[0].lng
+        ),
         level: 5,
       };
 
@@ -277,7 +337,10 @@ export default {
       var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
       var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
 
-      var position = new kakao.maps.LatLng(this.currentDialogItem.let, this.currentDialogItem.lng);
+      var position = new kakao.maps.LatLng(
+        this.currentDialogItem.let,
+        this.currentDialogItem.lng
+      );
       // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
       roadviewClient.getNearestPanoId(position, 150, function (panoId) {
         roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
@@ -289,7 +352,10 @@ export default {
 
       var mapContainer = document.getElementById("sangview"), // 지도를 표시할 div
         mapOption = {
-          center: new kakao.maps.LatLng(this.currentDialogItem.let, this.currentDialogItem.lng), // 지도의 중심좌표
+          center: new kakao.maps.LatLng(
+            this.currentDialogItem.let,
+            this.currentDialogItem.lng
+          ), // 지도의 중심좌표
           level: 5, // 지도의 확대 레벨
         };
 
@@ -307,8 +373,16 @@ export default {
 
       // 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
       // 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다
-      this.addEventHandle(this.contentNode, "mousedown", kakao.maps.event.preventMap);
-      this.addEventHandle(this.contentNode, "touchstart", kakao.maps.event.preventMap);
+      this.addEventHandle(
+        this.contentNode,
+        "mousedown",
+        kakao.maps.event.preventMap
+      );
+      this.addEventHandle(
+        this.contentNode,
+        "touchstart",
+        kakao.maps.event.preventMap
+      );
 
       // 커스텀 오버레이 컨텐츠를 설정합니다
       this.placeOverlay.setContent(this.contentNode);
@@ -357,11 +431,16 @@ export default {
     displayPlaces(places) {
       // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
       // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
-      var order = document.getElementById(this.currCategory).getAttribute("data-order");
+      var order = document
+        .getElementById(this.currCategory)
+        .getAttribute("data-order");
 
       for (var i = 0; i < places.length; i++) {
         // 마커를 생성하고 지도에 표시합니다
-        var marker = this.addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
+        var marker = this.addMarker(
+          new kakao.maps.LatLng(places[i].y, places[i].x),
+          order
+        );
 
         // 마커와 검색결과 항목을 클릭 했을 때
         // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
@@ -375,14 +454,19 @@ export default {
 
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
     addMarker(position, order) {
-      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+      var imageSrc =
+          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
         imageSize = new kakao.maps.Size(27, 28), // 마커 이미지의 크기
         imgOptions = {
           spriteSize: new kakao.maps.Size(72, 208), // 스프라이트 이미지의 크기
           spriteOrigin: new kakao.maps.Point(46, order * 36), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
           offset: new kakao.maps.Point(11, 28), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
         },
-        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+        markerImage = new kakao.maps.MarkerImage(
+          imageSrc,
+          imageSize,
+          imgOptions
+        ),
         marker = new kakao.maps.Marker({
           position: position, // 마커의 위치
           image: markerImage,
@@ -426,11 +510,20 @@ export default {
           place.address_name +
           ")</span>";
       } else {
-        content += '    <span title="' + place.address_name + '">' + place.address_name + "</span>";
+        content +=
+          '    <span title="' +
+          place.address_name +
+          '">' +
+          place.address_name +
+          "</span>";
       }
 
       content +=
-        '    <span class="tel">' + place.phone + "</span>" + "</div>" + '<div class="after"></div>';
+        '    <span class="tel">' +
+        place.phone +
+        "</span>" +
+        "</div>" +
+        '<div class="after"></div>';
 
       this.contentNode.innerHTML = content;
       this.placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
@@ -479,7 +572,12 @@ export default {
         el.className = "on";
       }
     },
-    ...mapActions(aptStore, ["getSidoNames", "getGugunNames", "getDongNames", "getSearchList"]),
+    ...mapActions(aptStore, [
+      "getSidoNames",
+      "getGugunNames",
+      "getDongNames",
+      "getSearchList",
+    ]),
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -493,7 +591,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(aptStore, ["sidoList", "gugunList", "dongList", "aptSearchList"]),
+    ...mapState(aptStore, [
+      "sidoList",
+      "gugunList",
+      "dongList",
+      "aptSearchList",
+    ]),
   },
 };
 </script>
@@ -628,7 +731,8 @@ export default {
   padding: 10px;
   color: #fff;
   background: #d95050;
-  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
+  background: #d95050
+    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
     no-repeat right 14px center;
 }
 .placeinfo .tel {

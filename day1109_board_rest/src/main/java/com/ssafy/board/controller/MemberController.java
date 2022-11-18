@@ -1,7 +1,9 @@
 package com.ssafy.board.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,8 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.board.model.dto.FileDTO;
 import com.ssafy.board.model.dto.MemberDTO;
+import com.ssafy.board.model.dto.MemberFileDTO;
 import com.ssafy.board.model.service.JwtServiceImpl;
 import com.ssafy.board.model.service.MemberService;
 
@@ -140,6 +145,41 @@ public class MemberController {
 			status = HttpStatus.UNAUTHORIZED;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@PostMapping("/signup")
+	public ResponseEntity<?> signup(MemberDTO memberDto, MultipartFile[] uploadFile)
+			throws Exception {
+		System.out.println("회원가입에 왔어요");
+		System.out.println("input member: " + memberDto);
+		// 일단 글이 DB에 저장되야 글번호를 파일 업로드에 넣을 수 있음
+		MemberDTO signupResult = memberService.userSignup(memberDto);
+		
+		// 글쓰기에 파일 첨부 기능 추가
+		if(uploadFile != null && uploadFile.length > 0) {
+			String uploadPath = "C:/SSAFY/workspace/board_final_pjt/board_final_pjt/src/assets/memberImg";
+			File uploadDir = new File(uploadPath);
+			
+			if(!uploadDir.exists()) { // 업로드 파일 저장 폴더 없으면 생성
+				uploadDir.mkdir();
+			}
+			
+			for(MultipartFile file : uploadFile) { // 파일 개수만큼 반복
+				String savedName = new Random().nextInt(1000000000) + "." + file.getOriginalFilename().split("\\.")[1];
+				System.out.println(savedName);
+				File savedFile = new File(uploadPath + "/" + savedName);
+				file.transferTo(savedFile); // profile.png -> c:/SSAFY/upload/2145346434
+				
+				MemberFileDTO dto = new MemberFileDTO(memberDto.getUserid(), file.getOriginalFilename(), savedName);
+				memberService.addFile(dto);
+			}
+		}
+		
+		if(signupResult != null) {
+			return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
+		} else {
+			return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+		}
 	}
 
 }

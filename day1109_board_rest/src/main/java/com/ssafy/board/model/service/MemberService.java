@@ -1,6 +1,8 @@
 package com.ssafy.board.model.service;
 
+import com.ssafy.board.model.dto.FileDTO;
 import com.ssafy.board.model.dto.MemberDTO;
+import com.ssafy.board.model.dto.MemberFileDTO;
 
 public interface MemberService {
 
@@ -9,5 +11,6 @@ public interface MemberService {
 	public void saveRefreshToken(String userid, String refreshToken) throws Exception;
 	public Object getRefreshToken(String userid) throws Exception;
 	public void deleRefreshToken(String userid) throws Exception;
-	
+	public MemberDTO userSignup(MemberDTO memberDto) throws Exception;
+	public int addFile(MemberFileDTO file) throws Exception;
 }

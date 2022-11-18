@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h3 class="underline-hotpink"><b-icon icon="journals"></b-icon>로그인</h3>
+
     <div style="width: 500px; margin: 0 auto">
       <v-simple-table>
         <thead>

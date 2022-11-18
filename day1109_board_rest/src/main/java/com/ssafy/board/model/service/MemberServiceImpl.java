@@ -7,15 +7,21 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.board.model.dao.FileMapper;
 import com.ssafy.board.model.dao.MemberMapper;
+import com.ssafy.board.model.dto.FileDTO;
 import com.ssafy.board.model.dto.MemberDTO;
+import com.ssafy.board.model.dto.MemberFileDTO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private SqlSession sqlSession;
-
+	
+	@Autowired
+	private FileMapper fdao;
+	
 	@Override
 	public MemberDTO login(MemberDTO MemberDTO) throws Exception {
 		if (MemberDTO.getUserid() == null || MemberDTO.getUserpwd() == null)
@@ -47,6 +53,18 @@ public class MemberServiceImpl implements MemberService {
 		map.put("userid", userid);
 		map.put("token", null);
 		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
+	}
+
+	@Override
+	public MemberDTO userSignup(MemberDTO memberDto) throws Exception {
+		sqlSession.getMapper(MemberMapper.class).userSignup(memberDto);
+		
+		return memberDto;
+	}
+	
+	@Override
+	public int addFile(MemberFileDTO file) {
+		return fdao.mfileinsert(file);
 	}
 
 }

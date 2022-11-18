@@ -1,18 +1,5 @@
 <template>
   <div>
-    <!-- <div>
-      <v-row align="center">
-        <v-col class="d-flex" cols="12" sm="2"> 분류 </v-col>
-        <v-col class="d-flex" cols="12" sm="2">
-          <v-select v-model="board.category" :items="['전체', '기타']" label="전체" dense solo>
-          </v-select>
-        </v-col>
-        <v-col class="d-flex" cols="12" sm="2"> 작성자 </v-col>
-        <v-col class="d-flex" cols="12" sm="6">
-          <v-text-field v-model="board.writer" label="작성자를 입력하세요." required></v-text-field>
-        </v-col>
-      </v-row>
-    </div> -->
     <v-form id="sendForm" ref="sendFrom" enctype="multipart/form-data">
       <v-simple-table v-if="show">
         <template v-slot:default>
@@ -56,7 +43,11 @@
           <tr>
             <th colspan="1" style="padding-bottom: 40px">내용</th>
             <td colspan="11">
-              <v-textarea outlined name="content" v-model="board.content"></v-textarea>
+              <v-textarea
+                outlined
+                name="content"
+                v-model="board.content"
+              ></v-textarea>
             </td>
           </tr>
 
