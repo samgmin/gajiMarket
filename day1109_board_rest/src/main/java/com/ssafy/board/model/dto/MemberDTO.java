@@ -17,7 +17,7 @@ public class MemberDTO {
 	@ApiModelProperty(value = "회원 가입일")
 	private String joindate;
 
-	private int age;
+	private String age;
 	private String gender;
 	private String celebrity;
 	
@@ -25,7 +25,7 @@ public class MemberDTO {
 		super();
 	}
 
-	public MemberDTO(String userid, String username, String userpwd, String email, String joindate, int age,
+	public MemberDTO(String userid, String username, String userpwd, String email, String joindate, String age,
 			String gender, String celebrity) {
 		super();
 		this.userid = userid;
@@ -78,11 +78,11 @@ public class MemberDTO {
 		this.joindate = joindate;
 	}
 
-	public int getAge() {
+	public String getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 

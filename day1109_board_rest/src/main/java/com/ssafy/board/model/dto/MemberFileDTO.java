@@ -5,13 +5,14 @@ public class MemberFileDTO {
 	private String userid;
 	private String originalName;
 	private String savedPath;
-	
+	private String absolPath;
 	public MemberFileDTO() {}
-	public MemberFileDTO(String userid, String originalName, String savedPath) {
+	public MemberFileDTO(String userid, String originalName, String savedPath,String absolPath) {
 		super();
 		this.userid = userid;
 		this.originalName = originalName;
 		this.savedPath = savedPath;
+		this.absolPath = absolPath;
 	}
 	public int getFno() {
 		return fno;
@@ -36,6 +37,13 @@ public class MemberFileDTO {
 	}
 	public void setSavedPath(String savedPath) {
 		this.savedPath = savedPath;
+	}
+	
+	public String getAbsolPath() {
+		return absolPath;
+	}
+	public void setAbsolPath(String absolPath) {
+		this.absolPath = absolPath;
 	}
 	@Override
 	public String toString() {

@@ -58,7 +58,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberDTO userSignup(MemberDTO memberDto) throws Exception {
 		sqlSession.getMapper(MemberMapper.class).userSignup(memberDto);
-		
 		return memberDto;
 	}
 	

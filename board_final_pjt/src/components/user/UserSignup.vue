@@ -60,6 +60,28 @@
               <td colspan="11">
                 <v-file-input type="file" name="uploadFile" v-model="file" />
               </td>
+              <v-btn variant="outline-primary" @click="naverCFRApi"
+                >사진제출</v-btn
+              >
+            </tr>
+
+            <tr v-if="age">
+              <th colspan="1">나이</th>
+              <td colspan="11">
+                {{ ageconfidence * 100 }}%확률로 {{ age }}살입니다
+              </td>
+            </tr>
+            <tr v-if="gender">
+              <th colspan="1">성별</th>
+              <td colspan="11">
+                {{ genderconfidence * 100 }}%확률로 {{ gender }}입니다
+              </td>
+            </tr>
+            <tr v-if="celebrity">
+              <th colspan="1">닮은꼴</th>
+              <td colspan="11">
+                {{ celebrityconfidence * 100 }}%확률로 {{ celebrity }}닮았습니다
+              </td>
             </tr>
           </template>
         </v-simple-table>
@@ -84,9 +106,6 @@ export default {
       pwd: "",
       name: "",
       email: "",
-      age: 0,
-      gender: "male",
-      celebrity: "제니",
       file: [],
       show: true,
     };
@@ -107,10 +126,25 @@ export default {
       await this.userSignup(fd);
       this.$router.push({ name: "userlogin" });
     },
-    ...mapActions(userStore, ["userSignup"]),
+    async naverCFRApi() {
+      var fd = new FormData();
+      fd.append("loadFile", this.file);
+      console.log(this.file);
+
+      await this.CFRApi(fd);
+    },
+    ...mapActions(userStore, ["userSignup", "CFRApi"]),
   },
   computed: {
-    ...mapState(userStore, ["userInfo"]),
+    ...mapState(userStore, [
+      "userInfo",
+      "age",
+      "ageconfidence",
+      "gender",
+      "genderconfidence",
+      "celebrity",
+      "celebrityconfidence",
+    ]),
   },
 };
 </script>

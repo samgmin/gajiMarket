@@ -167,10 +167,13 @@ public class MemberController {
 			for(MultipartFile file : uploadFile) { // 파일 개수만큼 반복
 				String savedName = new Random().nextInt(1000000000) + "." + file.getOriginalFilename().split("\\.")[1];
 				System.out.println(savedName);
-				File savedFile = new File(uploadPath + "/" + savedName);
+				uploadPath += "/";
+				uploadPath += savedName;
+				System.out.println(uploadPath);
+				File savedFile = new File(uploadPath);
 				file.transferTo(savedFile); // profile.png -> c:/SSAFY/upload/2145346434
 				
-				MemberFileDTO dto = new MemberFileDTO(memberDto.getUserid(), file.getOriginalFilename(), savedName);
+				MemberFileDTO dto = new MemberFileDTO(memberDto.getUserid(), file.getOriginalFilename(), savedName,uploadPath);
 				memberService.addFile(dto);
 			}
 		}

@@ -10,6 +10,12 @@ const userStore = {
     isLoginError: false,
     userInfo: null,
     isValidToken: false,
+    age: null,
+    ageconfidence:null,
+    gender: null,
+    genderconfidence: null,
+    celebrity: null,
+    celebrityconfidence:null,
   },
   getters: {
     checkUserInfo: function (state) {
@@ -32,6 +38,14 @@ const userStore = {
     SET_USER_INFO: (state, userInfo) => {
       state.isLogin = true;
       state.userInfo = userInfo;
+    },
+    CFR_API(state, payload) {
+      state.age = payload.faces.faces[0].age.value;
+      state.ageconfidence = payload.faces.faces[0].age.confidence;
+      state.gender = payload.faces.faces[0].gender.value;
+      state.genderconfidence = payload.faces.faces[0].gender.confidence;
+      state.celebrity = payload.celebrity.faces[0].celebrity.value;
+      state.celebrityconfidence = payload.celebrity.faces[0].celebrity.confidence;
     },
   },
   actions: {
@@ -144,6 +158,13 @@ const userStore = {
         .catch((error) => {
           console.log(error);
         });
+    },
+    CFRApi({ commit }, payload) {
+      axios.post("http://localhost:8888/board/naver", payload).then(({ data }) => {
+        console.log(data.celebrity.faces);
+        console.log(data.faces.faces);
+        commit("CFR_API", data);
+      });
     },
   },
 };
