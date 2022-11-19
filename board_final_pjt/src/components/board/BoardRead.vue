@@ -11,41 +11,44 @@
         </v-col>
       </v-row>
       <v-row justify="space-between">
-        <v-col class="d-flex" cols="6" sm="6">
+        <v-col class="d-flex flex-row">
           <span>
             <v-icon color="green darken-2"> mdi-domain </v-icon>
             {{ board.writer }} | &nbsp;
           </span>
           <span style="font-size: 15px">{{ board.writeDate }}</span>
         </v-col>
-        <v-col class="d-flex" cols="2" sm="2"></v-col>
-        <v-col class="d-flex align-end" cols="4" sm="4">
-          <span style="font-size: 15px">{{ board.readCount }}</span>
-          <span
-            ><v-btn icon color="deep-orange" @click="updateRecommend">
+        <v-col class="d-flex flex-row-reverse">
+          <span style="font-size: 12px">
+            <v-icon>{{ icons.mdiAccount }}</v-icon>
+            {{ board.readCount }}
+            <v-btn icon color="blue lighten-2" @click="updateRecommend">
               <v-icon>mdi-thumb-up</v-icon>
-            </v-btn></span
+            </v-btn>
+            {{ board.recommend }}</span
           >
-          <span style="font-size: 15px">{{ board.recommend }}</span>
         </v-col>
       </v-row>
       <hr />
-      <v-row align="center">
+      <v-row align="center" style="margin-top: 10px">
         <v-col class="d-flex" cols="12" sm="12">
           <div class="view" v-html="board.content"></div>
         </v-col>
       </v-row>
+      <br />
       <v-img
         v-if="image != ''"
         :src="require(`@/assets/boardImg/${image}`)"
-        style="width=200px; height-200px"
+        width="600"
+        style="margin: 0 auto"
       />
     </div>
+    <br />
 
     <!-- 수정 삭제 버튼 -->
     <div style="padding-top: 15px" v-if="board.writer === userInfo.username">
       <v-row align="center" justify="end">
-        <v-col class="d-flex" cols="12" sm="2">
+        <v-col class="d-flex justify-end">
           <v-btn variant="outline-primary" v-on:click="updateBoard">수정</v-btn>
           &nbsp;&nbsp;&nbsp;&nbsp;
           <v-btn variant="outline-primary" v-on:click="deleteBoard">삭제</v-btn>
@@ -55,39 +58,69 @@
       &nbsp;&nbsp;
       <v-btn variant="outline-primary" v-on:click="deleteBoard">삭제</v-btn> -->
     </div>
-    <br />
+    <hr />
 
     <!-- 댓글 목록 -->
     <div v-if="cList.length">
       <v-simple-table>
         <template v-slot:default>
+          <colgroup>
+            <col width="10%" />
+            <col width="80%" />
+            <col width="10%" />
+          </colgroup>
           <thead>
             <tr>
               <th>댓글</th>
+              <th></th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(comment, index) in cList" :key="index">
-              <td>{{ comment.cwriter }}</td>
-              <td>{{ comment.ccontent }}</td>
-              <v-btn
-                @click="updateComment(comment)"
-                v-if="comment.cwriter === userInfo.username"
-                >수정</v-btn
-              >
-              <v-btn
-                @click="deleteComment(comment.cno)"
-                v-if="comment.cwriter === userInfo.username"
-                >삭제</v-btn
-              >
+              <td class="text-left">{{ comment.cwriter }}</td>
+              <td class="text-left" v-if="flag">{{ comment.ccontent }}</td>
+              <td v-if="!flag">
+                <v-text-field
+                  dense
+                  v-model="comment.ccontent"
+                  required
+                  style="font-size: 14px; margin-top: 10px"
+                ></v-text-field>
+              </td>
+              <td>
+                <v-btn
+                  icon
+                  x-small
+                  @click="flag = !flag"
+                  v-if="flag && comment.cwriter === userInfo.username"
+                  ><v-icon>{{ icons.mdiPencil }}</v-icon></v-btn
+                >
+                <v-btn
+                  icon
+                  x-small
+                  @click="updateComment(comment)"
+                  v-if="!flag && comment.cwriter === userInfo.username"
+                  ><v-icon>{{ icons.mdiPencil }}</v-icon></v-btn
+                >
+                &nbsp;
+                <v-btn
+                  icon
+                  x-small
+                  @click="deleteComment(comment.cno)"
+                  v-if="comment.cwriter === userInfo.username"
+                  ><v-icon>
+                    {{ icons.mdiDelete }}
+                  </v-icon></v-btn
+                >
+              </td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
       <hr />
-      <br />
     </div>
+    <br />
 
     <!-- 댓글 작성 -->
     <div class="comment">
@@ -98,9 +131,7 @@
           required
         ></v-text-field> -->
         <v-text-field v-model="comment.ccontent" label="내용" required
-          ><v-icon slot="append" color="red" @click="writecomment">
-            mdi-plus
-          </v-icon></v-text-field
+          ><v-icon slot="append" color="red" @click="writecomment"> mdi-plus </v-icon></v-text-field
         >
       </v-form>
     </div>
@@ -108,6 +139,8 @@
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+import { mdiAccount, mdiPencil, mdiDelete } from "@mdi/js";
+
 const boardStore = "boardStore";
 const userStore = "userStore";
 
@@ -122,6 +155,12 @@ export default {
       },
       bno: this.$route.query.bno,
       show: true,
+      icons: {
+        mdiPencil,
+        mdiDelete,
+        mdiAccount,
+      },
+      flag: true,
     };
   },
   // props: ["money"],
@@ -150,6 +189,7 @@ export default {
     },
     updateComment(comment) {
       this.commentUpdate(comment);
+      this.flag = true;
     },
     deleteComment(cno) {
       let data = {
@@ -196,7 +236,7 @@ export default {
 .comment {
   border: 1px solid rgb(190, 190, 190);
   border-radius: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 </style>

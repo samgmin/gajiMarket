@@ -1,11 +1,15 @@
 <template>
-  <div>
+  <div style="width: 800px; margin: 0 auto">
     <v-form id="sendForm" ref="sendFrom" enctype="multipart/form-data">
       <v-simple-table v-if="show">
         <template v-slot:default>
+          <colgroup>
+            <col width="20%" />
+            <col width="80%" />
+          </colgroup>
           <tr>
-            <th colspan="1">분류</th>
-            <td colspan="1">
+            <th class="text-left" colspan="1">분류</th>
+            <td class="text-left" colspan="1">
               <v-select
                 style="max-width: 100px; padding-top: 25px"
                 name="category"
@@ -27,8 +31,8 @@
           </td> -->
           </tr>
           <tr>
-            <th colspan="1">제목</th>
-            <td colspan="11">
+            <th class="text-left" colspan="1">제목</th>
+            <td class="text-left" colspan="11">
               <v-text-field
                 name="title"
                 v-model="board.title"
@@ -41,28 +45,24 @@
             <br /><br />
           </tr>
           <tr>
-            <th colspan="1" style="padding-bottom: 40px">내용</th>
-            <td colspan="11">
-              <v-textarea
-                outlined
-                name="content"
-                v-model="board.content"
-              ></v-textarea>
+            <th class="text-left" colspan="1" style="padding-bottom: 40px">내용</th>
+            <td class="text-left" colspan="11">
+              <v-textarea outlined name="content" v-model="board.content"></v-textarea>
             </td>
           </tr>
 
           <tr>
-            <th colspan="1">이미지 첨부</th>
-            <td colspan="11">
+            <th class="text-left" colspan="1">이미지 첨부</th>
+            <td class="text-left" colspan="11">
               <v-file-input type="file" name="uploadFile" v-model="file" />
             </td>
           </tr>
         </template>
       </v-simple-table>
     </v-form>
-
+    <br />
     <v-row align="center" justify="end">
-      <v-col class="d-flex" cols="12" sm="1">
+      <v-col class="d-flex flex-row-reverse" cols="12" sm="1">
         <v-btn variant="outline-primary" @click="onSubmit">작성</v-btn>
       </v-col>
     </v-row>

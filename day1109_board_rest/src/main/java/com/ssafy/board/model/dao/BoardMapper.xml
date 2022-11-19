@@ -58,7 +58,9 @@
 	<select id="selectConditionList" parameterType="com.ssafy.board.model.dto.BoardParameterDto" resultMap="rrrr">
 		SELECT BNO, TITLE, WRITER, WRITE_DATE, READ_COUNT, CATEGORY, RECOMMEND
 		FROM BOARD_TB
+		<if test="category != null and category != ''">
 		WHERE category = #{category}
+		</if>
 		<if test="word != null and word != ''">
 			<if test="key == 'title'">
 				and title like concat('%', #{word}, '%')
@@ -79,7 +81,9 @@
 	<select id="selectConditionCount" parameterType="com.ssafy.board.model.dto.BoardParameterDto" resultType="int">
 		SELECT COUNT(*)
 		FROM BOARD_TB
+		<if test="category != null and category != ''">
 		WHERE category = #{category}
+		</if>
 		<if test="word != null and word != ''">
 			<if test="key == 'title'">
 				and title like concat('%', #{word}, '%')

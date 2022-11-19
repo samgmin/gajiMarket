@@ -24,8 +24,8 @@
           <v-select
             v-model="category"
             :items="[
-              { name: '전체', value: '전체' },
-              { name: '의류', value: '의류' },
+              { name: '전체', value: '' },
+              { name: '기타', value: '기타' },
             ]"
             item-text="name"
             item-value="value"
@@ -83,6 +83,15 @@
     <div v-if="boardList.length">
       <v-simple-table>
         <template v-slot:default>
+          <colgroup>
+            <col width="10%" />
+            <col width="10%" />
+            <col width="30%" />
+            <col width="10%" />
+            <col width="20%" />
+            <col width="10%" />
+            <col width="10%" />
+          </colgroup>
           <thead>
             <tr>
               <th class="text-center">번호</th>
@@ -91,6 +100,7 @@
               <th class="text-center">작성자</th>
               <th class="text-center">작성일시</th>
               <th class="text-center">조회수</th>
+              <th class="text-center">추천수</th>
             </tr>
           </thead>
           <tbody>
@@ -101,6 +111,7 @@
               <td>{{ board.writer }}</td>
               <td>{{ board.writeDate }}</td>
               <td>{{ board.readCount }}</td>
+              <td>{{ board.recommend }}</td>
             </tr>
           </tbody>
         </template>
@@ -144,7 +155,7 @@ export default {
   data() {
     return {
       sort: "BNO",
-      category: "전체",
+      category: "",
       word: "",
       key: "title",
       page: 1,
@@ -191,4 +202,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+tbody tr :hover {
+  cursor: pointer;
+}
+</style>

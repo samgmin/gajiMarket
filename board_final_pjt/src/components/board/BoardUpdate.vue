@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 800px; margin: 0 auto">
     <v-simple-table v-if="show">
       <template v-slot:default>
         <tr>
@@ -27,11 +27,7 @@
         <tr>
           <th colspan="1">제목</th>
           <td colspan="11">
-            <v-text-field
-              v-model="board.title"
-              label="제목을 입력하세요."
-              required
-            ></v-text-field>
+            <v-text-field v-model="board.title" label="제목을 입력하세요." required></v-text-field>
           </td>
         </tr>
         <tr>
@@ -40,18 +36,14 @@
         <tr>
           <th colspan="1" style="padding-bottom: 40px">내용</th>
           <td colspan="11">
-            <v-textarea
-              outlined
-              name="input-7-4"
-              v-model="board.content"
-            ></v-textarea>
+            <v-textarea outlined name="input-7-4" v-model="board.content"></v-textarea>
           </td>
         </tr>
       </template>
     </v-simple-table>
 
     <v-row align="center" justify="end">
-      <v-col class="d-flex" cols="12" sm="2">
+      <v-col class="d-flex flex-row-reverse" cols="12" sm="2">
         <v-btn variant="outline-primary" @click="onSubmit">수정</v-btn>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <v-btn variant="outline-primary" @click="onReset">초기화</v-btn>
