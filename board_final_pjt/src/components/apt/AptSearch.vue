@@ -303,17 +303,19 @@ export default {
       }
     },
     loadMap() {
-      const container = document.getElementById("map");
-      const options = {
-        center: new kakao.maps.LatLng(
-          this.aptSearchList[0].let,
-          this.aptSearchList[0].lng
-        ),
-        level: 5,
-      };
+      if (this.aptSearchList.length != 0) {
+        const container = document.getElementById("map");
+        const options = {
+          center: new kakao.maps.LatLng(
+            this.aptSearchList[0].let,
+            this.aptSearchList[0].lng
+          ),
+          level: 5,
+        };
 
-      this.map = new window.kakao.maps.Map(container, options);
-      this.loadMaker();
+        this.map = new window.kakao.maps.Map(container, options);
+        this.loadMaker();
+      }
     },
     showDialog(no) {
       this.dialog = true;

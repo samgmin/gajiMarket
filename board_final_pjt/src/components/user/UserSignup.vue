@@ -110,6 +110,12 @@ export default {
       show: true,
     };
   },
+  created() {
+    this.userDataReset();
+  },
+  mounted() {
+    this.userDataReset();
+  },
   methods: {
     async onSubmit() {
       var fd = new FormData();
@@ -133,7 +139,7 @@ export default {
 
       await this.CFRApi(fd);
     },
-    ...mapActions(userStore, ["userSignup", "CFRApi"]),
+    ...mapActions(userStore, ["userSignup", "CFRApi", "userDataReset"]),
   },
   computed: {
     ...mapState(userStore, [

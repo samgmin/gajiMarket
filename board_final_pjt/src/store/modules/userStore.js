@@ -47,6 +47,14 @@ const userStore = {
       state.celebrity = payload.celebrity.faces[0].celebrity.value;
       state.celebrityconfidence = payload.celebrity.faces[0].celebrity.confidence;
     },
+    SIGNUP_DATA_RESET(state) {
+      state.age = null;
+      state.ageconfidence = null;
+      state.gender = null;
+      state.genderconfidence = null;
+      state.celebrity = null;
+      state.celebrityconfidence = null;
+    },
   },
   actions: {
     userSignup({ commit }, payload) {
@@ -165,6 +173,9 @@ const userStore = {
         console.log(data.faces.faces);
         commit("CFR_API", data);
       });
+    },
+    userDataReset({ commit }) {
+      commit("SIGNUP_DATA_RESET");
     },
   },
 };
