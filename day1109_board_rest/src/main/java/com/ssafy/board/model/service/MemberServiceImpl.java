@@ -66,4 +66,20 @@ public class MemberServiceImpl implements MemberService {
 		return fdao.mfileinsert(file);
 	}
 
+	@Override
+	public MemberFileDTO getFile(String username) {
+		return fdao.selectUserImg(username);
+	}
+
+	@Override
+	public MemberDTO userModify(MemberDTO memberDto) throws Exception {
+		sqlSession.getMapper(MemberMapper.class).userModify(memberDto);
+		return sqlSession.getMapper(MemberMapper.class).userInfo(memberDto.getUserid());
+	}
+
+	@Override
+	public int modifyFile(MemberFileDTO file) throws Exception {
+		return fdao.mfileUpdate(file);
+	}
+
 }

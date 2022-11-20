@@ -12,5 +12,8 @@ public interface MemberService {
 	public Object getRefreshToken(String userid) throws Exception;
 	public void deleRefreshToken(String userid) throws Exception;
 	public MemberDTO userSignup(MemberDTO memberDto) throws Exception;
+	public MemberDTO userModify(MemberDTO memberDto) throws Exception;
 	public int addFile(MemberFileDTO file) throws Exception;
+	public MemberFileDTO getFile(String username) throws Exception;
+	public int modifyFile(MemberFileDTO file) throws Exception;
 }

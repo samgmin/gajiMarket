@@ -35,7 +35,7 @@
 
       <!-- 로그인 되었을 때 -->
       <v-list v-if="userInfo">
-        <v-list-item>
+        <v-list-item :to="{ name: 'usermypage' }">
           <v-list-item-title>마이페이지</v-list-item-title>
         </v-list-item>
         <v-list-item @click.prevent="onClickLogout">

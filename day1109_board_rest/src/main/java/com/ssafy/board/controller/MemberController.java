@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -146,25 +147,24 @@ public class MemberController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+
 	@PostMapping("/signup")
-	public ResponseEntity<?> signup(MemberDTO memberDto, MultipartFile[] uploadFile)
-			throws Exception {
+	public ResponseEntity<?> signup(MemberDTO memberDto, MultipartFile[] uploadFile) throws Exception {
 		System.out.println("회원가입에 왔어요");
 		System.out.println("input member: " + memberDto);
 		// 일단 글이 DB에 저장되야 글번호를 파일 업로드에 넣을 수 있음
 		MemberDTO signupResult = memberService.userSignup(memberDto);
-		
+
 		// 글쓰기에 파일 첨부 기능 추가
-		if(uploadFile != null && uploadFile.length > 0) {
+		if (uploadFile != null && uploadFile.length > 0) {
 			String uploadPath = "C:/SSAFY/workspace/board_final_pjt/board_final_pjt/src/assets/memberImg";
 			File uploadDir = new File(uploadPath);
-			
-			if(!uploadDir.exists()) { // 업로드 파일 저장 폴더 없으면 생성
+
+			if (!uploadDir.exists()) { // 업로드 파일 저장 폴더 없으면 생성
 				uploadDir.mkdir();
 			}
-			
-			for(MultipartFile file : uploadFile) { // 파일 개수만큼 반복
+
+			for (MultipartFile file : uploadFile) { // 파일 개수만큼 반복
 				String savedName = new Random().nextInt(1000000000) + "." + file.getOriginalFilename().split("\\.")[1];
 				System.out.println(savedName);
 				uploadPath += "/";
@@ -172,17 +172,82 @@ public class MemberController {
 				System.out.println(uploadPath);
 				File savedFile = new File(uploadPath);
 				file.transferTo(savedFile); // profile.png -> c:/SSAFY/upload/2145346434
-				
-				MemberFileDTO dto = new MemberFileDTO(memberDto.getUserid(), file.getOriginalFilename(), savedName,uploadPath);
+
+				MemberFileDTO dto = new MemberFileDTO(memberDto.getUsername(), file.getOriginalFilename(), savedName,
+						uploadPath);
 				memberService.addFile(dto);
 			}
 		}
-		
-		if(signupResult != null) {
+
+		if (signupResult != null) {
 			return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
 		} else {
 			return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
 		}
 	}
 
+	@GetMapping("/mypage")
+	public ResponseEntity<?> mypage(String userid, String username) throws Exception {
+		System.out.println("마이 페이지 : " + userid + " " + username);
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("myInfo", memberService.userInfo(userid));
+		result.put("myImg", memberService.getFile(username));
+		System.out.println(result);
+		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.ACCEPTED);
+	}
+
+	@PostMapping("/modify")
+	public ResponseEntity<?> modify(@RequestBody MemberDTO memberDto) throws Exception {
+		System.out.println("회원정보 수정에 왔어요");
+		System.out.println("input member: " + memberDto);
+		// 일단 글이 DB에 저장되야 글번호를 파일 업로드에 넣을 수 있음
+		MemberDTO modifyResult = memberService.userModify(memberDto);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("myInfo", modifyResult);
+
+		if (modifyResult != null) {
+			result.put("msg", "success");
+			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.ACCEPTED);
+		} else {
+			result.put("msg", "fail");
+			return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping("/image")
+	public ResponseEntity<?> modify(String username, MultipartFile[] uploadFile) throws Exception {
+		System.out.println("회원정보 사진 수정에 왔어요");
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		// 회원정보 수정에 사진 수정
+		if (uploadFile != null && uploadFile.length > 0) {
+			System.out.println("사진 있어???");
+			String uploadPath = "C:/SSAFY/workspace/board_final_pjt/board_final_pjt/src/assets/memberImg";
+			File uploadDir = new File(uploadPath);
+
+			if (!uploadDir.exists()) { // 업로드 파일 저장 폴더 없으면 생성
+				uploadDir.mkdir();
+			}
+
+			for (MultipartFile file : uploadFile) { // 파일 개수만큼 반복
+				String savedName = new Random().nextInt(1000000000) + "." + file.getOriginalFilename().split("\\.")[1];
+				System.out.println(savedName);
+				uploadPath += "/";
+				uploadPath += savedName;
+				System.out.println(uploadPath);
+				File savedFile = new File(uploadPath);
+				file.transferTo(savedFile); // profile.png -> c:/SSAFY/upload/2145346434
+
+				MemberFileDTO dto = new MemberFileDTO(username, file.getOriginalFilename(), savedName, uploadPath);
+				System.out.println(dto);
+				memberService.modifyFile(dto);
+			}
+		}
+
+		result.put("myImg", memberService.getFile(username));
+		System.out.println(result);
+		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.ACCEPTED);
+	}
+	
 }

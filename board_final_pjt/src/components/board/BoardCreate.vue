@@ -11,11 +11,23 @@
             <th class="text-left" colspan="1">분류</th>
             <td class="text-left" colspan="1">
               <v-select
+                v-if="board.writer !== '관리자'"
                 style="max-width: 100px; padding-top: 25px"
                 name="category"
                 v-model="board.category"
                 :items="['전체', '기타']"
                 label="전체"
+                dense
+                solo
+              >
+              </v-select>
+              <v-select
+                v-if="board.writer === '관리자'"
+                style="max-width: 100px; padding-top: 25px"
+                name="category"
+                v-model="board.category"
+                :items="['공지']"
+                label="공지"
                 dense
                 solo
               >
@@ -81,7 +93,7 @@ export default {
         title: "",
         writer: "",
         content: "",
-        category: "전체",
+        category: "",
       },
       file: [],
       show: true,

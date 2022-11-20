@@ -2,14 +2,14 @@ package com.ssafy.board.model.dto;
 
 public class MemberFileDTO {
 	private int fno;
-	private String userid;
+	private String username;
 	private String originalName;
 	private String savedPath;
 	private String absolPath;
 	public MemberFileDTO() {}
 	public MemberFileDTO(String userid, String originalName, String savedPath,String absolPath) {
 		super();
-		this.userid = userid;
+		this.username = userid;
 		this.originalName = originalName;
 		this.savedPath = savedPath;
 		this.absolPath = absolPath;
@@ -21,10 +21,10 @@ public class MemberFileDTO {
 		this.fno = fno;
 	}
 	public String getUserid() {
-		return userid;
+		return username;
 	}
 	public void setUserid(String userid) {
-		this.userid = userid;
+		this.username = userid;
 	}
 	public String getOriginalName() {
 		return originalName;
@@ -47,7 +47,7 @@ public class MemberFileDTO {
 	}
 	@Override
 	public String toString() {
-		return "MemberFileDTO [fno=" + fno + ", userid=" + userid + ", originalName=" + originalName + ", savedPath="
+		return "MemberFileDTO [fno=" + fno + ", userid=" + username + ", originalName=" + originalName + ", savedPath="
 				+ savedPath + "]";
 	}
 	

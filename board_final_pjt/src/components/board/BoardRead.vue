@@ -13,16 +13,25 @@
       <v-row justify="space-between">
         <v-col class="d-flex flex-row">
           <span>
-            <v-icon color="green darken-2"> mdi-domain </v-icon>
-            {{ board.writer }} | &nbsp;
+            <v-img
+              class="pa-4 primary rounded-circle d-inline-block"
+              :src="require(`@/assets/memberImg/${writerImg.savedPath}`)"
+              width="30"
+            />
           </span>
-          <span style="font-size: 15px">{{ board.writeDate }}</span>
+          &nbsp;&nbsp;
+          <span style="font-size: 15px; margin-top: 5px"
+            >{{ board.writer }} &nbsp; | &nbsp; {{ board.writeDate }}</span
+          >
         </v-col>
         <v-col class="d-flex flex-row-reverse">
           <span style="font-size: 12px">
             <v-icon>{{ icons.mdiAccount }}</v-icon>
             {{ board.readCount }}
-            <v-btn icon color="blue lighten-2" @click="updateRecommend">
+            <v-btn v-if="isrecommend" icon color="blue lighten-2" @click="updateRecommend">
+              <v-icon>mdi-thumb-up</v-icon>
+            </v-btn>
+            <v-btn v-if="!isrecommend" icon @click="updateRecommend">
               <v-icon>mdi-thumb-up</v-icon>
             </v-btn>
             {{ board.recommend }}</span
@@ -78,9 +87,17 @@
           </thead>
           <tbody>
             <tr v-for="(comment, index) in cList" :key="index">
-              <td class="text-left">{{ comment.cwriter }}</td>
-              <td class="text-left" v-if="flag">{{ comment.ccontent }}</td>
-              <td v-if="!flag">
+              <td class="d-flex flex-row">
+                <span style="margin-top: 8px">
+                  <v-img
+                    class="pa-4 primary rounded-circle d-inline-block"
+                    :src="require(`@/assets/memberImg/${cListImg[index].savedPath}`)"
+                    width="30" /></span
+                >&nbsp;&nbsp;
+                <span style="margin-top: 15px">{{ comment.cwriter }}</span>
+              </td>
+              <td class="text-left" v-if="flag || index !== cIndex">{{ comment.ccontent }}</td>
+              <td v-if="!flag && index === cIndex">
                 <v-text-field
                   dense
                   v-model="comment.ccontent"
@@ -92,7 +109,10 @@
                 <v-btn
                   icon
                   x-small
-                  @click="flag = !flag"
+                  @click="
+                    flag = !flag;
+                    cIndex = index;
+                  "
                   v-if="flag && comment.cwriter === userInfo.username"
                   ><v-icon>{{ icons.mdiPencil }}</v-icon></v-btn
                 >
@@ -161,6 +181,7 @@ export default {
         mdiAccount,
       },
       flag: true,
+      cIndex: "",
     };
   },
   // props: ["money"],
@@ -168,10 +189,14 @@ export default {
     this.findboard(this.$route.query.bno);
     this.comment.cwriter = this.userInfo.username;
   },
-
   methods: {
     findboard(bno) {
-      this.boardGetOne(bno);
+      let data = {
+        bno: bno,
+        userid: this.userInfo.userid,
+        username: this.userInfo.username,
+      };
+      this.boardGetOne(data);
     },
     enterToBr(str) {
       // 문자열에 enter값을 <br />로 변경.(html상에서 줄바꿈 처리)
@@ -183,6 +208,7 @@ export default {
       this.$router.push({ name: "boardlist" });
     },
     writecomment() {
+      this.comment.cwriter = this.userInfo.username;
       this.commentWrite(this.comment);
       this.comment.cwriter = "";
       this.comment.ccontent = "";
@@ -226,7 +252,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(boardStore, ["board", "cList", "image"]),
+    ...mapState(boardStore, ["board", "writerImg", "isrecommend", "cList", "cListImg", "image"]),
     ...mapState(userStore, ["userInfo"]),
   },
 };

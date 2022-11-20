@@ -1,5 +1,6 @@
 package com.ssafy.board.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import com.ssafy.board.model.dto.BoardParameterDto;
 import com.ssafy.board.model.dto.CommentDTO;
 import com.ssafy.board.model.dto.FileDTO;
 import com.ssafy.board.model.dto.MemberDTO;
+import com.ssafy.board.model.dto.MemberFileDTO;
 
 @Service
 public class BoardService {
@@ -141,6 +143,11 @@ public class BoardService {
 	}
 	
 	// 추천수
+	public boolean selectRecommendCount(String userid, int bno) {
+		if(dao.selectRecommendCount(userid, bno) == 1) return true;
+		else return false;
+	}
+	
 	public int updateRecommend(String userid, int bno) {
 		if(dao.selectRecommendCount(userid, bno) == 0) {
 			if(dao.insertRecommend(userid, bno) == 1 && dao.updateRecommendPlus(bno) == 1) {
@@ -169,8 +176,16 @@ public class BoardService {
 		return false;
 	}
 	
-	public List<CommentDTO> getComments(int bno) {
-		return cdao.selectList(bno);
+	public Map<String, Object> getComments(int bno) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("cList", cdao.selectList(bno));
+		List<MemberFileDTO> flist = new ArrayList<MemberFileDTO>();
+		for(CommentDTO comment : cdao.selectList(bno)) {
+			flist.add(fdao.selectUserImg(comment.getCwriter()));
+		}
+		result.put("cListImg", flist);
+		result.put("msg", "success");
+		return result;
 	}
 	
 	public boolean modifyComment(CommentDTO comment) {
@@ -201,11 +216,21 @@ public class BoardService {
 		return fdao.selectOne(fno);
 	}
 	
-	public Map<String, Object> makeRead(int bno) {
+	public Map<String, Object> makeRead(int bno, String userid, String username) {
+		System.out.println("글 가져오기 : " + bno + " " + userid + " " + username);
 		Map<String, Object> result = new HashMap<String, Object>();
-		dao.updateReadCount(bno);
+		if(!dao.selectOne(bno).getWriter().equals(username)) dao.updateReadCount(bno);
 		result.put("board", dao.selectOne(bno));
+		result.put("writerImg", fdao.selectUserImg(dao.selectOne(bno).getWriter()));
+		if(dao.selectRecommendCount(userid, bno) == 1)
+			result.put("isrecommend", true);
+		else result.put("isrecommend", false);		
 		result.put("cList", cdao.selectList(bno));
+		List<MemberFileDTO> flist = new ArrayList<MemberFileDTO>();
+		for(CommentDTO comment : cdao.selectList(bno)) {
+			flist.add(fdao.selectUserImg(comment.getCwriter()));
+		}
+		result.put("cListImg", flist);
 		result.put("file", fdao.selectFiles(bno));
 		System.out.println(result);
 		return result;

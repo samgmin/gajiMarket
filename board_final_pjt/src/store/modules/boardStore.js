@@ -10,8 +10,11 @@ const boardStore = {
     totalPage: "",
     endPage: "",
     board: {},
+    writerImg: {},
+    isrecommend: "",
     cList: [],
-    image:"",
+    cListImg: [],
+    image: "",
   },
   getters: {},
   mutations: {
@@ -23,12 +26,14 @@ const boardStore = {
       state.endPage = payload.endPage;
     },
     BOARD_GET_ONE(state, payload) {
-      state.cList = payload.cList;
       state.board = payload.board;
+      state.writerImg = payload.writerImg;
+      state.isrecommend = payload.isrecommend;
+      state.cList = payload.cList;
+      state.cListImg = payload.cListImg;
       if (payload.file.length != 0) {
         state.image = payload.file[0].savedPath;
-      }
-      else {
+      } else {
         state.image = "";
       }
     },
@@ -36,10 +41,12 @@ const boardStore = {
       state.board = payload;
     },
     COMMENT_WRITE(state, payload) {
-      state.cList = payload;
+      state.cList = payload.cList;
+      state.cListImg = payload.cListImg;
     },
     BOARD_RECOMMEND_UPDATE(state, payload) {
       state.board.recommend = payload;
+      state.isrecommend = !state.isrecommend;
     },
   },
   actions: {
@@ -52,10 +59,20 @@ const boardStore = {
       });
     },
     boardGetOne({ commit }, payload) {
-      http.get("/board/read?bno=" + payload).then(({ data }) => {
-        console.log(data);
-        commit("BOARD_GET_ONE", data);
-      });
+      console.log(payload);
+      http
+        .get(
+          "/board/read?bno=" +
+            payload.bno +
+            "&userid=" +
+            payload.userid +
+            "&username=" +
+            payload.username
+        )
+        .then(({ data }) => {
+          console.log(data);
+          commit("BOARD_GET_ONE", data);
+        });
     },
     boardGetSearch({ commit }, payload) {
       http.post("/board/list", payload).then(({ data }) => {
@@ -85,7 +102,7 @@ const boardStore = {
       });
     },
     boardRecommendUpdate({ commit }, payload) {
-      console.log("조회수 업데이트");
+      console.log("추천수 업데이트");
       console.log(payload);
       http
         .get("/board/recommend?userid=" + payload.userid + "&bno=" + payload.bno)
@@ -102,7 +119,7 @@ const boardStore = {
         if (data.msg === "success") {
           msg = "댓글 작성 성공~_~_~_~~";
           console.log(data);
-          commit("COMMENT_WRITE", data.cList);
+          commit("COMMENT_WRITE", data);
         }
         alert(msg);
       });
@@ -114,7 +131,7 @@ const boardStore = {
         if (data.msg === "success") {
           msg = "댓글 수정 성공~_~_~_~~";
           console.log(data);
-          commit("COMMENT_WRITE", data.cList);
+          commit("COMMENT_WRITE", data);
         }
         alert(msg);
       });
@@ -129,7 +146,7 @@ const boardStore = {
           if (data.msg === "success") {
             msg = "댓글 삭제 성공~_~_~_~~";
             console.log(data);
-            commit("COMMENT_WRITE", data.cList);
+            commit("COMMENT_WRITE", data);
           }
           alert(msg);
         });

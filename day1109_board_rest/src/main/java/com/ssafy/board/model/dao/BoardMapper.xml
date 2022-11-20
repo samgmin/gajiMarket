@@ -59,14 +59,27 @@
 		SELECT BNO, TITLE, WRITER, WRITE_DATE, READ_COUNT, CATEGORY, RECOMMEND
 		FROM BOARD_TB
 		<if test="category != null and category != ''">
-		WHERE category = #{category}
-		</if>
-		<if test="word != null and word != ''">
-			<if test="key == 'title'">
-				and title like concat('%', #{word}, '%')
+			<if test="word != null and word != ''">
+				WHERE category = #{category}
+				<if test="key == 'title'">
+					and title like concat('%', #{word}, '%')
+				</if>
+				<if test="key == 'writer'">
+					and writer like concat('%', #{word}, '%')
+				</if>
 			</if>
-			<if test="key == 'writer'">
-				and writer like concat('%', #{word}, '%')
+			<if test="word == null or word == ''">
+				WHERE category = #{category}
+			</if>
+		</if>
+		<if test="category == null or category == ''">
+			<if test="word != null and word != ''">
+				<if test="key == 'title'">
+					WHERE title like concat('%', #{word}, '%')
+				</if>
+				<if test="key == 'writer'">
+					WHERE writer like concat('%', #{word}, '%')
+				</if>
 			</if>
 		</if>
 		ORDER BY ${sort} DESC
@@ -81,15 +94,24 @@
 	<select id="selectConditionCount" parameterType="com.ssafy.board.model.dto.BoardParameterDto" resultType="int">
 		SELECT COUNT(*)
 		FROM BOARD_TB
-		<if test="category != null and category != ''">
-		WHERE category = #{category}
-		</if>
-		<if test="word != null and word != ''">
+		<if test="category != null and category != '' and word != null and word != ''">
+			WHERE category = #{category}
 			<if test="key == 'title'">
 				and title like concat('%', #{word}, '%')
 			</if>
 			<if test="key == 'writer'">
 				and writer like concat('%', #{word}, '%')
+			</if>
+		</if>
+		<if test="(category != null and category != '') and (word == null or word == '')">
+			WHERE category = #{category}
+		</if>
+		<if test="(category == null or category == '') and (word != null and word != '')">
+			<if test="key == 'title'">
+				WHERE title like concat('%', #{word}, '%')
+			</if>
+			<if test="key == 'writer'">
+				WHERE writer like concat('%', #{word}, '%')
 			</if>
 		</if>
 	</select>

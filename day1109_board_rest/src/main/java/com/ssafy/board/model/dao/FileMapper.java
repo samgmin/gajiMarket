@@ -9,5 +9,7 @@ public interface FileMapper {
 	public int insert(FileDTO file);
 	public List<FileDTO> selectFiles(int bno);
 	public FileDTO selectOne(int fno);
+	public MemberFileDTO selectUserImg(String username);
 	public int mfileinsert(MemberFileDTO file);
+	public int mfileUpdate(MemberFileDTO file);
 }

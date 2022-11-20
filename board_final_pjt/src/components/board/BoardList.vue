@@ -9,6 +9,7 @@
             :items="[
               { name: '최신순', value: 'BNO' },
               { name: '조회수', value: 'READ_COUNT' },
+              { name: '추천수', value: 'RECOMMEND' },
             ]"
             item-text="name"
             item-value="value"
@@ -161,7 +162,6 @@ export default {
       page: 1,
     };
   },
-
   methods: {
     movePage(page) {
       this.boardGetSearch({

@@ -83,8 +83,14 @@ public class BoardRestController {
 	}
 	
 	@GetMapping("/read")
-	public ResponseEntity<Map<String, Object>> read(int bno) {
-		return new ResponseEntity<Map<String, Object>>(bservice.makeRead(bno), HttpStatus.OK);
+	public ResponseEntity<Map<String, Object>> read(int bno, String userid, String username) {
+		System.out.println("게시물 읽기 : " + bno + " " + username);
+		return new ResponseEntity<Map<String, Object>>(bservice.makeRead(bno, userid, username), HttpStatus.OK);
+	}
+	
+	@GetMapping("/read/recommend")
+	public ResponseEntity<Boolean> readRecommend(String userid, int bno) {
+		return new ResponseEntity<Boolean>(bservice.selectRecommendCount(userid, bno), HttpStatus.OK);
 	}
 	
 	@PutMapping("/modify")
@@ -118,11 +124,7 @@ public class BoardRestController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		System.out.println(comment);
 		if(bservice.writeComment(comment)) {
-			List<CommentDTO> list = bservice.getComments(comment.getBno());
-			System.out.println(list);
-			result.put("cList", list);
-			result.put("msg", "success");
-			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.ACCEPTED);
+			return new ResponseEntity<Map<String, Object>>(bservice.getComments(comment.getBno()), HttpStatus.ACCEPTED);
 		} else {
 			result.put("msg", "error");
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
@@ -134,11 +136,8 @@ public class BoardRestController {
 		Map<String, Object> result = new HashMap<String, Object>();
 		System.out.println("업데이트 댓글 : " + comment);
 		if(bservice.modifyComment(comment)) {
-			List<CommentDTO> list = bservice.getComments(comment.getBno());
-			System.out.println("리스트 다시 불러오기 : " + list);
-			result.put("cList", list);
-			result.put("msg", "success");
-			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.ACCEPTED);
+			System.out.println("리스트 다시 불러오기");
+			return new ResponseEntity<Map<String, Object>>(bservice.getComments(comment.getBno()), HttpStatus.ACCEPTED);
 		} else {
 			result.put("msg", "error");
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);
@@ -151,11 +150,7 @@ public class BoardRestController {
 		System.out.println("게시물 : " + bno + " 댓글 삭제 : " + cno);
 		if(bservice.deleteCemment(cno)) {
 			System.out.println(cno + " 댓글 삭제했음!");
-			List<CommentDTO> list = bservice.getComments(bno);
-			System.out.println(list);
-			result.put("cList", list);
-			result.put("msg", "success");
-			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.ACCEPTED);
+			return new ResponseEntity<Map<String, Object>>(bservice.getComments(bno), HttpStatus.ACCEPTED);
 		} else {
 			result.put("msg", "error");
 			return new ResponseEntity<Map<String, Object>>(result, HttpStatus.BAD_REQUEST);

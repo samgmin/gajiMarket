@@ -11,11 +11,13 @@ const userStore = {
     userInfo: null,
     isValidToken: false,
     age: null,
-    ageconfidence:null,
+    ageconfidence: null,
     gender: null,
     genderconfidence: null,
     celebrity: null,
-    celebrityconfidence:null,
+    celebrityconfidence: null,
+    myInfo: null,
+    myImg: null,
   },
   getters: {
     checkUserInfo: function (state) {
@@ -55,6 +57,16 @@ const userStore = {
       state.celebrity = null;
       state.celebrityconfidence = null;
     },
+    SET_USER_PAGE(state, payload) {
+      state.myInfo = payload.myInfo;
+      state.myImg = payload.myImg.savedPath;
+    },
+    MODIFY_USER_INFO(state, payload) {
+      state.myInfo = payload.myInfo;
+    },
+    MODIFY_USER_IMAGE(state, payload) {
+      state.myImg = payload.myImg.savedPath;
+    },
   },
   actions: {
     userSignup({ commit }, payload) {
@@ -63,6 +75,33 @@ const userStore = {
       axios.post("http://localhost:8888/board/user/signup", payload).then(({ data }) => {
         console.log(data);
         alert(data);
+      });
+    },
+    getMyInfo({ commit }, payload) {
+      console.log(commit);
+      console.log(payload);
+      http
+        .get("/user/mypage?userid=" + payload.userid + "&username=" + payload.username)
+        .then(({ data }) => {
+          console.log(data);
+          commit("SET_USER_PAGE", data);
+        });
+    },
+    updateImg({ commit }, payload) {
+      console.log(commit);
+      console.log(payload);
+      axios.post("http://localhost:8888/board/user/image", payload).then(({ data }) => {
+        console.log(data);
+        commit("MODIFY_USER_IMAGE", data);
+      });
+    },
+    updateInfo({ commit }, payload) {
+      console.log(commit);
+      console.log(payload);
+      http.post("/user/modify", payload).then(({ data }) => {
+        console.log(data);
+        alert(data.msg);
+        commit("MODIFY_USER_INFO", data);
       });
     },
     async userConfirm({ commit }, user) {
