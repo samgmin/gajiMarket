@@ -1,20 +1,34 @@
-<template>
+<template fixed>
   <!-- <v-card class="overflow-hidden"> -->
   <v-app-bar
+    id="navbar"
     absolute
-    color="#fcb69f"
-    dark
-    shrink-on-scroll
-    src="https://picsum.photos/1920/1080?random"
-    scroll-target="#scrolling-techniques-2"
+    color="#7E57C2"
+    elevate-on-scroll
+    scroll-target="#scrolling-techniques-7"
   >
-    <template v-slot:img="{ props }">
-      <v-img v-bind="props"></v-img>
-    </template>
+    <v-menu bottom left offset-y open-on-hover>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon color="white" v-bind="attrs" v-on="on">
+          <v-img icon src="@/assets/icon.png" max-width="30px"></v-img>
+        </v-btn>
+      </template>
 
-    <v-app-bar-nav-icon>뿡</v-app-bar-nav-icon>
-
-    <v-app-bar-title>HAPPY HAPPY</v-app-bar-title>
+      <!-- 로그인 되었을 때 -->
+      <v-list>
+        <v-list-item to="/">
+          <v-list-item-title>메인</v-list-item-title>
+        </v-list-item>
+        <v-list-item :to="{ name: 'apt' }">
+          <v-list-item-title>아파트</v-list-item-title>
+        </v-list-item>
+        <v-list-item :to="{ name: 'board' }">
+          <v-list-item-title>게시판</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+    &nbsp;&nbsp;
+    <v-app-bar-title>가지마켓</v-app-bar-title>
 
     <v-spacer></v-spacer>
 
@@ -22,7 +36,7 @@
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
 
-    <v-btn icon>
+    <v-btn :to="{ name: 'aptinterest' }" icon>
       <v-icon>mdi-heart</v-icon>
     </v-btn>
 
@@ -53,14 +67,6 @@
         </v-list-item>
       </v-list>
     </v-menu>
-
-    <template v-slot:extension>
-      <v-tabs align-with-title>
-        <v-tab to="/">메인</v-tab>
-        <v-tab :to="{ name: 'apt' }">아파트</v-tab>
-        <v-tab :to="{ name: 'board' }">게시판</v-tab>
-      </v-tabs>
-    </template>
   </v-app-bar>
 </template>
 
@@ -99,4 +105,18 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+@font-face {
+  font-family: "jua";
+  src: url("@/assets/fonts/BMJUA_ttf.ttf");
+}
+@font-face {
+  font-family: "dohyeon";
+  src: url("@/assets/fonts/BMDOHYEON_ttf.ttf");
+}
+#navbar {
+  font-family: "dohyeon";
+  font-size: 30px;
+  color: yellow;
+}
+</style>

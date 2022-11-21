@@ -1,8 +1,10 @@
 <template>
   <div style="width: 800px; margin: 0 auto">
-    <h3 class="underline-hotpink"><b-icon icon="journals"></b-icon>마이페이지</h3>
+    <h3 class="underline-hotpink">
+      <b-icon icon="journals"></b-icon>마이페이지
+    </h3>
     <v-form id="sendForm" ref="sendFrom" enctype="multipart/form-data">
-      <v-simple-table v-if="show">
+      <v-simple-table v-if="show && myInfo && myImg">
         <template v-slot:default>
           <colgroup>
             <col width="20%" />
@@ -11,7 +13,12 @@
           <tr>
             <th class="text-left" colspan="1">아이디</th>
             <td class="text-left" colspan="11">
-              <v-text-field name="id" v-model="myInfo.userid" required readonly></v-text-field>
+              <v-text-field
+                name="id"
+                v-model="myInfo.userid"
+                required
+                readonly
+              ></v-text-field>
             </td>
           </tr>
           <tr>
@@ -38,7 +45,12 @@
           <tr>
             <th class="text-left" colspan="1">이름</th>
             <td class="text-left" colspan="11">
-              <v-text-field name="name" v-model="myInfo.username" required readonly></v-text-field>
+              <v-text-field
+                name="name"
+                v-model="myInfo.username"
+                required
+                readonly
+              ></v-text-field>
             </td>
           </tr>
           <tr>
@@ -89,7 +101,12 @@
                 :src="preview"
                 width="30"
               />
-              <v-file-input v-if="!flag" type="file" name="uploadFile" v-model="file" />
+              <v-file-input
+                v-if="!flag"
+                type="file"
+                name="uploadFile"
+                v-model="file"
+              />
               <!-- <v-btn variant="outline-primary" @click="naverCFRApi">사진제출</v-btn> -->
             </td>
           </tr>
@@ -99,7 +116,7 @@
         </template>
       </v-simple-table>
 
-      <v-simple-table v-if="show">
+      <v-simple-table v-if="show && myInfo">
         <template v-slot:default>
           <colgroup>
             <col width="20%" />
@@ -108,31 +125,44 @@
           <tr style="padding-top: 100px" v-if="!flag && age">
             <th class="text-left" colspan="1">나이</th>
             <td class="text-left" colspan="11">
-              {{ ageconfidence * 100 }}% 확률로 {{ age }}입니다
+              {{ Math.round(ageconfidence * 10000) / 100 }}% 확률로 {{ age }}살
+              입니다.
             </td>
           </tr>
           <tr v-if="flag || !age">
             <th class="text-left" colspan="1">나이</th>
             <td class="text-left" colspan="10">
-              <v-text-field name="age" v-model="myInfo.age" required readonly></v-text-field>
+              <v-text-field
+                name="age"
+                v-model="myInfo.age"
+                required
+                readonly
+              ></v-text-field>
             </td>
           </tr>
           <tr id="naver" v-if="!flag && gender">
             <th class="text-left" colspan="1">성별</th>
             <td class="text-left" colspan="11">
-              {{ genderconfidence * 100 }}% 확률로 {{ gender }}입니다
+              {{ Math.round(genderconfidence * 10000) / 100 }}% 확률로
+              {{ gender }}입니다.
             </td>
           </tr>
           <tr v-if="flag || !gender">
             <th class="text-left" colspan="1">성별</th>
             <td class="text-left" colspan="11">
-              <v-text-field name="gender" v-model="myInfo.gender" required readonly></v-text-field>
+              <v-text-field
+                name="gender"
+                v-model="myInfo.gender"
+                required
+                readonly
+              ></v-text-field>
             </td>
           </tr>
           <tr id="naver" v-if="!flag && celebrity">
             <th class="text-left" colspan="1">닮은꼴</th>
             <td class="text-left" colspan="11">
-              {{ celebrityconfidence * 100 }}% 확률로 {{ celebrity }}닮았습니다
+              {{ Math.round(celebrityconfidence * 10000) / 100 }}% 확률로
+              {{ celebrity }}을(를) 닮았습니다.
             </td>
           </tr>
           <tr v-if="flag || !celebrity">
@@ -152,8 +182,12 @@
 
     <v-row align="center" justify="end">
       <v-col class="d-flex justify-end" cols="12" sm="1">
-        <v-btn variant="outline-primary" v-if="flag" @click="flag = !flag">수정</v-btn>
-        <v-btn variant="outline-primary" v-if="!flag" @click="modifyInfo">수정</v-btn>
+        <v-btn variant="outline-primary" v-if="flag" @click="flag = !flag"
+          >수정</v-btn
+        >
+        <v-btn variant="outline-primary" v-if="!flag" @click="modifyInfo"
+          >수정</v-btn
+        >
         &nbsp;&nbsp;&nbsp;&nbsp;
         <v-btn variant="outline-primary" @click="deleteInfo">탈퇴</v-btn>
       </v-col>

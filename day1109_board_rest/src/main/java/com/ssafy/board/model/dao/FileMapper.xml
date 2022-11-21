@@ -6,6 +6,12 @@
 		VALUES(#{bno}, #{originalName}, #{savedPath})
 	</insert>
 	
+	<insert id="update" parameterType="com.ssafy.board.model.dto.FileDTO">
+		UPDATE FILE_TB
+		SET ORIGINAL_NAME = #{originalName}, SAVED_PATH = #{savedPath}
+		WHERE BNO = #{bno}
+	</insert>
+	
 	<select id="selectFiles" resultType="com.ssafy.board.model.dto.FileDTO">
 		SELECT FNO, BNO, ORIGINAL_NAME AS 'originalName', SAVED_PATH as 'savedPath'
 		FROM FILE_TB

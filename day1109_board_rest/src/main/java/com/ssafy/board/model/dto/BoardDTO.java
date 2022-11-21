@@ -9,9 +9,10 @@ public class BoardDTO {
 	private int readCount;
 	private String category;
 	private int recommend;
+	private String soldout;
 	
 //////////////////////////////////////////////////////////	
-	public BoardDTO(int bno, String title, String writer, String content, String writeDate, int readCount, String category, int recommend) {
+	public BoardDTO(int bno, String title, String writer, String content, String writeDate, int readCount, String category, int recommend, String soldout) {
 		this.bno = bno;
 		this.title = title;
 		this.writer = writer;
@@ -20,6 +21,7 @@ public class BoardDTO {
 		this.readCount = readCount;
 		this.category = category;
 		this.recommend = recommend;
+		this.soldout = soldout;
 	}
 	
 	public BoardDTO(String title, String writer, String content) {
@@ -94,10 +96,18 @@ public class BoardDTO {
 		this.recommend = recommend;
 	}
 
+	public String getSoldout() {
+		return soldout;
+	}
+
+	public void setSoldout(String soldout) {
+		this.soldout = soldout;
+	}
+
 	@Override
 	public String toString() {
 		return "BoardDTO [bno=" + bno + ", title=" + title + ", writer=" + writer + ", content=" + content
 				+ ", writeDate=" + writeDate + ", readCount=" + readCount + ", category=" + category + ", recommend="
-				+ recommend + "]";
+				+ recommend + ", soldout=" + soldout + "]";
 	}
 }

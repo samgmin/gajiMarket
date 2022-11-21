@@ -6,8 +6,11 @@
         <v-col class="d-flex" cols="12" sm="12" style="font-size: 20px">
           <span style="color: #b39ddb">{{ board.category }} &nbsp;</span>
           <span
-            ><b>{{ board.title }}</b></span
+            ><b>{{ board.title }} &nbsp;</b></span
           >
+          <span v-if="board.soldout === '0'">(판매 중)</span>
+          <span v-if="board.soldout === '1'">(예약 완료)</span>
+          <span v-if="board.soldout === '2'">(판매 완료)</span>
         </v-col>
       </v-row>
       <v-row justify="space-between">
@@ -28,7 +31,12 @@
           <span style="font-size: 12px">
             <v-icon>{{ icons.mdiAccount }}</v-icon>
             {{ board.readCount }}
-            <v-btn v-if="isrecommend" icon color="blue lighten-2" @click="updateRecommend">
+            <v-btn
+              v-if="isrecommend"
+              icon
+              color="blue lighten-2"
+              @click="updateRecommend"
+            >
               <v-icon>mdi-thumb-up</v-icon>
             </v-btn>
             <v-btn v-if="!isrecommend" icon @click="updateRecommend">
@@ -46,7 +54,7 @@
       </v-row>
       <br />
       <v-img
-        v-if="image != ''"
+        v-if="image"
         :src="require(`@/assets/boardImg/${image}`)"
         width="600"
         style="margin: 0 auto"
@@ -91,12 +99,16 @@
                 <span style="margin-top: 8px">
                   <v-img
                     class="pa-4 primary rounded-circle d-inline-block"
-                    :src="require(`@/assets/memberImg/${cListImg[index].savedPath}`)"
+                    :src="
+                      require(`@/assets/memberImg/${cListImg[index].savedPath}`)
+                    "
                     width="30" /></span
                 >&nbsp;&nbsp;
                 <span style="margin-top: 15px">{{ comment.cwriter }}</span>
               </td>
-              <td class="text-left" v-if="flag || index !== cIndex">{{ comment.ccontent }}</td>
+              <td class="text-left" v-if="flag || index !== cIndex">
+                {{ comment.ccontent }}
+              </td>
               <td v-if="!flag && index === cIndex">
                 <v-text-field
                   dense
@@ -151,7 +163,9 @@
           required
         ></v-text-field> -->
         <v-text-field v-model="comment.ccontent" label="내용" required
-          ><v-icon slot="append" color="red" @click="writecomment"> mdi-plus </v-icon></v-text-field
+          ><v-icon slot="append" color="red" @click="writecomment">
+            mdi-plus
+          </v-icon></v-text-field
         >
       </v-form>
     </div>
@@ -252,7 +266,14 @@ export default {
     },
   },
   computed: {
-    ...mapState(boardStore, ["board", "writerImg", "isrecommend", "cList", "cListImg", "image"]),
+    ...mapState(boardStore, [
+      "board",
+      "writerImg",
+      "isrecommend",
+      "cList",
+      "cListImg",
+      "image",
+    ]),
     ...mapState(userStore, ["userInfo"]),
   },
 };

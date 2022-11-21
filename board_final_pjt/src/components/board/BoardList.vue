@@ -105,10 +105,25 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(board, index) in boardList" :key="index" @click="titleClick(board.bno)">
+            <tr
+              v-for="(board, index) in boardList"
+              :key="index"
+              @click="titleClick(board.bno)"
+            >
               <td>{{ board.bno }}</td>
               <td>{{ board.category }}</td>
-              <td>{{ board.title }}</td>
+              <td v-if="board.soldout === '0'" style="color: #3949ab">
+                <b>{{ board.title }}</b>
+              </td>
+              <td v-if="board.soldout === '1'" style="color: #0277bd">
+                {{ board.title }}
+              </td>
+              <td
+                v-if="board.soldout === '2'"
+                style="text-decoration: line-through; color: #26a69a"
+              >
+                {{ board.title }}
+              </td>
               <td>{{ board.writer }}</td>
               <td>{{ board.writeDate }}</td>
               <td>{{ board.readCount }}</td>
@@ -189,7 +204,13 @@ export default {
     ...mapActions(boardStore, ["boardGetList", "boardGetSearch"]),
   },
   computed: {
-    ...mapState(boardStore, ["boardList", "startPage", "totalPage", "endPage", "currPage"]),
+    ...mapState(boardStore, [
+      "boardList",
+      "startPage",
+      "totalPage",
+      "endPage",
+      "currPage",
+    ]),
   },
   watch: {
     sort() {

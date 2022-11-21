@@ -27,6 +27,7 @@
                 v-model="pwd"
                 label="비밀번호를 입력하세요."
                 required
+                type="password"
               ></v-text-field>
             </td>
           </tr>
@@ -57,7 +58,8 @@
           </tr>
           <tr>
             <td colspan="12">
-              사진을 첨부해주세요 추정나이, 성별, 닮은꼴 연예인을 알려드립니다 아쉽지만 필수에요
+              사진을 첨부해주세요 추정나이, 성별, 닮은꼴 연예인을 알려드립니다
+              아쉽지만 필수에요
             </td>
           </tr>
           <tr>
@@ -78,19 +80,22 @@
           <tr v-if="age">
             <th class="text-left" colspan="1">나이</th>
             <td class="text-left" colspan="11">
-              {{ ageconfidence * 100 }}% 확률로 {{ age }}살 입니다.
+              {{ Math.round(ageconfidence * 10000) / 100 }}% 확률로 {{ age }}살
+              입니다.
             </td>
           </tr>
           <tr v-if="gender">
             <th class="text-left" colspan="1">성별</th>
             <td class="text-left" colspan="11">
-              {{ genderconfidence * 100 }}% 확률로 {{ gender }}입니다.
+              {{ Math.round(genderconfidence * 10000) / 100 }}% 확률로
+              {{ gender }}입니다.
             </td>
           </tr>
           <tr v-if="celebrity">
             <th class="text-left" colspan="1">닮은꼴</th>
             <td class="text-left" colspan="11">
-              {{ celebrityconfidence * 100 }}% 확률로 {{ celebrity }}을(를) 닮았습니다.
+              {{ Math.round(celebrityconfidence * 10000) / 100 }}% 확률로
+              {{ celebrity }}을(를) 닮았습니다.
             </td>
           </tr>
         </template>

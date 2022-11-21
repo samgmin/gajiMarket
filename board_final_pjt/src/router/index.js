@@ -26,6 +26,11 @@ const onlyAuthUser = async (to, from, next) => {
 
 const routes = [
   {
+    path: "/",
+    name: "main",
+    component: () => import("@/views/AppMain"),
+  },
+  {
     path: "/board",
     name: "board",
     component: () => import("@/views/AppBoard"),
@@ -66,6 +71,12 @@ const routes = [
         path: "search",
         name: "aptsearch",
         component: () => import("@/components/apt/AptSearch"),
+      },
+      {
+        path: "interest",
+        name: "aptinterest",
+        beforeEnter: onlyAuthUser,
+        component: () => import("@/components/apt/AptInterest"),
       },
     ],
   },

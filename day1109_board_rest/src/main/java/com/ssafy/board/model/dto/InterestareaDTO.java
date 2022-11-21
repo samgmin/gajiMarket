@@ -1,7 +1,7 @@
 package com.ssafy.board.model.dto;
 
 public class InterestareaDTO {
-    private String id;
+    private String userid;
     private String aptname;
     private String aptcode;
     private String dongname;
@@ -11,8 +11,8 @@ public class InterestareaDTO {
     public InterestareaDTO() {
     }
 
-    public InterestareaDTO(String id, String aptname, String aptcode, String dongname, String lat, String lng) {
-        this.id = id;
+    public InterestareaDTO(String userid, String aptname, String aptcode, String dongname, String lat, String lng) {
+        this.userid = userid;
         this.aptname = aptname;
         this.aptcode = aptcode;
         this.dongname = dongname;
@@ -20,12 +20,12 @@ public class InterestareaDTO {
         this.lng = lng;
     }
 
-    public String getId() {
-        return id;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public String getAptname() {
@@ -70,7 +70,7 @@ public class InterestareaDTO {
 
     @Override
     public String toString() {
-        return "InterestareaDTO [id=" + id + ", aptname=" + aptname + ", aptcode=" + aptcode + ", dongname=" + dongname
+        return "InterestareaDTO [id=" + userid + ", aptname=" + aptname + ", aptcode=" + aptcode + ", dongname=" + dongname
                 + ", lat=" + lat + ", lng=" + lng + "]";
     }
 

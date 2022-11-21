@@ -82,6 +82,39 @@ public class BoardRestController {
 		}
 	}
 	
+	@PostMapping("/image")
+	public ResponseEntity<Map<String, Object>> modify(int bno, MultipartFile[] uploadFile) throws IllegalStateException, IOException {
+//	public ResponseEntity<String> write(@RequestBody BoardDTO board) throws IllegalStateException, IOException {
+		System.out.println("글 이미지 수정에 왔어요");
+		System.out.println("글 이미지 수정 글 번호 : " + bno);
+		System.out.println("글 이미지 수정 이미지 : " + uploadFile);
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		// 글쓰기에 파일 첨부 기능 추가
+		if(uploadFile != null && uploadFile.length > 0) {
+			String uploadPath = "C:/SSAFY/workspace/board_final_pjt/board_final_pjt/src/assets/boardImg";
+			File uploadDir = new File(uploadPath);
+			
+			if(!uploadDir.exists()) { // 업로드 파일 저장 폴더 없으면 생성
+				uploadDir.mkdir();
+			}
+			
+			for(MultipartFile file : uploadFile) { // 파일 개수만큼 반복
+				String savedName = new Random().nextInt(1000000000) + "." + file.getOriginalFilename().split("\\.")[1];
+				System.out.println(savedName);
+				File savedFile = new File(uploadPath + "/" + savedName);
+				file.transferTo(savedFile); // profile.png -> c:/SSAFY/upload/2145346434
+				
+				FileDTO dto = new FileDTO(bno, file.getOriginalFilename(), savedName);
+				bservice.modifyFile(dto);
+			}
+		}
+		
+		result.put("file", bservice.getFiles(bno));
+		System.out.println(result);
+		return new ResponseEntity<Map<String, Object>>(result, HttpStatus.ACCEPTED);
+	}
+	
 	@GetMapping("/read")
 	public ResponseEntity<Map<String, Object>> read(int bno, String userid, String username) {
 		System.out.println("게시물 읽기 : " + bno + " " + username);
@@ -94,13 +127,9 @@ public class BoardRestController {
 	}
 	
 	@PutMapping("/modify")
-	public ResponseEntity<String> modify(@RequestBody BoardDTO board) {
+	public ResponseEntity<Map<String, Object>> modify(@RequestBody BoardDTO board) {
 		System.out.println(board);
-		if(bservice.update(board)) {
-			return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
-		} else {
-			return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
-		}
+		return new ResponseEntity<Map<String, Object>>(bservice.update(board), HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/{bno}")

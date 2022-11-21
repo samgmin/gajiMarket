@@ -40,6 +40,9 @@ const boardStore = {
     BOARD_UPDATE(state, payload) {
       state.board = payload;
     },
+    BOARD_IMG_UPDATE(state, payload) {
+      state.image = payload.file[0].savedPath;
+    },
     COMMENT_WRITE(state, payload) {
       state.cList = payload.cList;
       state.cListImg = payload.cListImg;
@@ -61,14 +64,7 @@ const boardStore = {
     boardGetOne({ commit }, payload) {
       console.log(payload);
       http
-        .get(
-          "/board/read?bno=" +
-            payload.bno +
-            "&userid=" +
-            payload.userid +
-            "&username=" +
-            payload.username
-        )
+        .get("/board/read?bno=" + payload.bno + "&userid=" + payload.userid + "&username=" + payload.username)
         .then(({ data }) => {
           console.log(data);
           commit("BOARD_GET_ONE", data);
@@ -97,19 +93,27 @@ const boardStore = {
       console.log(payload);
       http.put("/board/modify", payload).then(({ data }) => {
         console.log(data);
-        alert(data);
-        commit("BOARD_UPDATE", payload);
+        alert(data.msg);
+        if (data.msg === "success") {
+          commit("BOARD_UPDATE", data.board);
+        }
+      });
+    },
+    boardImgUpdate({ commit }, payload) {
+      console.log(commit);
+      console.log(payload);
+      axios.post("http://localhost:8888/board/board/image", payload).then(({ data }) => {
+        console.log(data);
+        commit("BOARD_IMG_UPDATE", data);
       });
     },
     boardRecommendUpdate({ commit }, payload) {
       console.log("추천수 업데이트");
       console.log(payload);
-      http
-        .get("/board/recommend?userid=" + payload.userid + "&bno=" + payload.bno)
-        .then(({ data }) => {
-          console.log(data);
-          commit("BOARD_RECOMMEND_UPDATE", data);
-        });
+      http.get("/board/recommend?userid=" + payload.userid + "&bno=" + payload.bno).then(({ data }) => {
+        console.log(data);
+        commit("BOARD_RECOMMEND_UPDATE", data);
+      });
     },
     commentWrite({ commit }, payload) {
       console.log(payload);
@@ -139,17 +143,15 @@ const boardStore = {
     commentDelete({ commit }, payload) {
       console.log(commit);
       console.log(payload);
-      http
-        .delete("/board/comment/delete?bno=" + payload.bno + "&cno=" + payload.cno)
-        .then(({ data }) => {
-          let msg = "댓글 처리 중 문제 발생 ~_~";
-          if (data.msg === "success") {
-            msg = "댓글 삭제 성공~_~_~_~~";
-            console.log(data);
-            commit("COMMENT_WRITE", data);
-          }
-          alert(msg);
-        });
+      http.delete("/board/comment/delete?bno=" + payload.bno + "&cno=" + payload.cno).then(({ data }) => {
+        let msg = "댓글 처리 중 문제 발생 ~_~";
+        if (data.msg === "success") {
+          msg = "댓글 삭제 성공~_~_~_~~";
+          console.log(data);
+          commit("COMMENT_WRITE", data);
+        }
+        alert(msg);
+      });
     },
   },
 };

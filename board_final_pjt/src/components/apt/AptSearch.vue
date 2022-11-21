@@ -55,7 +55,7 @@
       <v-row>
         <v-col>
           <h3>검색결과</h3>
-          <div style="overflow: scroll; height: 500px">
+          <div style="overflow-y: scroll; height: 500px">
             <v-simple-table>
               <template v-slot:default>
                 <thead>
@@ -92,7 +92,7 @@
         </v-col>
       </v-row>
     </div>
-    <!--     상세보기 dialog          -->
+    <!--ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 상세보기 dialog ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
     <div class="text-center">
       <v-dialog v-model="dialog" width="1000px" height="1000px">
         <v-card>
@@ -132,6 +132,17 @@
               </v-simple-table>
               <v-card-actions>
                 <v-spacer></v-spacer>
+                <v-btn
+                  v-if="isInterest"
+                  icon
+                  color="blue lighten-2"
+                  @click="registInterest"
+                >
+                  <v-icon>mdi-thumb-up</v-icon>
+                </v-btn>
+                <v-btn v-if="!isInterest" icon @click="registInterest">
+                  <v-icon>mdi-thumb-up</v-icon>
+                </v-btn>
                 <v-btn color="primary" text @click="dialog = false">
                   돌아가기
                 </v-btn>
@@ -205,6 +216,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 const aptStore = "aptStore";
+const userStore = "userStore";
 
 export default {
   created() {
@@ -241,6 +253,7 @@ export default {
         CE7: "",
         CS2: "",
       },
+      isInterest: "",
     };
   },
   watch: {
@@ -268,6 +281,17 @@ export default {
     },
   },
   methods: {
+    registInterest() {
+      let interestdto = {
+        userid: this.userInfo.userid,
+        aptname: this.currentDialogItem.apartmentName,
+        aptcode: this.currentDialogItem.aptCode,
+        dongname: this.currentDialogItem.dongName,
+        lat: this.currentDialogItem.let,
+        lng: this.currentDialogItem.lng,
+      };
+      this.registAptInterest(interestdto);
+    },
     selectList() {
       let data = {
         sido: this.selectSido,
@@ -579,6 +603,7 @@ export default {
       "getGugunNames",
       "getDongNames",
       "getSearchList",
+      "registAptInterest",
     ]),
   },
   mounted() {
@@ -599,6 +624,7 @@ export default {
       "dongList",
       "aptSearchList",
     ]),
+    ...mapState(userStore, ["userInfo"]),
   },
 };
 </script>

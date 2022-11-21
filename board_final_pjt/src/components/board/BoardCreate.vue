@@ -57,16 +57,38 @@
             <br /><br />
           </tr>
           <tr>
-            <th class="text-left" colspan="1" style="padding-bottom: 40px">내용</th>
+            <th class="text-left" colspan="1" style="padding-bottom: 40px">
+              내용
+            </th>
             <td class="text-left" colspan="11">
-              <v-textarea outlined name="content" v-model="board.content"></v-textarea>
+              <v-textarea
+                outlined
+                name="content"
+                v-model="board.content"
+              ></v-textarea>
             </td>
           </tr>
 
           <tr>
             <th class="text-left" colspan="1">이미지 첨부</th>
-            <td class="text-left" colspan="11">
+            <td class="text-left" colspan="11" style="overflow: hidden">
+              <v-img
+                v-if="file && preview"
+                class="pa-12 d-inline-block"
+                :src="preview"
+                width="30"
+              />
               <v-file-input type="file" name="uploadFile" v-model="file" />
+            </td>
+          </tr>
+          <tr>
+            <th class="text-left" colspan="1">판매 여부</th>
+            <td class="text-left" colspan="11">
+              <v-radio-group v-model="board.soldout" row>
+                <v-radio label="판매 중" value="0"></v-radio>
+                <v-radio label="예약 완료" value="1"></v-radio>
+                <v-radio label="판매 완료" value="2"></v-radio>
+              </v-radio-group>
             </td>
           </tr>
         </template>
@@ -93,10 +115,12 @@ export default {
         title: "",
         writer: "",
         content: "",
-        category: "",
+        category: "전체",
+        soldout: "0",
       },
       file: [],
       show: true,
+      preview: "",
     };
   },
   created() {
@@ -111,6 +135,7 @@ export default {
       fd.append("writer", this.board.writer);
       fd.append("content", this.board.content);
       fd.append("category", this.board.category);
+      fd.append("soldout", this.board.soldout);
       // let request = {
       //   title: this.board.title,
       //   writer: this.board.writer,
@@ -125,10 +150,29 @@ export default {
     },
 
     onReset() {},
+    previewFile(file) {
+      const fileData = (data) => {
+        this.preview = data;
+      };
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.addEventListener(
+        "load",
+        function () {
+          fileData(reader.result);
+        },
+        false
+      );
+    },
     ...mapActions(boardStore, ["boardCreate"]),
   },
   computed: {
     ...mapState(userStore, ["userInfo"]),
+  },
+  watch: {
+    file() {
+      this.previewFile(this.file);
+    },
   },
 };
 </script>

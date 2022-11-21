@@ -124,14 +124,20 @@ public class BoardService {
 		return board;
 	}
 	
-	public boolean update(BoardDTO board) {
-		if(board == null || board.getTitle() == null || board.getTitle().length() == 0 || 
-				board.getWriter() == null || board.getWriter().length() == 0)
-			return false;
+	public Map<String, Object> update(BoardDTO board) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		
-		if(dao.update(board) == 1)
-			return true;
-		return false;
+		if(board == null || board.getTitle() == null || board.getTitle().length() == 0 || 
+				board.getWriter() == null || board.getWriter().length() == 0) {
+			result.put("msg", "fail");
+		}
+		
+		if(dao.update(board) == 1) {
+			result.put("msg", "success");
+			result.put("board", dao.selectOne(board.getBno()));
+		}
+		
+		return result;
 	}
 	
 	public boolean delete(int bno) {
@@ -214,6 +220,10 @@ public class BoardService {
 	
 	public FileDTO getFile(int fno) {
 		return fdao.selectOne(fno);
+	}
+	
+	public int modifyFile(FileDTO file) {
+		return fdao.update(file);
 	}
 	
 	public Map<String, Object> makeRead(int bno, String userid, String username) {

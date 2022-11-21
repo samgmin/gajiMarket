@@ -6,14 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.board.model.dao.AptMapper;
+import com.ssafy.board.model.dto.BoardDTO;
 import com.ssafy.board.model.dto.HousedealinfoDTO;
+import com.ssafy.board.model.dto.InterestareaDTO;
 
 @Service
 public class AptService {
 
-	@Autowired
-	private AptMapper aMapper;
-	
+    @Autowired
+    private AptMapper aMapper;
+    
     public List<String> getSidoNames(){
         return aMapper.selectSidoName();
     }
@@ -35,6 +37,30 @@ public class AptService {
         return aMapper.selectDongcode(dongName, sidoName);
     }
     public HousedealinfoDTO getdetail(int dno) {
-    	return aMapper.selectDealinfo(dno);
+        return aMapper.selectDealinfo(dno);
     }
+    
+    public boolean registinterest(InterestareaDTO idto) {
+        try {
+        if(aMapper.registinterest(idto) == 1)
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+    public List<InterestareaDTO> listinterest(String userid) {
+        return aMapper.listinterest(userid);
+    }
+    public boolean deleteinterest(String userid, String aptname) {
+        try {
+        if(aMapper.deleteinterest(userid,aptname) == 1)
+            return true;
+        }
+        catch (Exception e) {
+            return false;
+        }
+        return false;
+    }    
 }
