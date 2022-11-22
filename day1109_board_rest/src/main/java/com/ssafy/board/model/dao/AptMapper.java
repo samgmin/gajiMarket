@@ -20,5 +20,5 @@ public interface AptMapper {
     public int registinterest(InterestareaDTO idto);
     public List<InterestareaDTO> listinterest(String userid);
     public int deleteinterest(@Param("userid")String userid, @Param("aptname")String aptname);
-    
+    public List<HousedealinfoDTO> selectRecent();
 }

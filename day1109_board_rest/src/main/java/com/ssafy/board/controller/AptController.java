@@ -85,4 +85,9 @@ public class AptController {
         }
         return new ResponseEntity<Map<String, Object>>(result,HttpStatus.ACCEPTED);
     }
+    
+    @GetMapping("/recent")
+    public ResponseEntity<List<HousedealinfoDTO>> recentList(){
+        return new ResponseEntity<List<HousedealinfoDTO>>(aService.getRecentList(),HttpStatus.ACCEPTED);
+    }
 }

@@ -7,6 +7,7 @@ const aptStore = {
     dongList: [],
     aptSearchList: [],
     aptInterestList: [],
+    aptRecentList: [],
   },
   getters: {},
   mutations: {
@@ -24,6 +25,9 @@ const aptStore = {
     },
     APT_INTEREST_LIST(state, payload) {
       state.aptInterestList = payload.interestList;
+    },
+    APT_GET_RECENT_LIST(state, payload) {
+      state.aptRecentList = payload;
     },
   },
   actions: {
@@ -85,6 +89,12 @@ const aptStore = {
         if (data.msg === "관심지역 해제 성공") {
           commit("APT_INTEREST_LIST", data);
         }
+      });
+    },
+    aptGetRecentList({ commit }) {
+      http.get("/apt/recent").then(({ data }) => {
+        console.log(data);
+        commit("APT_GET_RECENT_LIST", data);
       });
     },
   },

@@ -27,7 +27,7 @@
       </v-list>
     </v-menu>
 
-    <v-app-bar-title>뿡가지마켓!</v-app-bar-title>
+    <v-app-bar-title>뿅가지마켓!</v-app-bar-title>
 
     <v-spacer></v-spacer>
 

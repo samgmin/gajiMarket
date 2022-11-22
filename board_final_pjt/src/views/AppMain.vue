@@ -157,28 +157,86 @@
           ----------------------------------------------- -->
           <v-row justify="center">
             <v-col cols="12" md="7" lg="6" class="d-flex align-center">
-              <v-card class="mx-auto my-12" max-width="374">
-                <v-card-title>Profile</v-card-title>
-
-                <v-img
-                  height="250"
-                  :src="require(`@/assets/memberImg/${myImg}`)"
-                ></v-img>
-
-                <v-card-text>
+              <!-- 프로필 -->
+              <v-card class="mx-auto my-12" min-width="325" min-height="575">
+                <v-card-title style="margin-bottom: -15px"
+                  >Profile</v-card-title
+                >
+                <v-divider class="mx-4"></v-divider>
+                <div style="text-align: center">
+                  <v-img
+                    v-if="userInfo"
+                    width="200"
+                    class="pa-12 primary rounded-circle d-inline-block"
+                    :src="require(`@/assets/memberImg/${myImg}`)"
+                  ></v-img>
+                  <v-img
+                    v-if="userInfo == null"
+                    width="200"
+                    class="pa-12 primary rounded-circle d-inline-block"
+                    :src="require(`@/assets/mimoticon.gif`)"
+                  ></v-img>
+                </div>
+                <v-divider class="mx-4"></v-divider>
+                <v-card-text v-if="userInfo">
                   <div class="my-4">{{ userInfo.username }}님 안녕하세요.</div>
                   <div class="my-4">{{ userInfo.age }}살로 보이시네요.</div>
                   <div class="my-4">{{ userInfo.gender }} 맞으세요?</div>
-                  <div class="my-4">{{ userInfo.celebrity }} 닮았어요!</div>
+                  <div class="my-4">{{ userInfo.celebrity }} 닮았어요 !</div>
                 </v-card-text>
+                <v-card-text v-if="userInfo == null"> </v-card-text>
 
+                <v-divider class="mx-4"></v-divider>
+
+                <v-btn
+                  v-if="userInfo"
+                  color="deep-purple lighten-2"
+                  text
+                  :to="{ name: 'usermypage' }"
+                >
+                  MYPAGE
+                </v-btn>
+                <v-btn
+                  v-if="userInfo == null"
+                  color="deep-purple lighten-2"
+                  text
+                  :to="{ name: 'usersignup' }"
+                >
+                  SIGNUP
+                </v-btn>
+              </v-card>
+
+              <!-- 게시판 -->
+              <v-card class="mx-auto my-12" min-width="300" min-height="500">
+                <v-card-title style="margin-bottom: -15px">Notice</v-card-title>
+                <v-divider class="mx-4"></v-divider>
+                <v-card-text>
+                  <v-simple-table>
+                    <thead>
+                      <tr>
+                        <th>No.</th>
+                        <th>제목</th>
+                        <th>작성일</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr v-for="(admin, index) in adminList" :key="index">
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ admin.title }}</td>
+                        <td>
+                          {{
+                            admin.writeDate.split(" ")[0].replaceAll("-", ".")
+                          }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </v-simple-table>
+                </v-card-text>
                 <v-divider class="mx-4"></v-divider>
 
                 <v-btn color="deep-purple lighten-2" text> Reserve </v-btn>
               </v-card>
-            </v-col>
-            <v-col cols="12" md="5" lg="5">
-              <v-img :src="require('@/assets/shop.png')" alt="banner" />
             </v-col>
           </v-row>
 
@@ -196,17 +254,24 @@ import { mapState, mapActions } from "vuex";
 
 const userStore = "userStore";
 const boardStore = "boardStore";
+const aptStore = "aptStore";
 
 export default {
+  data() {
+    return {};
+  },
   created() {
     this.boardGetAdminList();
+    this.aptGetRecentList();
   },
   methods: {
     ...mapActions(boardStore, ["boardGetAdminList"]),
+    ...mapActions(aptStore, ["aptGetRecentList"]),
   },
   computed: {
     ...mapState(userStore, ["userInfo", "myImg"]),
     ...mapState(boardStore, ["adminList"]),
+    ...mapState(aptStore, ["aptRecentList"]),
   },
 };
 

@@ -58,4 +58,10 @@
         delete from interestapt
         where userid = #{userid} and aptname = #{aptname}
     </delete>
+    
+    <select id="selectRecent" resultType="com.ssafy.board.model.dto.HousedealinfoDTO">
+        select * from housedeal
+        order by  dealYear desc, dealmonth desc, dealday desc
+        limit 5
+    </select>
 </mapper>

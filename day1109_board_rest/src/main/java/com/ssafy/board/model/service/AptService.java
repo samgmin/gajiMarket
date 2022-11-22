@@ -62,5 +62,9 @@ public class AptService {
             return false;
         }
         return false;
-    }    
+    }
+    
+    public List<HousedealinfoDTO> getRecentList() {
+        return aMapper.selectRecent();
+    }
 }
