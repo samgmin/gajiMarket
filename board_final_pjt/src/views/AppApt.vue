@@ -3,12 +3,6 @@
     class="bv-example-row mt-3 text-center"
     style="width: 1200px; margin-bottom: 150px"
   >
-    <h3
-      class="underline-hotpink"
-      style="margin-top: 100px; margin-bottom: 50px"
-    >
-      <b-icon icon="journals"></b-icon> 집가지마켓
-    </h3>
     <router-view></router-view>
   </v-container>
 </template>

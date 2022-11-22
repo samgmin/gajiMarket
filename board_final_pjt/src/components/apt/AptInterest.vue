@@ -1,47 +1,62 @@
 <template>
   <div>
-    <h3>관심지역~</h3>
-    <v-sheet
-      class="mx-auto"
-      max-width="1500"
-      elevation="8"
-      v-if="aptInterestList.length"
+    <h3
+      class="underline-hotpink"
+      style="margin-top: 100px; margin-bottom: 50px"
     >
-      <v-slide-group multiple show-arrows class="pa-4">
-        <v-slide-item v-for="(interest, index) in aptInterestList" :key="index">
-          <v-card class="ma-4" max-width="374" v-if="aptInterestList.length">
-            <v-img
-              height="250"
-              :src="'https://loremflickr.com/320/240/apartment'"
-            ></v-img>
+      <b-icon icon="journals"></b-icon>
+      <!-- <v-img src="@/assets/eggplant-logo.png" width="40px"></v-img> -->
+      북마크
+    </h3>
+    <div style="margin-bottom: 80px">
+      <v-sheet
+        class="mx-auto"
+        max-width="auto"
+        elevation="8"
+        v-if="aptInterestList.length"
+      >
+        <v-slide-group multiple show-arrows class="pa-4">
+          <v-slide-item
+            v-for="(interest, index) in aptInterestList"
+            :key="index"
+          >
+            <v-card class="ma-4" max-width="374" v-if="aptInterestList.length">
+              <v-img
+                height="250"
+                :src="'https://loremflickr.com/320/240/apartment'"
+              ></v-img>
 
-            <v-card-title>{{ interest.aptname }}</v-card-title>
+              <v-card-title>{{ interest.aptname }}</v-card-title>
 
-            <v-card-text>
-              <div class="my-4 text-subtitle-1">
-                {{ interest.dongname }}<br />
-                법정코드 : {{ interest.aptcode }} <br />
-              </div>
-            </v-card-text>
-            <v-btn color="deep-purple lighten-2" text
-              ><a
-                :href="`https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=${interest.dongname}${interest.aptname}`"
-                target="”_blank”"
-              >
-                네이버검색
-              </a>
-            </v-btn>
-
-            <v-btn
-              color="deep-purple lighten-2"
-              @click="deleteInterest(interest.aptname)"
-              text
-              >관심지역 해제</v-btn
-            >
-          </v-card>
-        </v-slide-item>
-      </v-slide-group>
-    </v-sheet>
+              <v-card-text>
+                <div class="my-4 text-subtitle-1 text-start">
+                  {{ interest.dongname }}<br />
+                  법정코드 : {{ interest.aptcode }} <br />
+                </div>
+              </v-card-text>
+              <v-col class="d-flex justify-end">
+                <v-btn color="deep-purple" x-small dark
+                  ><a
+                    :href="`https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=${interest.dongname}${interest.aptname}`"
+                    target="”_blank”"
+                  >
+                    네이버 검색
+                  </a>
+                </v-btn>
+                &nbsp;&nbsp;
+                <v-btn
+                  color="deep-purple"
+                  x-small
+                  dark
+                  @click="deleteInterest(interest.aptname)"
+                  >북마크 해제</v-btn
+                >
+              </v-col>
+            </v-card>
+          </v-slide-item>
+        </v-slide-group>
+      </v-sheet>
+    </div>
   </div>
 </template>
 
@@ -77,4 +92,16 @@ export default {
 </script>
 
 <style>
+a:link {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+a:visited {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+a:hover {
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
 </style>

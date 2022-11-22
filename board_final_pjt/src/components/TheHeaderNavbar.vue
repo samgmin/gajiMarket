@@ -14,7 +14,6 @@
         </v-btn>
       </template>
 
-      <!-- 로그인 되었을 때 -->
       <v-list>
         <v-list-item to="/">
           <v-list-item-title>메인</v-list-item-title>
@@ -27,6 +26,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
+
     <v-app-bar-title>뿡가지마켓!</v-app-bar-title>
 
     <v-spacer></v-spacer>

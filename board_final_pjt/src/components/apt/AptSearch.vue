@@ -1,5 +1,11 @@
 <template>
   <div>
+    <h3
+      class="underline-hotpink"
+      style="margin-top: 100px; margin-bottom: 50px"
+    >
+      <b-icon icon="journals"></b-icon> 집가지마켓
+    </h3>
     <v-container fluid>
       <v-row align="center">
         <v-col class="d-flex">
@@ -190,10 +196,10 @@
               </div>
             </v-col>
             <v-col>
-              <v-btn color="indigo" x-small dark @click="showLoadmap">
+              <v-btn color="deep-purple" x-small dark @click="showLoadmap">
                 로드뷰 </v-btn
               >&nbsp;&nbsp;
-              <v-btn color="indigo" x-small dark @click="showSangmap">
+              <v-btn color="deep-purple" x-small dark @click="showSangmap">
                 상권
               </v-btn>
               <div
