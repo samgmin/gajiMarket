@@ -1,8 +1,15 @@
 <template>
   <div>
-    <h3 class="underline-hotpink"><b-icon icon="journals"></b-icon>로그인</h3>
+    <h3
+      class="underline-hotpink"
+      style="margin-top: 100px; margin-bottom: 50px"
+    >
+      <b-icon icon="journals"></b-icon>
+      <!-- <v-img src="@/assets/eggplant-logo.png" width="40px"></v-img> -->
+      로그인
+    </h3>
 
-    <div style="width: 500px; margin: 0 auto">
+    <div style="width: 500px; margin: 0 auto; margin-bottom: 330px">
       <v-simple-table>
         <thead>
           <tr>
@@ -26,7 +33,7 @@
           </tr>
         </thead>
       </v-simple-table>
-      <v-simple-table>
+      <v-simple-table style="margin-bottom: 20px">
         <thead>
           <tr>
             <th class="text-left">비밀번호</th>
@@ -45,8 +52,8 @@
           </tr>
         </thead>
       </v-simple-table>
-      <v-btn @click="confirm">로그인</v-btn>
-      <v-btn :to="{ name: 'usersignup' }">회원가입</v-btn>
+      <v-btn @click="confirm" width="85px">로그인</v-btn>&nbsp;&nbsp;
+      <v-btn :to="{ name: 'usersignup' }" width="85px">회원가입</v-btn>
     </div>
   </div>
 </template>
@@ -90,4 +97,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.underline-hotpink {
+  display: inline-block;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(128, 30, 255, 0.3) 30%
+  );
+}
+</style>

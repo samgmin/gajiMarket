@@ -1,7 +1,12 @@
 <template>
   <div style="width: 800px; margin: 0 auto">
-    <h3 class="underline-hotpink">
-      <b-icon icon="journals"></b-icon>마이페이지
+    <h3
+      class="underline-hotpink"
+      style="margin-top: 100px; margin-bottom: 50px"
+    >
+      <b-icon icon="journals"></b-icon>
+      <!-- <v-img src="@/assets/eggplant-logo.png" width="40px"></v-img> -->
+      마이페이지
     </h3>
     <v-form id="sendForm" ref="sendFrom" enctype="multipart/form-data">
       <v-simple-table v-if="show && myInfo && myImg">
@@ -179,7 +184,7 @@
         </template>
       </v-simple-table>
     </v-form>
-
+    <br />
     <v-row align="center" justify="end">
       <v-col class="d-flex justify-end" cols="12" sm="1">
         <v-btn variant="outline-primary" v-if="flag" @click="flag = !flag"

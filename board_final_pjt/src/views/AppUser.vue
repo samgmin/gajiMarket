@@ -1,7 +1,10 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center">
+  <v-container
+    class="bv-example-row mt-3 text-center"
+    style="width: 1200px; margin-bottom: 150px"
+  >
     <router-view></router-view>
-  </b-container>
+  </v-container>
 </template>
 <script>
 export default {

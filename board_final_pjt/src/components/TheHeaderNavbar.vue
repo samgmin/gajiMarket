@@ -10,7 +10,7 @@
     <v-menu bottom left offset-y open-on-hover>
       <template v-slot:activator="{ on, attrs }">
         <v-btn icon color="white" v-bind="attrs" v-on="on">
-          <v-img icon src="@/assets/icon.png" max-width="30px"></v-img>
+          <v-app-bar-nav-icon></v-app-bar-nav-icon>
         </v-btn>
       </template>
 
@@ -27,8 +27,7 @@
         </v-list-item>
       </v-list>
     </v-menu>
-    &nbsp;&nbsp;
-    <v-app-bar-title>가지마켓</v-app-bar-title>
+    <v-app-bar-title>뿡가지마켓!</v-app-bar-title>
 
     <v-spacer></v-spacer>
 
