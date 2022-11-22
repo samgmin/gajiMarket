@@ -3,7 +3,9 @@
     <v-card class="overflow-hidden">
       <the-header-navbar style="position: fixed" />
       <v-sheet id="scrolling-techniques-2" class="overflow-y-auto;">
-        <v-container-fluid style="padding-top: 100px; padding-bottom: 100px; overflow-hidden">
+        <v-container-fluid
+          style="padding-top: 100px; padding-bottom: 100px; overflow-hidden"
+        >
           <router-view />
         </v-container-fluid>
       </v-sheet>
@@ -23,24 +25,9 @@ export default {
 </script>
 
 <style>
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+h3 {
+  font-family: "dohyeon";
+  font-size: 30px;
+  color: rgb(64, 0, 124);
 }
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-} */
 </style>

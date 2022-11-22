@@ -5,6 +5,7 @@ const boardStore = {
   namespaced: true,
   state: {
     boardList: [],
+    adminList: [],
     startPage: "",
     currPage: "",
     totalPage: "",
@@ -24,6 +25,9 @@ const boardStore = {
       state.currPage = payload.currPage;
       state.totalPage = payload.totalPage;
       state.endPage = payload.endPage;
+    },
+    BOARD_GET_ADMIN_LIST(state, payload) {
+      state.adminList = payload.adminList;
     },
     BOARD_GET_ONE(state, payload) {
       state.board = payload.board;
@@ -59,6 +63,12 @@ const boardStore = {
         console.log("data : ", data);
         console.log("commit : ", commit);
         commit("BOARD_GET_LIST", data);
+      });
+    },
+    boardGetAdminList({ commit }) {
+      http.get("/board/adminlist").then(({ data }) => {
+        console.log(data);
+        commit("BOARD_GET_ADMIN_LIST", data);
       });
     },
     boardGetOne({ commit }, payload) {

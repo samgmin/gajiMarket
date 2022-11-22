@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h3>아파트 매물 검색</h3>
     <v-container fluid>
       <v-row align="center">
         <v-col class="d-flex">
@@ -8,6 +7,7 @@
             :items="sidoList"
             label="시도 선택"
             v-model="selectSido"
+            dense
             solo
           ></v-select>
         </v-col>
@@ -54,8 +54,7 @@
     <div v-if="aptSearchList.length">
       <v-row>
         <v-col>
-          <h3>검색결과</h3>
-          <div style="overflow-y: scroll; height: 500px">
+          <div style="overflow-y: scroll; height: 500px; margin-top: 10px">
             <v-simple-table>
               <template v-slot:default>
                 <thead>
@@ -84,10 +83,10 @@
             </v-simple-table>
           </div>
         </v-col>
-        <v-col>
+        <v-col class="d-flex justify-end">
           <div
             id="map"
-            style="width: 500px; height: 500px; margin-top: 47px"
+            style="width: 575px; height: 500px; margin-top: 10px"
           ></div>
         </v-col>
       </v-row>
@@ -95,65 +94,107 @@
     <!--ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 상세보기 dialog ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
     <div class="text-center">
       <v-dialog v-model="dialog" width="1000px" height="1000px">
-        <v-card>
-          <v-card-title class="text-h5 grey lighten-2">
-            아파트 거래내역 상세보기
+        <v-card style="overflow-x: hidden">
+          <v-card-title class="text-h5">
+            <b style="padding-top: 20px; padding-left: 10px">{{
+              currentDialogItem.apartmentName
+            }}</b
+            >&nbsp;&nbsp;
+            <v-btn
+              v-if="isInterest"
+              icon
+              small
+              @click="registInterest"
+              style="padding-top: 15px"
+            >
+              <v-img
+                icon
+                max-width="30px"
+                src="@/assets/icons/star-full.png"
+              ></v-img>
+            </v-btn>
+            <v-btn
+              v-if="!isInterest"
+              icon
+              small
+              @click="registInterest"
+              style="padding-top: 15px"
+            >
+              <v-img
+                icon
+                max-width="30px"
+                src="@/assets/icons/star-empty.png"
+              ></v-img>
+            </v-btn>
           </v-card-title>
           <v-row>
-            <v-col style="margin-top: 50px">
-              <v-simple-table>
+            <v-col style="padding-top: 70px; padding-left: 50px">
+              <v-simple-table id="aptDetail">
                 <template v-slot:default>
                   <tr>
                     <th class="text-center">아파트이름</th>
-                    <td>{{ currentDialogItem.apartmentName }}</td>
+                    <td class="text-center">
+                      {{ currentDialogItem.apartmentName }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-center"><hr /></th>
+                    <td><hr /></td>
                   </tr>
                   <tr>
                     <th class="text-center">동이름</th>
-                    <td>{{ currentDialogItem.dongName }}</td>
+                    <td class="text-center">
+                      {{ currentDialogItem.dongName }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-center"><hr /></th>
+                    <td><hr /></td>
                   </tr>
                   <tr>
                     <th class="text-center">거래가격</th>
-
-                    <td>{{ currentDialogItem.dealAmount }}</td>
+                    <td class="text-center">
+                      {{ currentDialogItem.dealAmount }}만원
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="text-center"><hr /></th>
+                    <td><hr /></td>
                   </tr>
                   <tr>
                     <th class="text-center">거래년월</th>
-                    <td>
+                    <td class="text-center">
                       {{ currentDialogItem.dealYear }}/{{
                         currentDialogItem.dealMonth
                       }}
                     </td>
                   </tr>
                   <tr>
+                    <th class="text-center"><hr /></th>
+                    <td><hr /></td>
+                  </tr>
+                  <tr>
                     <th class="text-center">층</th>
-                    <td>{{ currentDialogItem.floor }}</td>
+                    <td class="text-center">{{ currentDialogItem.floor }}</td>
                   </tr>
                 </template>
               </v-simple-table>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  v-if="isInterest"
-                  icon
-                  color="blue lighten-2"
-                  @click="registInterest"
-                >
-                  <v-icon>mdi-thumb-up</v-icon>
+              <div style="padding-top: 225px">
+                <v-btn color="primary" icon small @click="dialog = false">
+                  <v-img
+                    icon
+                    max-width="30px"
+                    src="@/assets/icons/exit.png"
+                  ></v-img>
                 </v-btn>
-                <v-btn v-if="!isInterest" icon @click="registInterest">
-                  <v-icon>mdi-thumb-up</v-icon>
-                </v-btn>
-                <v-btn color="primary" text @click="dialog = false">
-                  돌아가기
-                </v-btn>
-              </v-card-actions>
+              </div>
             </v-col>
             <v-col>
-              <v-btn color="primary" text @click="showLoadmap">
-                로드뷰 보기
-              </v-btn>
-              <v-btn color="primary" text @click="showSangmap">
-                주변 상권정보 보기
+              <v-btn color="indigo" x-small dark @click="showLoadmap">
+                로드뷰 </v-btn
+              >&nbsp;&nbsp;
+              <v-btn color="indigo" x-small dark @click="showSangmap">
+                상권
               </v-btn>
               <div
                 v-show="mapswitch"
@@ -161,8 +202,9 @@
                 style="
                   width: 500px;
                   height: 500px;
-                  margin-top: 20px;
-                  margin-right: 47px;
+                  margin-top: 10px;
+                  margin-right: 40px;
+                  margin-bottom: 20px;
                 "
               ></div>
 
@@ -172,8 +214,9 @@
                   style="
                     width: 500px;
                     height: 500px;
-                    margin-top: 20px;
-                    margin-right: 47px;
+                    margin-top: 10px;
+                    margin-right: 40px;
+                    margin-bottom: 20px;
                   "
                 ></div>
                 <ul id="category">
@@ -634,13 +677,11 @@ export default {
 .map_wrap * {
   margin: 0;
   padding: 0;
-  font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
   font-size: 12px;
 }
 .map_wrap {
   position: relative;
   width: 100%;
-  height: 350px;
 }
 #category {
   position: absolute;
@@ -771,4 +812,7 @@ export default {
   font-size: 11px;
   margin-top: 0;
 }
+/* .v-application .text-left {
+  background-color: rgb(253, 253, 255);
+} */
 </style>

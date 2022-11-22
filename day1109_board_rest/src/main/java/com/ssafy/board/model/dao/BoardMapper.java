@@ -25,4 +25,5 @@ public interface BoardMapper {
     public int deleteRecommend(String userid, int bno);
     public int update(BoardDTO board);
     public int delete(int bno);
+    public List<BoardDTO> getAdminList();
 }

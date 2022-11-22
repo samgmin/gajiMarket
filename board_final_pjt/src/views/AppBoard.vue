@@ -1,8 +1,16 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center">
-    <h3 class="underline-hotpink"><b-icon icon="journals"></b-icon> 게시판</h3>
+  <v-container
+    class="bv-example-row mt-3 text-center"
+    style="width: 1200px; margin-bottom: 100px"
+  >
+    <h3
+      class="underline-hotpink"
+      style="margin-top: 100px; margin-bottom: 50px"
+    >
+      <b-icon icon="journals"></b-icon> 바가지마켓
+    </h3>
     <router-view></router-view>
-  </b-container>
+  </v-container>
 </template>
 <script>
 export default {
@@ -15,7 +23,7 @@ export default {
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 70%,
-    rgba(231, 27, 139, 0.3) 30%
+    rgba(128, 30, 255, 0.3) 30%
   );
 }
 </style>

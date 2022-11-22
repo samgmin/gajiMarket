@@ -46,6 +46,11 @@ public class BoardRestController {
 		return new ResponseEntity<Map<String, Object>>(bservice.makePage(boardParameterDto), HttpStatus.ACCEPTED);
 	}
 	
+	@GetMapping("/adminlist")
+    public ResponseEntity<Map<String, Object>> adminlist() {
+        return new ResponseEntity<Map<String, Object>>(bservice.getadminlist(), HttpStatus.ACCEPTED);
+    }
+	
 	@PostMapping
 	public ResponseEntity<String> write(BoardDTO board, MultipartFile[] uploadFile) throws IllegalStateException, IOException {
 //	public ResponseEntity<String> write(@RequestBody BoardDTO board) throws IllegalStateException, IOException {

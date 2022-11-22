@@ -3,8 +3,8 @@
     <v-simple-table v-if="show && board">
       <template v-slot:default>
         <tr>
-          <th colspan="1">분류</th>
-          <td colspan="1">
+          <th class="text-left" colspan="1">분류</th>
+          <td class="text-left" colspan="1">
             <v-select
               style="max-width: 100px; padding-top: 25px"
               v-model="board.category"
@@ -15,18 +15,18 @@
             >
             </v-select>
           </td>
-          <th colspan="1">작성자</th>
+          <!-- <th colspan="1">작성자</th>
           <td colspan="9">
             <v-text-field
               v-model="board.writer"
               label="작성자를 입력하세요."
               required
             ></v-text-field>
-          </td>
+          </td> -->
         </tr>
         <tr>
-          <th colspan="1">제목</th>
-          <td colspan="11">
+          <th class="text-left" colspan="1">제목</th>
+          <td class="text-left" colspan="11">
             <v-text-field
               v-model="board.title"
               label="제목을 입력하세요."
@@ -38,8 +38,10 @@
           <br /><br />
         </tr>
         <tr>
-          <th colspan="1" style="padding-bottom: 40px">내용</th>
-          <td colspan="11">
+          <th class="text-left" colspan="1" style="padding-bottom: 40px">
+            내용
+          </th>
+          <td class="text-left" colspan="11">
             <v-textarea
               outlined
               name="input-7-4"

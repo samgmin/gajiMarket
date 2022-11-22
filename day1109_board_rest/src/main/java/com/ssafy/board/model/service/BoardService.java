@@ -245,4 +245,12 @@ public class BoardService {
 		System.out.println(result);
 		return result;
 	}
+	
+	public Map<String, Object> getadminlist() {
+        Map<String, Object> result = new HashMap<String, Object>();
+        List<BoardDTO> adminList = dao.getAdminList();
+        System.out.println(adminList);
+        result.put("adminList", adminList);
+        return result;
+    }
 }

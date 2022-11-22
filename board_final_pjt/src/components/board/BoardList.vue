@@ -3,8 +3,9 @@
     <div>
       <!-- 조건 -->
       <v-row align="center" justify="space-between">
-        <v-col class="d-flex" cols="2" sm="2">
+        <v-col class="d-flex justify-start">
           <v-select
+            style="max-width: 120px"
             v-model="sort"
             :items="[
               { name: '최신순', value: 'BNO' },
@@ -20,9 +21,9 @@
             <!-- <option value="bno">최신순</option>
             <option value="readCount">조회수</option> -->
           </v-select>
-        </v-col>
-        <v-col class="d-flex" cols="2" sm="2">
+          &nbsp;&nbsp;&nbsp;
           <v-select
+            style="max-width: 120px"
             v-model="category"
             :items="[
               { name: '전체', value: '' },
@@ -39,11 +40,9 @@
           </v-select>
         </v-col>
 
-        <v-col class="d-flex" cols="2" sm="2"></v-col>
-        <!-- <v-col class="d-flex" cols="2" sm="2"></v-col> -->
-
-        <v-col class="d-flex" cols="2" sm="2">
+        <v-col class="d-flex justify-end">
           <v-select
+            style="max-width: 120px"
             v-model="key"
             :items="[
               { name: '제목', value: 'title' },
@@ -55,11 +54,8 @@
             dense
             solo
           >
-            <!-- <option value="title">제목</option>
-            <option value="writer">작성자</option> -->
           </v-select>
-        </v-col>
-        <v-col class="d-flex" cols="4" sm="4">
+          &nbsp;&nbsp;&nbsp;
           <v-text-field
             type="text"
             id="word"
@@ -67,15 +63,15 @@
             v-model="word"
             ref="word"
             label="검색어"
+            style="max-width: 120px; margin-top: -10px"
           ></v-text-field>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
           <v-btn variant="outline-primary" @click="selectList">검색</v-btn>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;
           <v-btn tile color="success" to="/board/create">
             <v-icon left> mdi-pencil </v-icon>
             작성
           </v-btn>
-          <!-- <v-btn variant="outline-primary" to="/board/create">작성</v-btn> -->
         </v-col>
       </v-row>
     </div>
@@ -226,5 +222,8 @@ export default {
 <style>
 tbody tr :hover {
   cursor: pointer;
+}
+v-select {
+  max-width: 10px;
 }
 </style>
