@@ -60,8 +60,12 @@
     </delete>
     
     <select id="selectRecent" resultType="com.ssafy.board.model.dto.HousedealinfoDTO">
-        select * from housedeal
-        order by  dealYear desc, dealmonth desc, dealday desc
+        select
+        hd.no as dno, hi.aptName as apartmentName,hd.floor,hd.area,hd.dealamount,hi.lat as let,hi.lng,
+        hd.aptcode, hi.dongName, hd.dealYear, hd.dealMonth
+        from housedeal hd, houseinfo hi
+        where hd.aptCode = hi.aptcode
+        order by  hd.dealYear desc, hd.dealmonth desc, hd.dealday desc
         limit 5
     </select>
 </mapper>

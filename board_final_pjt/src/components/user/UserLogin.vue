@@ -87,7 +87,7 @@ export default {
         console.log("if문 안에");
         await this.getUserInfo(token);
         console.log("4. confirm() userInfo :: ", this.userInfo);
-        this.$router.push({ name: "main" });
+        this.$router.push({ name: "usermypage" });
       }
     },
     movePage() {

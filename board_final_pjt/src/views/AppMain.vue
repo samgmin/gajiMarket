@@ -180,11 +180,16 @@
                 <v-divider class="mx-4"></v-divider>
                 <v-card-text v-if="userInfo">
                   <div class="my-4">{{ userInfo.username }}님 안녕하세요.</div>
-                  <div class="my-4">{{ userInfo.age }}살로 보이시네요.</div>
-                  <div class="my-4">{{ userInfo.gender }} 맞으세요?</div>
-                  <div class="my-4">{{ userInfo.celebrity }} 닮았어요 !</div>
+                  <div class="my-4">{{ age }}살로 보이시네요.</div>
+                  <div class="my-4" v-if="gender == 'female'">
+                    여성 맞으세요?
+                  </div>
+                  <div class="my-4" v-if="gender == 'male'">남성 맞으세요?</div>
+                  <div class="my-4">{{ celebrity }} 닮았어요 !</div>
                 </v-card-text>
-                <v-card-text v-if="userInfo == null"> </v-card-text>
+                <v-card-text v-if="userInfo == null">
+                  프로필을 등록해보세요!
+                </v-card-text>
 
                 <v-divider class="mx-4"></v-divider>
 
@@ -219,9 +224,12 @@
                         <th>작성일</th>
                       </tr>
                     </thead>
-
                     <tbody>
-                      <tr v-for="(admin, index) in adminList" :key="index">
+                      <tr
+                        v-for="(admin, index) in adminList"
+                        :key="index"
+                        @click="titleClick(admin.bno)"
+                      >
                         <td>{{ index + 1 }}</td>
                         <td>{{ admin.title }}</td>
                         <td>
@@ -234,8 +242,34 @@
                   </v-simple-table>
                 </v-card-text>
                 <v-divider class="mx-4"></v-divider>
-
-                <v-btn color="deep-purple lighten-2" text> Reserve </v-btn>
+              </v-card>
+              <!-- 최근거래 -->
+              <v-card class="mx-auto my-12" min-width="300" min-height="500">
+                <v-card-title style="margin-bottom: -15px"
+                  >최근 아파트 거래정보</v-card-title
+                >
+                <v-divider class="mx-4"></v-divider>
+                <v-card-text>
+                  <v-simple-table>
+                    <thead>
+                      <tr>
+                        <th>아파트</th>
+                        <th>동</th>
+                        <th>날짜</th>
+                        <th>거래가</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(apt, index) in aptRecentList" :key="index">
+                        <td>{{ apt.apartmentName }}</td>
+                        <td>{{ apt.dongName }}</td>
+                        <td>{{ apt.dealYear }}.{{ apt.dealMonth }}</td>
+                        <td>{{ apt.dealAmount }}</td>
+                      </tr>
+                    </tbody>
+                  </v-simple-table>
+                </v-card-text>
+                <v-divider class="mx-4"></v-divider>
               </v-card>
             </v-col>
           </v-row>
@@ -265,11 +299,21 @@ export default {
     this.aptGetRecentList();
   },
   methods: {
+    titleClick(bno) {
+      this.$router.push({ name: "boardread", query: { bno } });
+    },
     ...mapActions(boardStore, ["boardGetAdminList"]),
     ...mapActions(aptStore, ["aptGetRecentList"]),
   },
   computed: {
-    ...mapState(userStore, ["userInfo", "myImg"]),
+    ...mapState(userStore, [
+      "userInfo",
+      "myImg",
+      "myInfo",
+      "celebrity",
+      "age",
+      "gender",
+    ]),
     ...mapState(boardStore, ["adminList"]),
     ...mapState(aptStore, ["aptRecentList"]),
   },

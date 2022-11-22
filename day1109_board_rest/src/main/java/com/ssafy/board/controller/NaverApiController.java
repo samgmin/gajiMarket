@@ -31,7 +31,7 @@ public class NaverApiController {
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> CFR(MultipartFile loadFile) throws IllegalStateException, IOException {
 		System.out.println("아앜ㅋㅋ");
-		System.out.println(loadFile.getOriginalFilename());
+		System.out.println(loadFile.toString());
 		JSONParser jsonParser = new JSONParser();
 
 		Map<String, Object> result = new HashMap<String, Object>();
