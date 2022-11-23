@@ -67,4 +67,8 @@ public class AptService {
     public List<HousedealinfoDTO> getRecentList() {
         return aMapper.selectRecent();
     }
+    
+    public int getInterestCount(String userid, String aptname) {
+    	return aMapper.selectInterestCount(userid, aptname);
+    }
 }

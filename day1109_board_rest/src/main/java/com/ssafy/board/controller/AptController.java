@@ -71,6 +71,18 @@ public class AptController {
 
         return new ResponseEntity<Map<String, Object>>(result,HttpStatus.ACCEPTED);
     }
+    
+    @GetMapping("/isinterest")
+    public ResponseEntity<?> interestCount(String userid, String aptname) {
+    	if(aService.getInterestCount(userid, aptname) != 0) {
+    		System.out.println("관심 지역 등록되어있음 OOOOOOOOO " + true);
+    		return new ResponseEntity<Boolean>(true, HttpStatus.ACCEPTED);
+    	} else {
+    		System.out.println("관심 지역 등록 안되어있음 XXXXXXXXX " + false);
+    		return new ResponseEntity<Boolean>(false, HttpStatus.ACCEPTED);
+    	}
+    }
+    
     @DeleteMapping
     public ResponseEntity<Map<String, Object>> deleteinterest(String userid, String aptname){
         System.out.println(userid + " "+ aptname);

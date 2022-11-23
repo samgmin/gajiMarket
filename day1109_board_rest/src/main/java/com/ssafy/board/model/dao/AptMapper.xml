@@ -59,6 +59,12 @@
         where userid = #{userid} and aptname = #{aptname}
     </delete>
     
+    <select id="selectInterestCount" resultType="int">
+    	select count(*)
+    	from interestapt
+    	where userid = #{userid} and aptname = #{aptname}
+    </select>
+    
     <select id="selectRecent" resultType="com.ssafy.board.model.dto.HousedealinfoDTO">
         select
         hd.no as dno, hi.aptName as apartmentName,hd.floor,hd.area,hd.dealamount,hi.lat as let,hi.lng,

@@ -8,6 +8,7 @@ const aptStore = {
     aptSearchList: [],
     aptInterestList: [],
     aptRecentList: [],
+    isInterest: "",
   },
   getters: {},
   mutations: {
@@ -28,6 +29,12 @@ const aptStore = {
     },
     APT_GET_RECENT_LIST(state, payload) {
       state.aptRecentList = payload;
+    },
+    GET_IS_INTEREST(state, payload) {
+      state.isInterest = payload;
+    },
+    IS_INTEREST_REFRESH(state) {
+      state.isInterest = null;
     },
   },
   actions: {
@@ -95,6 +102,13 @@ const aptStore = {
       http.get("/apt/recent").then(({ data }) => {
         console.log(data);
         commit("APT_GET_RECENT_LIST", data);
+      });
+    },
+    aptInterestCount({ commit }, payload) {
+      console.log(commit);
+      commit("IS_INTEREST_REFRESH");
+      http.get("/apt/isinterest?userid=" + payload.userid + "&aptname=" + payload.aptname).then(({ data }) => {
+        commit("GET_IS_INTEREST", data);
       });
     },
   },

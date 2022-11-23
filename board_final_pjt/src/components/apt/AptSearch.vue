@@ -107,7 +107,7 @@
             }}</b
             >&nbsp;&nbsp;
             <v-btn
-              v-if="isInterest"
+              v-if="interestMark"
               icon
               small
               @click="registInterest"
@@ -120,7 +120,7 @@
               ></v-img>
             </v-btn>
             <v-btn
-              v-if="!isInterest"
+              v-if="!interestMark"
               icon
               small
               @click="registInterest"
@@ -302,7 +302,7 @@ export default {
         CE7: "",
         CS2: "",
       },
-      isInterest: "",
+      interestMark: "",
     };
   },
   watch: {
@@ -328,18 +328,26 @@ export default {
     markers() {
       console.log(this.markers);
     },
+    isInterest() {
+      this.interestMark = this.isInterest;
+    },
   },
   methods: {
     registInterest() {
-      let interestdto = {
-        userid: this.userInfo.userid,
-        aptname: this.currentDialogItem.apartmentName,
-        aptcode: this.currentDialogItem.aptCode,
-        dongname: this.currentDialogItem.dongName,
-        lat: this.currentDialogItem.let,
-        lng: this.currentDialogItem.lng,
-      };
-      this.registAptInterest(interestdto);
+      if (this.userInfo) {
+        let interestdto = {
+          userid: this.userInfo.userid,
+          aptname: this.currentDialogItem.apartmentName,
+          aptcode: this.currentDialogItem.aptCode,
+          dongname: this.currentDialogItem.dongName,
+          lat: this.currentDialogItem.let,
+          lng: this.currentDialogItem.lng,
+        };
+        this.registAptInterest(interestdto);
+        this.interestMark = true;
+      } else {
+        alert("로그인이 필요한 기능입니다.");
+      }
     },
     selectList() {
       let data = {
@@ -391,8 +399,14 @@ export default {
       }
     },
     showDialog(no) {
-      this.dialog = true;
       this.currentDialogItem = this.aptSearchList[no];
+      let data = {
+        userid: this.userInfo.userid,
+        aptname: this.currentDialogItem.apartmentName,
+      };
+      this.aptInterestCount(data);
+      console.log(this.isInterest);
+      this.dialog = true;
       setTimeout(this.loadView, 100);
     },
     showLoadmap() {
@@ -653,6 +667,7 @@ export default {
       "getDongNames",
       "getSearchList",
       "registAptInterest",
+      "aptInterestCount",
     ]),
   },
   mounted() {
@@ -672,6 +687,7 @@ export default {
       "gugunList",
       "dongList",
       "aptSearchList",
+      "isInterest",
     ]),
     ...mapState(userStore, ["userInfo"]),
   },
