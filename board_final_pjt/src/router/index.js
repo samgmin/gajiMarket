@@ -31,6 +31,11 @@ const routes = [
     component: () => import("@/views/AppMain"),
   },
   {
+    path: "/chat",
+    name: "chat",
+    component: () => import("@/views/AppChat"),
+  },
+  {
     path: "/board",
     name: "board",
     component: () => import("@/views/AppBoard"),

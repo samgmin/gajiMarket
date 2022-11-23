@@ -5,6 +5,7 @@ import createPersistedState from "vuex-persistedstate";
 import boardStore from "@/store/modules/boardStore";
 import aptStore from "@/store/modules/aptStore";
 import userStore from "@/store/modules/userStore";
+import chatStore from "@/store/modules/chatStore";
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     boardStore,
     aptStore,
     userStore,
+    chatStore,
   },
   plugins: [
     createPersistedState({

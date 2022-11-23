@@ -2,6 +2,7 @@ package com.ssafy.board.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.board.model.dto.ChatMessageDTO;
@@ -28,6 +29,8 @@ public class StompChatController {
 
     @MessageMapping(value = "/chat/message")
     public void message(ChatMessageDTO message){
+    	System.out.println("들어왔다...........");
+    	System.out.println(message);
         cservice.insertMessage(message);
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }

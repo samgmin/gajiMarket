@@ -16,70 +16,80 @@ import com.ssafy.board.model.dto.MemberFileDTO;
 @Service
 public class MemberServiceImpl implements MemberService {
 
-	@Autowired
-	private SqlSession sqlSession;
-	
-	@Autowired
-	private FileMapper fdao;
-	
-	@Override
-	public MemberDTO login(MemberDTO MemberDTO) throws Exception {
-		if (MemberDTO.getUserid() == null || MemberDTO.getUserpwd() == null)
-			return null;
-		return sqlSession.getMapper(MemberMapper.class).login(MemberDTO);
-	}
+    @Autowired
+    private SqlSession sqlSession;
+    
+    @Autowired
+    private FileMapper fdao;
+    
+    @Override
+    public MemberDTO login(MemberDTO MemberDTO) throws Exception {
+        if (MemberDTO.getUserid() == null || MemberDTO.getUserpwd() == null)
+            return null;
+        return sqlSession.getMapper(MemberMapper.class).login(MemberDTO);
+    }
 
-	@Override
-	public MemberDTO userInfo(String userid) throws Exception {
-		return sqlSession.getMapper(MemberMapper.class).userInfo(userid);
-	}
+    @Override
+    public MemberDTO userInfo(String userid) throws Exception {
+        return sqlSession.getMapper(MemberMapper.class).userInfo(userid);
+    }
 
-	@Override
-	public void saveRefreshToken(String userid, String refreshToken) throws Exception {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("userid", userid);
-		map.put("token", refreshToken);
-		sqlSession.getMapper(MemberMapper.class).saveRefreshToken(map);
-	}
+    @Override
+    public void saveRefreshToken(String userid, String refreshToken) throws Exception {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("userid", userid);
+        map.put("token", refreshToken);
+        sqlSession.getMapper(MemberMapper.class).saveRefreshToken(map);
+    }
 
-	@Override
-	public Object getRefreshToken(String userid) throws Exception {
-		return sqlSession.getMapper(MemberMapper.class).getRefreshToken(userid);
-	}
+    @Override
+    public Object getRefreshToken(String userid) throws Exception {
+        return sqlSession.getMapper(MemberMapper.class).getRefreshToken(userid);
+    }
 
-	@Override
-	public void deleRefreshToken(String userid) throws Exception {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("userid", userid);
-		map.put("token", null);
-		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
-	}
+    @Override
+    public void deleRefreshToken(String userid) throws Exception {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("userid", userid);
+        map.put("token", null);
+        sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
+    }
 
-	@Override
-	public MemberDTO userSignup(MemberDTO memberDto) throws Exception {
-		sqlSession.getMapper(MemberMapper.class).userSignup(memberDto);
-		return memberDto;
-	}
-	
-	@Override
-	public int addFile(MemberFileDTO file) {
-		return fdao.mfileinsert(file);
-	}
+    @Override
+    public MemberDTO userSignup(MemberDTO memberDto) throws Exception {
+        sqlSession.getMapper(MemberMapper.class).userSignup(memberDto);
+        return memberDto;
+    }
+    
+    @Override
+    public int addFile(MemberFileDTO file) {
+        return fdao.mfileinsert(file);
+    }
 
-	@Override
-	public MemberFileDTO getFile(String username) {
-		return fdao.selectUserImg(username);
-	}
+    @Override
+    public MemberFileDTO getFile(String username) {
+        return fdao.selectUserImg(username);
+    }
 
-	@Override
-	public MemberDTO userModify(MemberDTO memberDto) throws Exception {
-		sqlSession.getMapper(MemberMapper.class).userModify(memberDto);
-		return sqlSession.getMapper(MemberMapper.class).userInfo(memberDto.getUserid());
-	}
+    @Override
+    public MemberDTO userModify(MemberDTO memberDto) throws Exception {
+        sqlSession.getMapper(MemberMapper.class).userModify(memberDto);
+        return sqlSession.getMapper(MemberMapper.class).userInfo(memberDto.getUserid());
+    }
 
-	@Override
-	public int modifyFile(MemberFileDTO file) throws Exception {
-		return fdao.mfileUpdate(file);
-	}
+    @Override
+    public int modifyFile(MemberFileDTO file) throws Exception {
+        return fdao.mfileUpdate(file);
+    }
+
+    @Override
+    public int checkId(String userid) {
+        return sqlSession.getMapper(MemberMapper.class).checkId(userid);
+    }
+
+    @Override
+    public int checkName(String username) {
+        return sqlSession.getMapper(MemberMapper.class).checkName(username);
+    }
 
 }

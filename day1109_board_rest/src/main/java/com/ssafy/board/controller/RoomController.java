@@ -9,13 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 @Log4j2
@@ -33,9 +35,10 @@ public class RoomController {
 
     //채팅방 개설
     @PostMapping("/room")
-    public String create(@RequestParam String name){
-        log.info("# Create Chat Room , name: " + name);
-        return cservice.createChatRoomDTO(name);
+    public String create(@RequestBody ChatRoomDTO rdto){
+        ChatRoomDTO makeRoomDTO = new ChatRoomDTO(rdto.getName() ,rdto.getRoomMaker(), rdto.getDescription());
+        log.info("# Create Chat Room , name: " + makeRoomDTO);
+        return cservice.createChatRoomDTO(makeRoomDTO);
     }
 
     //채팅방 조회

@@ -24,9 +24,8 @@ public class ChatRoomService {
         return dao.selectRoomOne(id);
     }
 
-    public String createChatRoomDTO(String name){
-        ChatRoomDTO room = ChatRoomDTO.create(name);
-        if(dao.insertRoom(room)) {
+    public String createChatRoomDTO(ChatRoomDTO rdto){
+        if(dao.insertRoom(rdto)==1) {
             return "success";
         }
         else {
@@ -35,7 +34,7 @@ public class ChatRoomService {
     }
 
     public String insertMessage(ChatMessageDTO message) {
-            if(dao.insertMessage(message)) {
+            if(dao.insertMessage(message)==1) {
                 return "success";
             }
             else {

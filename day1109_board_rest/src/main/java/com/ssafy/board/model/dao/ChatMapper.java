@@ -9,7 +9,7 @@ public interface ChatMapper {
 
     List<ChatRoomDTO> selectRoomList();
     ChatRoomDTO selectRoomOne(String id);
-    boolean insertRoom(ChatRoomDTO room);
-    boolean insertMessage(ChatMessageDTO message);
+    int insertRoom(ChatRoomDTO room);
+    int insertMessage(ChatMessageDTO message);
 
 }

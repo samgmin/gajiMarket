@@ -18,6 +18,8 @@ const userStore = {
     celebrityconfidence: null,
     myInfo: null,
     myImg: null,
+    canUseId: false,
+    canUseName: false,
   },
   getters: {
     checkUserInfo: function (state) {
@@ -67,6 +69,12 @@ const userStore = {
     MODIFY_USER_IMAGE(state, payload) {
       state.myImg = payload.myImg.savedPath;
     },
+    USER_ID_CHECK(state, payload) {
+      state.canUseId = payload;
+    },
+    USER_NAME_CHECK(state, payload) {
+      state.canUseName = payload;
+    },
   },
   actions: {
     userSignup({ commit }, payload) {
@@ -80,12 +88,10 @@ const userStore = {
     getMyInfo({ commit }, payload) {
       console.log(commit);
       console.log(payload);
-      http
-        .get("/user/mypage?userid=" + payload.userid + "&username=" + payload.username)
-        .then(({ data }) => {
-          console.log(data);
-          commit("SET_USER_PAGE", data);
-        });
+      http.get("/user/mypage?userid=" + payload.userid + "&username=" + payload.username).then(({ data }) => {
+        console.log(data);
+        commit("SET_USER_PAGE", data);
+      });
     },
     updateImg({ commit }, payload) {
       console.log(commit);
@@ -142,10 +148,7 @@ const userStore = {
           }
         })
         .catch(async (error) => {
-          console.log(
-            "getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
-            error.response.status
-          );
+          console.log("getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
           commit("SET_IS_VALID_TOKEN", false);
           await dispatch("tokenRegeneration");
         });
@@ -215,6 +218,28 @@ const userStore = {
     },
     userDataReset({ commit }) {
       commit("SIGNUP_DATA_RESET");
+    },
+    userIdCheck({ commit }, payload) {
+      http.get("/user/idcheck?userid" + payload).then(({ data }) => {
+        console.log(data);
+        alert(data);
+        if (data == "이미 존재하는 아이디입니다.") {
+          commit("USER_ID_CHECK", false);
+        } else {
+          commit("USER_ID_CHECK", true);
+        }
+      });
+    },
+    userNameCheck({ commit }, payload) {
+      http.get("/user/namecheck?username" + payload).then(({ data }) => {
+        console.log(data);
+        alert(data);
+        if (data == "이미 존재하는 별명입니다.") {
+          commit("USER_NAME_CHECK", false);
+        } else {
+          commit("USER_NAME_CHECK", true);
+        }
+      });
     },
   },
 };
