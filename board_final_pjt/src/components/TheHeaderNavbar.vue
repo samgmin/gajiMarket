@@ -32,7 +32,7 @@
     <v-spacer></v-spacer>
 
     <v-btn icon :to="{ name: 'chat' }">
-      <v-icon>mdi-magnify</v-icon>
+      <v-icon>mdi-message-text</v-icon>
     </v-btn>
 
     <v-btn :to="{ name: 'aptinterest' }" icon>

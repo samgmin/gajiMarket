@@ -31,4 +31,8 @@ h3 {
   font-size: 30px;
   color: rgb(64, 0, 124);
 }
+
+#app {
+  font-family: "dohyeon";
+}
 </style>

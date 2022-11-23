@@ -19,4 +19,9 @@
         insert into chatmessage_tb(roomId,writer,message,date)
         values(#{roomId},#{writer},#{message},now())
     </insert>
+    
+    <select id="selectChatList" parameterType="String" resultType="com.ssafy.board.model.dto.ChatMessageDTO">
+        select * from chatmessage_tb
+        where roomId = #{roomId}
+    </select>
 </mapper>

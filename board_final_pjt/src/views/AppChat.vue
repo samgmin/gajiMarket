@@ -1,12 +1,6 @@
 <template>
-  <v-container
-    class="bv-example-row mt-3 text-center"
-    style="width: 1200px; margin-bottom: 100px"
-  >
-    <h3
-      class="underline-hotpink"
-      style="margin-top: 100px; margin-bottom: 50px"
-    >
+  <v-container class="bv-example-row mt-3 text-center" style="width: 1200px; margin-bottom: 100px">
+    <h3 class="underline-hotpink" style="margin-top: 100px; margin-bottom: 50px">
       <b-icon icon="journals"></b-icon> 채팅
     </h3>
 
@@ -19,9 +13,7 @@
           style="max-width: 120px; margin-top: -10px"
         ></v-text-field>
         &nbsp;&nbsp;&nbsp;
-        <v-btn variant="outline-primary" @click="makeChatRoom"
-          >채팅방 개설</v-btn
-        >
+        <v-btn variant="outline-primary" @click="makeChatRoom">채팅방 개설</v-btn>
       </v-col>
       <div v-if="roomList.length">
         <v-simple-table>
@@ -55,45 +47,39 @@
           </template>
         </v-simple-table>
       </div>
-
-      <!-- 채팅방 dialog -->
-      <v-dialog v-model="dialog" width="500px" height="1000px">
-        <v-card style="overflow-x: hidden">
-          <v-card-title class="text-h5">
-            <b style="padding-top: 10px; padding-left: 10px">{{
-              this.nowroomname
-            }}</b
-            >&nbsp;&nbsp;
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-list>
-            <transition-group name="list">
-              <div v-for="(item, idx) in recvList" :key="idx">
-                <v-list-tile>
-                  <v-list-tile-action>
-                    <span>{{ item.writer }}</span>
-                  </v-list-tile-action>
-                  <v-list-tile-content>
-                    <v-list-tile-title>{{ item.message }}</v-list-tile-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-                <v-divider inset></v-divider>
-              </div>
-            </transition-group>
-          </v-list>
-
-          <div class="inner-wrap">
-            <v-text-field
-              v-model="message"
-              label="chat"
-              placeholder="보낼 메세지를 입력하세요."
-              solo
-              @keyup="sendMessage"
-            ></v-text-field>
-          </div>
-        </v-card>
-      </v-dialog>
     </div>
+
+    <!-- 채팅방 dialog -->
+    <v-dialog v-model="dialog" width="500px" height="1000px">
+      <v-card style="overflow-x: hidden" class="chatbox" ref="chatbox">
+        <v-toolbar color="#7E57C2" width="500px" dark style="position: fixed; z-index: 3">
+          <b>{{ this.nowroomname }}</b>
+        </v-toolbar>
+        <v-list style="height: 660px; margin-top: 60px">
+          <div v-for="(item, idx) in recvList" :key="idx">
+            <v-list-item class="d-flex justify-end" v-if="item.writer === userInfo.username">
+              <span>{{ item.message }}</span>
+            </v-list-item>
+            <v-list-item class="d-flex justify-start" v-if="item.writer !== userInfo.username">
+              <span
+                ><b>{{ item.writer }}</b
+                >&nbsp;&nbsp;{{ item.message }}</span
+              >
+            </v-list-item>
+          </div>
+        </v-list>
+
+        <div class="inner-wrap" style="position: fixed">
+          <v-text-field
+            style="overflow-x: hidden; width: 500px"
+            v-model="message"
+            placeholder="보낼 메세지를 입력하세요."
+            solo
+            @keyup="sendMessage"
+          ></v-text-field>
+        </div>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -144,7 +130,7 @@ export default {
       if (this.stompClient && this.stompClient.connected) {
         const msg = {
           roomId: this.nowroomid,
-          writer: this.userInfo.userName,
+          writer: this.userInfo.username,
           message: this.message,
         };
         console.log("메세지", msg);
@@ -164,17 +150,16 @@ export default {
           console.log("소켓 연결 성공", frame);
           // 서버의 메시지 전송 endpoint를 구독합니다.
           // 이런형태를 pub sub 구조라고 합니다.
+
+          this.selectChatList(roomid);
           this.nowroomid = roomid;
           console.log("nowroomid", this.nowroomid);
-          this.stompClient.subscribe(
-            "/sub/chat/room/" + this.nowroomid,
-            (res) => {
-              console.log("구독으로 받은 메시지 입니다.", res.body);
+          this.stompClient.subscribe("/sub/chat/room/" + this.nowroomid, (res) => {
+            console.log("구독으로 받은 메시지 입니다.", res.body);
 
-              // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
-              this.recvList.push(JSON.parse(res.body));
-            }
-          );
+            // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+            this.recvList.push(JSON.parse(res.body));
+          });
           let data = {
             roomId: this.nowroomid,
             writer: this.userInfo.username,
@@ -189,11 +174,29 @@ export default {
         }
       );
     },
-    ...mapActions(chatStore, ["createChatRoom", "selectChatRoomList"]),
+    ...mapActions(chatStore, ["createChatRoom", "selectChatRoomList", "selectChatList"]),
   },
   computed: {
-    ...mapState(chatStore, ["roomList"]),
+    ...mapState(chatStore, ["roomList", "chatList"]),
     ...mapState(userStore, ["userInfo"]),
+  },
+  watch: {
+    dialog() {
+      if (!this.dialog) {
+        console.log("다이아로그 끔");
+        this.stompClient.disconnect();
+      }
+    },
+    chatList() {
+      this.recvList = [];
+      this.recvList = this.chatList;
+    },
+    recvList() {
+      this.$nextTick(() => {
+        let chatbox = this.$refs.chatbox;
+        chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: "smooth" });
+      });
+    },
   },
 };
 </script>
@@ -201,10 +204,6 @@ export default {
 <style>
 .underline-hotpink {
   display: inline-block;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 70%,
-    rgba(128, 30, 255, 0.3) 30%
-  );
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 70%, rgba(128, 30, 255, 0.3) 30%);
 }
 </style>

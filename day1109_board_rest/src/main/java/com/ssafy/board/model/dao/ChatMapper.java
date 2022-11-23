@@ -11,5 +11,6 @@ public interface ChatMapper {
     ChatRoomDTO selectRoomOne(String id);
     int insertRoom(ChatRoomDTO room);
     int insertMessage(ChatMessageDTO message);
+    List<ChatMessageDTO> selectChatList(String roomId);
 
 }
