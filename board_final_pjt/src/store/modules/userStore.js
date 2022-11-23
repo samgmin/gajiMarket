@@ -220,7 +220,7 @@ const userStore = {
       commit("SIGNUP_DATA_RESET");
     },
     userIdCheck({ commit }, payload) {
-      http.get("/user/idcheck?userid" + payload).then(({ data }) => {
+      http.get("/user/idcheck?userid=" + payload).then(({ data }) => {
         console.log(data);
         alert(data);
         if (data == "이미 존재하는 아이디입니다.") {
@@ -231,7 +231,7 @@ const userStore = {
       });
     },
     userNameCheck({ commit }, payload) {
-      http.get("/user/namecheck?username" + payload).then(({ data }) => {
+      http.get("/user/namecheck?username=" + payload).then(({ data }) => {
         console.log(data);
         alert(data);
         if (data == "이미 존재하는 별명입니다.") {

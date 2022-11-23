@@ -1,6 +1,9 @@
 <template>
   <div style="width: 800px; margin: 0 auto; margin-bottom: 150px">
-    <h3 class="underline-hotpink" style="margin-top: 100px; margin-bottom: 50px">
+    <h3
+      class="underline-hotpink"
+      style="margin-top: 100px; margin-bottom: 50px"
+    >
       <b-icon icon="journals"></b-icon>
       <!-- <v-img src="@/assets/eggplant-logo.png" width="40px"></v-img> -->
       회원가입
@@ -21,6 +24,7 @@
                 :error-messages="idErrorMessages"
                 label="아이디를 입력하세요."
                 required
+                @blur="checkid"
               ></v-text-field>
             </td>
           </tr>
@@ -46,6 +50,7 @@
                 :error-messages="nameErrorMessages"
                 label="이름을 입력하세요."
                 required
+                @blur="checkname"
               ></v-text-field>
             </td>
           </tr>
@@ -66,8 +71,8 @@
           </tr>
           <tr>
             <td colspan="12">
-              얼굴 사진을 첨부하면 추정 나이, 성별, 닮은꼴 연예인을 알려드립니다. 아쉽지만 필! 수!
-              에요.
+              얼굴 사진을 첨부하면 추정 나이, 성별, 닮은꼴 연예인을
+              알려드립니다. 아쉽지만 필! 수! 에요.
             </td>
           </tr>
           <tr>
@@ -95,20 +100,22 @@
           <tr v-if="age">
             <th class="text-left" colspan="1">나이</th>
             <td class="text-left" colspan="11">
-              {{ Math.round(ageconfidence * 10000) / 100 }}% 확률로 {{ age }}살 입니다.
+              {{ Math.round(ageconfidence * 10000) / 100 }}% 확률로 {{ age }}살
+              입니다.
             </td>
           </tr>
           <tr v-if="gender">
             <th class="text-left" colspan="1">성별</th>
             <td class="text-left" colspan="11">
-              {{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 {{ gender }}입니다.
+              {{ Math.round(genderconfidence * 10000) / 100 }}% 확률로
+              {{ gender }}입니다.
             </td>
           </tr>
           <tr v-if="celebrity">
             <th class="text-left" colspan="1">닮은꼴</th>
             <td class="text-left" colspan="11">
-              {{ Math.round(celebrityconfidence * 10000) / 100 }}% 확률로 {{ celebrity }}을(를)
-              닮았습니다.
+              {{ Math.round(celebrityconfidence * 10000) / 100 }}% 확률로
+              {{ celebrity }}을(를) 닮았습니다.
             </td>
           </tr>
         </template>
@@ -150,6 +157,12 @@ export default {
     this.userDataReset();
   },
   methods: {
+    checkid() {
+      this.userIdCheck(this.id);
+    },
+    checkname() {
+      this.userNameCheck(this.name);
+    },
     async onSubmit() {
       if (this.inputCheck()) {
         var fd = new FormData();
@@ -203,7 +216,13 @@ export default {
 
       return true;
     },
-    ...mapActions(userStore, ["userSignup", "CFRApi", "userDataReset"]),
+    ...mapActions(userStore, [
+      "userSignup",
+      "CFRApi",
+      "userDataReset",
+      "userIdCheck",
+      "userNameCheck",
+    ]),
   },
   computed: {
     ...mapState(userStore, [
@@ -214,6 +233,8 @@ export default {
       "genderconfidence",
       "celebrity",
       "celebrityconfidence",
+      "canUseId",
+      "canUseName",
     ]),
   },
   watch: {
@@ -240,6 +261,10 @@ export default {
 <style>
 .underline-hotpink {
   display: inline-block;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 70%, rgba(128, 30, 255, 0.3) 30%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(128, 30, 255, 0.3) 30%
+  );
 }
 </style>

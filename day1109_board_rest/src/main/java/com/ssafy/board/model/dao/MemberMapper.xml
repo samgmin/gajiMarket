@@ -11,11 +11,11 @@
 	</select>
 	
 	<select id="checkId" parameterType="String" resultType="int">
-    	select count(id) from member_tb where userid = #{userid}
+    	select count(userid) from member_tb where userid = #{userid}
     </select>
 	
 	<select id="checkName" parameterType="String" resultType="int">
-    	select count(id) from member_tb where username = #{username}
+    	select count(username) from member_tb where username = #{username}
     </select>
     
     <delete id="delete" parameterType="String">
