@@ -1,9 +1,6 @@
 <template>
   <div style="width: 800px; margin: 0 auto">
-    <h3
-      class="underline-hotpink"
-      style="margin-top: 100px; margin-bottom: 50px"
-    >
+    <h3 class="underline-hotpink" style="margin-top: 100px; margin-bottom: 50px">
       <b-icon icon="journals"></b-icon>
       <!-- <v-img src="@/assets/eggplant-logo.png" width="40px"></v-img> -->
       마이페이지
@@ -18,12 +15,7 @@
           <tr>
             <th class="text-left" colspan="1">아이디</th>
             <td class="text-left" colspan="11">
-              <v-text-field
-                name="id"
-                v-model="myInfo.userid"
-                required
-                readonly
-              ></v-text-field>
+              <v-text-field name="id" v-model="myInfo.userid" required readonly></v-text-field>
             </td>
           </tr>
           <tr>
@@ -52,12 +44,7 @@
           <tr>
             <th class="text-left" colspan="1">이름</th>
             <td class="text-left" colspan="11">
-              <v-text-field
-                name="name"
-                v-model="myInfo.username"
-                required
-                readonly
-              ></v-text-field>
+              <v-text-field name="name" v-model="myInfo.username" required readonly></v-text-field>
             </td>
           </tr>
           <tr>
@@ -108,12 +95,7 @@
                 :src="preview"
                 width="30"
               />
-              <v-file-input
-                v-if="!flag"
-                type="file"
-                name="uploadFile"
-                v-model="file"
-              />
+              <v-file-input v-if="!flag" type="file" name="uploadFile" v-model="file" />
               <!-- <v-btn variant="outline-primary" @click="naverCFRApi">사진제출</v-btn> -->
             </td>
           </tr>
@@ -132,33 +114,29 @@
           <tr style="padding-top: 100px" v-if="!flag && age">
             <th class="text-left" colspan="1">나이</th>
             <td class="text-left" colspan="11">
-              <v-text-field
-                v-if="age"
-                name="age"
-                v-model="age"
-                readonly
-              ></v-text-field>
+              <v-text-field v-if="age" name="age" v-model="age" readonly></v-text-field>
               <v-text-field v-if="!age" readonly></v-text-field>
             </td>
           </tr>
           <tr v-if="flag || !age">
             <th class="text-left" colspan="1">나이</th>
             <td class="text-left" colspan="10">
-              <v-text-field
-                name="age"
-                v-model="myInfo.age"
-                required
-                readonly
-              ></v-text-field>
+              <v-text-field name="age" v-model="myInfo.age" required readonly></v-text-field>
             </td>
           </tr>
           <tr id="naver" v-if="!flag && gender">
             <th class="text-left" colspan="1">성별</th>
             <td class="text-left" colspan="11">
               <v-text-field
-                v-if="gender"
+                v-if="gender && gender === 'male'"
                 name="gender"
-                v-model="gender"
+                value="남성"
+                readonly
+              ></v-text-field>
+              <v-text-field
+                v-if="gender && gender === 'female'"
+                name="gender"
+                value="여성"
                 readonly
               ></v-text-field>
               <v-text-field v-if="!gender" readonly></v-text-field>
@@ -169,13 +147,21 @@
             <td class="text-left" colspan="11">
               <v-text-field
                 name="gender"
-                v-model="myInfo.gender"
+                v-if="myInfo.gender === 'male'"
+                value="남성"
+                required
+                readonly
+              ></v-text-field>
+              <v-text-field
+                name="gender"
+                v-if="myInfo.gender === 'female'"
+                value="여성"
                 required
                 readonly
               ></v-text-field>
             </td>
           </tr>
-          <tr id="naver" v-if="celebrity">
+          <tr id="naver" v-if="!flag && celebrity">
             <th class="text-left" colspan="1">닮은꼴</th>
             <td class="text-left" colspan="11">
               <v-text-field
@@ -187,7 +173,7 @@
               <v-text-field v-if="!celebrity" readonly></v-text-field>
             </td>
           </tr>
-          <tr v-if="!celebrity">
+          <tr v-if="flag || !celebrity">
             <th class="text-left" colspan="1">닮은꼴</th>
             <td class="text-left" colspan="11">
               <v-text-field
@@ -231,10 +217,7 @@
 
         <v-list style="height: 450px; margin-top: 60px; margin-bottom: 5px">
           <div class="text-center" style="margin-top: 200px" v-if="loading">
-            <v-progress-circular
-              indeterminate
-              color="purple"
-            ></v-progress-circular>
+            <v-progress-circular indeterminate color="purple"></v-progress-circular>
           </div>
           <div v-if="!loading">
             <v-list-item
@@ -262,18 +245,16 @@
             </v-list-item>
             <v-list-item class="d-flex justify-center">
               <span v-if="gender === 'male'" style="font-size: 25px"
-                >{{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 남성
-                입니다.</span
+                >{{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 남성 입니다.</span
               >
               <span v-if="gender === 'female'" style="font-size: 25px"
-                >{{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 여성
-                입니다.</span
+                >{{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 여성 입니다.</span
               >
             </v-list-item>
             <v-list-item class="d-flex justify-center">
               <span style="font-size: 25px"
-                >{{ Math.round(celebrityconfidence * 10000) / 100 }}% 확률로
-                {{ celebrity }}을(를) 닮았습니다.</span
+                >{{ Math.round(celebrityconfidence * 10000) / 100 }}% 확률로 {{ celebrity }}을(를)
+                닮았습니다.</span
               >
             </v-list-item>
           </div>
@@ -315,6 +296,7 @@ export default {
       username: this.userInfo.username,
     };
     this.getMyInfo(data);
+    console.log("mount", this.myInfo);
   },
   methods: {
     async naverCFRApi() {
@@ -324,7 +306,7 @@ export default {
 
       await this.CFRApi(fd);
     },
-    async modifyInfo() {
+    modifyInfo() {
       let data = {
         userid: this.myInfo.userid,
         username: this.myInfo.username,
@@ -335,24 +317,18 @@ export default {
         celebrity: this.celebrity,
       };
       console.log(data);
-      await this.updateInfo(data);
+      this.updateInfo(data);
     },
     async modifyImg() {
       var fd = new FormData();
       fd.append("username", this.myInfo.username);
       fd.append("uploadFile", this.file);
-      await this.updateImg(fd);
+      this.updateImg(fd);
     },
     async modifyBtn() {
+      this.modifyInfo();
+      this.modifyImg();
       this.userDataReset();
-      await this.modifyInfo();
-      await this.modifyImg();
-      this.userDataReset();
-      let data = {
-        userid: this.userInfo.userid,
-        username: this.userInfo.username,
-      };
-      await this.getMyInfo(data);
       this.flag = true;
     },
     deleteInfo() {
@@ -428,6 +404,7 @@ export default {
       if (this.celebrity) {
         console.log("사진 왔따.");
         this.loading = false;
+        console.log("나이", this.age);
       }
     },
   },

@@ -1,9 +1,6 @@
 <template>
   <div>
-    <h3
-      class="underline-hotpink"
-      style="margin-top: 100px; margin-bottom: 50px"
-    >
+    <h3 class="underline-hotpink" style="margin-top: 100px; margin-bottom: 95px">
       <b-icon icon="journals"></b-icon>
       <!-- <v-img src="@/assets/eggplant-logo.png" width="40px"></v-img> -->
       로그인
@@ -16,11 +13,6 @@
             <th class="text-left">아이디</th>
           </tr>
           <tr>
-            <!-- <v-text-field
-              label="아이디를 입력해주세요."
-              single-line
-              outlined
-            ></v-text-field> -->
             <v-text-field
               id="userid"
               v-model="userid"
@@ -136,10 +128,6 @@ export default {
 <style>
 .underline-hotpink {
   display: inline-block;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 70%,
-    rgba(128, 30, 255, 0.3) 30%
-  );
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 70%, rgba(128, 30, 255, 0.3) 30%);
 }
 </style>

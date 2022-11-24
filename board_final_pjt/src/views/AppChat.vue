@@ -1,20 +1,12 @@
 <template>
-  <v-container
-    class="bv-example-row mt-3 text-center"
-    style="width: 1200px; margin-bottom: 100px"
-  >
-    <h3
-      class="underline-hotpink"
-      style="margin-top: 100px; margin-bottom: 50px"
-    >
+  <v-container class="bv-example-row mt-3 text-center" style="width: 1200px; margin-bottom: 225px">
+    <h3 class="underline-hotpink" style="margin-top: 100px; margin-bottom: 50px">
       <b-icon icon="journals"></b-icon> 채팅
     </h3>
 
     <div style="margin-bottom: 330px">
       <v-col class="d-flex justify-end">
-        <v-btn variant="outline-primary" @click="dialogMake = true"
-          >채팅방 개설</v-btn
-        >
+        <v-btn variant="outline-primary" @click="dialogMake = true">채팅방 개설</v-btn>
       </v-col>
       <div v-if="roomList.length">
         <v-simple-table>
@@ -53,17 +45,10 @@
     <!-- 채팅방 개설 dialog -->
     <v-dialog v-model="dialogMake" width="500px">
       <v-card style="overflow-x: hidden" height="355px">
-        <v-toolbar
-          color="#7E57C2"
-          width="500px"
-          dark
-          style="position: fixed; z-index: 3"
-        >
+        <v-toolbar color="#7E57C2" width="500px" dark style="position: fixed; z-index: 3">
           <b>채팅방 개설</b>
         </v-toolbar>
-        <v-simple-table
-          style="margin-top: 70px; margin-left: 20px; margin-right: 20px"
-        >
+        <v-simple-table style="margin-top: 70px; margin-left: 20px; margin-right: 20px">
           <template v-slot:default>
             <colgroup>
               <col width="20%" />
@@ -112,20 +97,12 @@
     <!-- 채팅방 dialog -->
     <v-dialog v-model="dialog" width="500px" height="1000px">
       <v-card style="overflow-x: hidden" id="chatbox" ref="chatbox">
-        <v-toolbar
-          color="#7E57C2"
-          width="500px"
-          dark
-          style="position: fixed; z-index: 3"
-        >
+        <v-toolbar color="#7E57C2" width="500px" dark style="position: fixed; z-index: 3">
           <b>{{ this.nowroomname }}</b>
         </v-toolbar>
         <v-list style="height: 630px; margin-top: 60px">
           <div v-for="(item, idx) in recvList" :key="idx">
-            <v-list-item
-              class="d-flex justify-end"
-              v-if="item.writer === userInfo.username"
-            >
+            <v-list-item class="d-flex justify-end" v-if="item.writer === userInfo.username">
               <span
                 >{{ item.message }}&nbsp;
                 <b class="underline-hotpink">{{ item.writer }}</b>
@@ -139,10 +116,7 @@
                 />
               </span>
             </v-list-item>
-            <v-list-item
-              class="d-flex justify-start"
-              v-if="item.writer !== userInfo.username"
-            >
+            <v-list-item class="d-flex justify-start" v-if="item.writer !== userInfo.username">
               <span
                 ><v-img
                   v-if="item.image != null"
@@ -252,15 +226,12 @@ export default {
           this.selectChatList(roomid);
           this.nowroomid = roomid;
           console.log("nowroomid", this.nowroomid);
-          this.stompClient.subscribe(
-            "/sub/chat/room/" + this.nowroomid,
-            (res) => {
-              console.log("구독으로 받은 메시지 입니다.", res.body);
+          this.stompClient.subscribe("/sub/chat/room/" + this.nowroomid, (res) => {
+            console.log("구독으로 받은 메시지 입니다.", res.body);
 
-              // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
-              this.recvList.push(JSON.parse(res.body));
-            }
-          );
+            // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+            this.recvList.push(JSON.parse(res.body));
+          });
           let data = {
             roomId: this.nowroomid,
             writer: this.userInfo.username,
@@ -275,11 +246,7 @@ export default {
         }
       );
     },
-    ...mapActions(chatStore, [
-      "createChatRoom",
-      "selectChatRoomList",
-      "selectChatList",
-    ]),
+    ...mapActions(chatStore, ["createChatRoom", "selectChatRoomList", "selectChatList"]),
   },
   computed: {
     ...mapState(chatStore, ["roomList", "chatList"]),
@@ -310,10 +277,6 @@ export default {
 <style>
 .underline-hotpink {
   display: inline-block;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 70%,
-    rgba(128, 30, 255, 0.3) 30%
-  );
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 70%, rgba(128, 30, 255, 0.3) 30%);
 }
 </style>

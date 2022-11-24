@@ -98,10 +98,12 @@ const userStore = {
     getMyInfo({ commit }, payload) {
       console.log(commit);
       console.log(payload);
-      http.get("/user/mypage?userid=" + payload.userid + "&username=" + payload.username).then(({ data }) => {
-        console.log(data);
-        commit("SET_USER_PAGE", data);
-      });
+      http
+        .get("/user/mypage?userid=" + payload.userid + "&username=" + payload.username)
+        .then(({ data }) => {
+          console.log(data);
+          commit("SET_USER_PAGE", data);
+        });
     },
     updateImg({ commit }, payload) {
       console.log(commit);
@@ -158,7 +160,10 @@ const userStore = {
           }
         })
         .catch(async (error) => {
-          console.log("getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
+          console.log(
+            "getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
+            error.response.status
+          );
           commit("SET_IS_VALID_TOKEN", false);
           await dispatch("tokenRegeneration");
         });
@@ -252,18 +257,22 @@ const userStore = {
       });
     },
     deleteUserInfo({ commit }, payload) {
-      http.delete("/user?username=" + payload.username + "&userid=" + payload.userid).then(({ data }) => {
-        console.log(commit);
-        console.log(data);
-      });
+      http
+        .delete("/user?username=" + payload.username + "&userid=" + payload.userid)
+        .then(({ data }) => {
+          console.log(commit);
+          console.log(data);
+        });
     },
     getCelebrityImage({ commit }, payload) {
       console.log("셀럽 이름", payload);
       console.log(commit);
-      axios.post("http://localhost:8888/board/naver/imagesearch?celebrity=" + payload).then(({ data }) => {
-        console.log(data);
-        commit("GET_CELEBRITY_IMAGE", data);
-      });
+      axios
+        .post("http://localhost:8888/board/naver/imagesearch?celebrity=" + payload)
+        .then(({ data }) => {
+          console.log(data);
+          commit("GET_CELEBRITY_IMAGE", data);
+        });
     },
     resetIdCheck({ commit }) {
       commit("RESET_ID_CHECK");
