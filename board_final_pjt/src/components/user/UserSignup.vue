@@ -1,6 +1,9 @@
 <template>
   <div style="width: 800px; margin: 0 auto; margin-bottom: 150px">
-    <h3 class="underline-hotpink" style="margin-top: 100px; margin-bottom: 50px">
+    <h3
+      class="underline-hotpink"
+      style="margin-top: 100px; margin-bottom: 50px"
+    >
       <b-icon icon="journals"></b-icon>
       <!-- <v-img src="@/assets/eggplant-logo.png" width="40px"></v-img> -->
       회원가입
@@ -35,6 +38,7 @@
                 label="비밀번호를 입력하세요."
                 required
                 type="password"
+                style="font-family: monospace"
               ></v-text-field>
             </td>
           </tr>
@@ -68,8 +72,8 @@
           </tr>
           <tr>
             <td colspan="12">
-              얼굴 사진을 첨부하면 추정 나이, 성별, 닮은꼴 연예인을 알려드립니다. 아쉽지만 필! 수!
-              에요.
+              얼굴 사진을 첨부하면 추정 나이, 성별, 닮은꼴 연예인을
+              알려드립니다. 아쉽지만 필! 수! 에요.
             </td>
           </tr>
           <tr>
@@ -101,14 +105,24 @@
           <tr>
             <th class="text-left" colspan="1">나이</th>
             <td class="text-left" colspan="11">
-              <v-text-field v-if="age" name="age" v-model="age" readonly></v-text-field>
+              <v-text-field
+                v-if="age"
+                name="age"
+                v-model="age"
+                readonly
+              ></v-text-field>
               <v-text-field v-if="!age" readonly></v-text-field>
             </td>
           </tr>
           <tr>
             <th class="text-left" colspan="1">성별</th>
             <td class="text-left" colspan="11">
-              <v-text-field v-if="gender" name="gender" v-model="gender" readonly></v-text-field>
+              <v-text-field
+                v-if="gender"
+                name="gender"
+                v-model="gender"
+                readonly
+              ></v-text-field>
               <v-text-field v-if="!gender" readonly></v-text-field>
             </td>
           </tr>
@@ -131,7 +145,9 @@
     <br />
     <v-row align="center" justify="end">
       <v-col class="d-flex flex-row-reverse" cols="12" sm="1">
-        <v-btn variant="outline-primary" @click="onSubmit">가입</v-btn>
+        <v-btn variant="outline-primary" @click="onSubmit"
+          ><span style="font-size: 16px">가입</span></v-btn
+        >
       </v-col>
     </v-row>
 
@@ -173,16 +189,18 @@
             </v-list-item>
             <v-list-item class="d-flex justify-center">
               <span v-if="gender === 'male'" style="font-size: 25px"
-                >{{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 남성 입니다.</span
+                >{{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 남성
+                입니다.</span
               >
               <span v-if="gender === 'female'" style="font-size: 25px"
-                >{{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 여성 입니다.</span
+                >{{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 여성
+                입니다.</span
               >
             </v-list-item>
             <v-list-item class="d-flex justify-center">
               <span style="font-size: 25px"
-                >{{ Math.round(celebrityconfidence * 10000) / 100 }}% 확률로 {{ celebrity }}을(를)
-                닮았습니다.</span
+                >{{ Math.round(celebrityconfidence * 10000) / 100 }}% 확률로
+                {{ celebrity }}을(를) 닮았습니다.</span
               >
             </v-list-item>
           </div>
@@ -311,6 +329,8 @@ export default {
       "userIdCheck",
       "userNameCheck",
       "getCelebrityImage",
+      "resetIdCheck",
+      "resetNameCheck",
     ]),
   },
   computed: {
@@ -330,12 +350,14 @@ export default {
   watch: {
     id() {
       this.idErrorMessages = "";
+      this.resetIdCheck();
     },
     pwd() {
       this.pwdErrorMessages = "";
     },
     name() {
       this.nameErrorMessages = "";
+      this.resetNameCheck();
     },
     email() {
       this.emailErrorMessages = "";
@@ -347,17 +369,17 @@ export default {
       this.dialog = true;
     },
     canUseId() {
-      if (this.canUserId == true) {
-        this.idErrorMessages = "";
+      if (!this.canUseId) {
+        this.idErrorMessages = "이미 사용 중인 아이디입니다.";
       } else {
-        this.idErrorMessages = "이미 사용중인 아이디입니다.";
+        this.idErrorMessages = "";
       }
     },
     canUseName() {
-      if (this.canUserName == true) {
+      if (this.canUseName) {
         this.nameErrorMessages = "";
       } else {
-        this.nameErrorMessages = "이미 사용중인 닉네임입니다.";
+        this.nameErrorMessages = "이미 사용 중인 닉네임입니다.";
       }
     },
     celebrity() {
@@ -370,7 +392,11 @@ export default {
 <style>
 .underline-hotpink {
   display: inline-block;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 70%, rgba(128, 30, 255, 0.3) 30%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(128, 30, 255, 0.3) 30%
+  );
 }
 
 span {

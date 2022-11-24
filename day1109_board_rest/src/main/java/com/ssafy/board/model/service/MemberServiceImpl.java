@@ -92,4 +92,15 @@ public class MemberServiceImpl implements MemberService {
         return sqlSession.getMapper(MemberMapper.class).checkName(username);
     }
 
+    @Override
+    public int deleteMember(String username, String userid) {
+        sqlSession.getMapper(MemberMapper.class).deleteBoardByWriter(username);
+        sqlSession.getMapper(MemberMapper.class).deleteChatroomByRoomMaker(username);
+        sqlSession.getMapper(MemberMapper.class).deleteMfileByUser(username);
+        sqlSession.getMapper(MemberMapper.class).deleteRecommendByUser(userid);
+        sqlSession.getMapper(MemberMapper.class).deleteMember(userid);
+
+        return 1;
+    }
+
 }

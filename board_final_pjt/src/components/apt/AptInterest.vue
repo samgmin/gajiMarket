@@ -8,7 +8,8 @@
       <!-- <v-img src="@/assets/eggplant-logo.png" width="40px"></v-img> -->
       북마크
     </h3>
-    <div style="margin-bottom: 80px">
+    <div style="margin-bottom: 20px">
+      <div v-if="!aptInterestList.length" style="margin-bottom: 550px"></div>
       <v-sheet
         class="mx-auto"
         max-width="auto"
@@ -29,7 +30,7 @@
               <v-card-title>{{ interest.aptname }}</v-card-title>
 
               <v-card-text>
-                <div class="my-4 text-subtitle-1 text-start">
+                <div class="my-4 text-start" style="font-family: dohyeon">
                   {{ interest.dongname }}<br />
                   법정코드 : {{ interest.aptcode }} <br />
                 </div>
@@ -103,5 +104,9 @@ a:visited {
 a:hover {
   color: rgb(255, 255, 255);
   text-decoration: none;
+}
+
+div {
+  font-family: "dohyeon";
 }
 </style>

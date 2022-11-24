@@ -20,4 +20,10 @@ public interface MemberMapper {
     public void saveRefreshToken(Map<String, String> map) throws SQLException;
     public Object getRefreshToken(String userid) throws SQLException;
     public void deleteRefreshToken(Map<String, String> map) throws SQLException;
+    public int deleteBoardByWriter(String username);
+    public int deleteChatroomByRoomMaker(String username);
+    public int deleteMfileByUser(String username);
+    public int deleteRecommendByUser(String userid);
+    public int deleteMember(String userid);
+
 }

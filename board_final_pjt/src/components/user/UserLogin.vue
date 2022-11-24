@@ -1,6 +1,9 @@
 <template>
   <div>
-    <h3 class="underline-hotpink" style="margin-top: 100px; margin-bottom: 50px">
+    <h3
+      class="underline-hotpink"
+      style="margin-top: 100px; margin-bottom: 50px"
+    >
       <b-icon icon="journals"></b-icon>
       <!-- <v-img src="@/assets/eggplant-logo.png" width="40px"></v-img> -->
       로그인
@@ -47,6 +50,7 @@
               single-line
               outlined
               dense
+              style="font-family: monospace"
             ></v-text-field>
           </tr>
         </thead>
@@ -132,6 +136,10 @@ export default {
 <style>
 .underline-hotpink {
   display: inline-block;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 70%, rgba(128, 30, 255, 0.3) 30%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(128, 30, 255, 0.3) 30%
+  );
 }
 </style>

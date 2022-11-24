@@ -57,10 +57,17 @@
         </v-col>
       </v-row>
     </v-container>
-    <div v-if="aptSearchList.length">
+    <div>
       <v-row>
         <v-col>
-          <div style="overflow-y: scroll; height: 500px; margin-top: 10px">
+          <div
+            v-if="!aptSearchList.length"
+            style="overflow-y: hidden; height: 500px; margin-top: 10px"
+          ></div>
+          <div
+            v-if="aptSearchList.length"
+            style="overflow-y: scroll; height: 500px; margin-top: 10px"
+          >
             <v-simple-table>
               <template v-slot:default>
                 <thead>
@@ -102,9 +109,13 @@
       <v-dialog v-model="dialog" width="1000px" height="1000px">
         <v-card style="overflow-x: hidden">
           <v-card-title class="text-h5">
-            <b style="padding-top: 20px; padding-left: 10px">{{
-              currentDialogItem.apartmentName
-            }}</b
+            <b
+              style="
+                padding-top: 20px;
+                padding-left: 10px;
+                font-family: dohyeon;
+              "
+              >{{ currentDialogItem.apartmentName }}</b
             >&nbsp;&nbsp;
             <v-btn
               v-if="interestMark"
@@ -400,12 +411,14 @@ export default {
     },
     showDialog(no) {
       this.currentDialogItem = this.aptSearchList[no];
-      let data = {
-        userid: this.userInfo.userid,
-        aptname: this.currentDialogItem.apartmentName,
-      };
-      this.aptInterestCount(data);
-      console.log(this.isInterest);
+      if (this.userInfo) {
+        let data = {
+          userid: this.userInfo.userid,
+          aptname: this.currentDialogItem.apartmentName,
+        };
+        this.aptInterestCount(data);
+        console.log(this.isInterest);
+      }
       this.dialog = true;
       setTimeout(this.loadView, 100);
     },

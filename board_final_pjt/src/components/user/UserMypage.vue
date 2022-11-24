@@ -36,6 +36,7 @@
                 required
                 readonly
                 type="password"
+                style="font-family: monospace"
               ></v-text-field>
               <v-text-field
                 v-if="!flag"
@@ -44,6 +45,7 @@
                 label="비밀번호를 입력하세요."
                 required
                 type="password"
+                style="font-family: monospace"
               ></v-text-field>
             </td>
           </tr>
@@ -188,13 +190,15 @@
     <v-row align="center" justify="end">
       <v-col class="d-flex justify-end" cols="12" sm="1">
         <v-btn variant="outline-primary" v-if="flag" @click="flag = !flag"
-          >수정</v-btn
+          ><span style="font-size: 16px">수정</span></v-btn
         >
         <v-btn variant="outline-primary" v-if="!flag" @click="modifyInfo"
-          >수정</v-btn
+          ><span style="font-size: 16px">수정</span></v-btn
         >
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <v-btn variant="outline-primary" @click="deleteInfo">탈퇴</v-btn>
+        <v-btn variant="outline-primary" @click="deleteInfo"
+          ><span style="font-size: 16px">탈퇴</span></v-btn
+        >
       </v-col>
     </v-row>
   </div>
@@ -263,7 +267,27 @@ export default {
       this.modifyInfo();
       this.modifyImg();
     },
-    deleteInfo() {},
+    deleteInfo() {
+      let data = {
+        username: this.myInfo.username,
+        userid: this.myInfo.userid,
+      };
+      this.deleteUserInfo(data);
+
+      // this.SET_IS_LOGIN(false);
+      // this.SET_USER_INFO(null);
+      // sessionStorage.removeItem("access-token");
+      // if (this.$route.path != "/") this.$router.push({ name: "main" });
+      console.log(this.userInfo.userid);
+      //vuex actions에서 userLogout 실행(Backend에 저장 된 리프레시 토큰 없애기
+      //+ satate에 isLogin, userInfo 정보 변경)
+      // this.$store.dispatch("userLogout", this.userInfo.userid);
+      this.userLogout(this.userInfo.userid);
+      sessionStorage.removeItem("access-token"); //저장된 토큰 없애기
+      sessionStorage.removeItem("refresh-token"); //저장된 토큰 없애기
+      alert("탈퇴되었습니다.");
+      if (this.$route.path != "/") this.$router.push({ name: "main" });
+    },
     previewFile(file) {
       const fileData = (data) => {
         this.preview = data;
@@ -285,6 +309,8 @@ export default {
       "updateInfo",
       "CFRApi",
       "userDataReset",
+      "userLogout",
+      "deleteUserInfo",
     ]),
   },
   computed: {

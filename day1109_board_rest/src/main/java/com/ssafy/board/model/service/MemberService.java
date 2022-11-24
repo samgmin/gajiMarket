@@ -18,4 +18,6 @@ public interface MemberService {
     public int modifyFile(MemberFileDTO file) throws Exception;
     public int checkId(String userid);
     public int checkName(String name);
+    public int deleteMember(String username, String userid);
+    
 }

@@ -9,13 +9,16 @@
           <v-row justify="center">
             <v-col cols="12" md="7" lg="6" class="d-flex align-center">
               <div class="text-center text-md-left">
-                <h2 class="banner1-title font-weight-bold text-uppercase">
+                <h2
+                  class="banner1-title font-weight-bold text-uppercase"
+                  style="font-size: 50px"
+                >
                   어떤 집을 찾고 계세요?
                 </h2>
-                <p class="op-8 font-weight-regular">
-                  집 알아보기 힘드시죠? 집가지마켓에는 최근 10년 동안의 아파트 거래 내역이 있습니다.
-                  아파트 거래 내역을 분석하여 성공적인 아파트 매매 하세요. 주변 상권, 로드뷰 등을
-                  참고할 수 있습니다.
+                <p class="op-8 font-weight-regular" style="font-size: 18px">
+                  집 알아보기 힘드시죠? 집가지마켓에는 최근 10년 동안의 아파트
+                  거래 내역이 있습니다. 아파트 거래 내역을 분석하여 성공적인
+                  아파트 매매 하세요. 주변 상권, 로드뷰 등을 참고할 수 있습니다.
                 </p>
                 <div class="mt-16 pt-2">
                   <v-btn
@@ -52,12 +55,16 @@
           <v-row justify="center">
             <v-col cols="12" md="7" lg="6" class="d-flex align-center">
               <div class="text-center text-md-left">
-                <h2 class="banner1-title font-weight-bold text-uppercase">
+                <h2
+                  class="banner1-title font-weight-bold text-uppercase"
+                  style="font-size: 50px"
+                >
                   새 것같은 중고제품 찾고 계세요?
                 </h2>
-                <p class="op-8 font-weight-regular">
-                  물가가 오른 요즘 새 제품을 구매하기 부담 되시나요? 바가지마켓 커뮤니티를 통해
-                  이웃과 합리적인 거래 하세요. 공지글을 참고하시어 기본적인 매너를 지켜주세요.
+                <p class="op-8 font-weight-regular" style="font-size: 18px">
+                  물가가 오른 요즘 새 제품을 구매하기 부담 되시나요? 바가지마켓
+                  커뮤니티를 통해 이웃과 합리적인 거래 하세요. 공지글을
+                  참고하시어 기본적인 매너를 지켜주세요.
                 </p>
                 <div class="mt-16 pt-2">
                   <v-btn
@@ -94,10 +101,16 @@
           <v-row justify="center">
             <v-col cols="12" md="7" lg="6" class="d-flex align-center">
               <div class="text-center text-md-left">
-                <h2 class="banner1-title font-weight-bold text-uppercase">닮은꼴을 찾아보세염.</h2>
-                <p class="op-8 font-weight-regular">
-                  프로필 사진을 등록하여 추정 나이, 성별, 닮은꼴 연예인을 확인해보세요. 다른
-                  회원에게 얼굴이 공개되니 매너있는 가지마켓을 함께 만들어보아요.
+                <h2
+                  class="banner1-title font-weight-bold text-uppercase"
+                  style="font-size: 50px"
+                >
+                  닮은꼴을 찾아보세염.
+                </h2>
+                <p class="op-8 font-weight-regular" style="font-size: 18px">
+                  프로필 사진을 등록하여 추정 나이, 성별, 닮은꼴 연예인을
+                  확인해보세요. 다른 회원에게 얼굴이 공개되니 매너있는
+                  가지마켓을 함께 만들어보아요.
                 </p>
                 <div class="mt-16 pt-2">
                   <v-btn
@@ -160,7 +173,9 @@
                 min-height="575"
                 style="position: relative"
               >
-                <v-card-title style="margin-bottom: -15px">Profile</v-card-title>
+                <v-card-title style="margin-bottom: -15px"
+                  >Profile</v-card-title
+                >
                 <v-divider class="mx-4"></v-divider>
                 <div style="text-align: center; padding-top: 5px">
                   <v-img
@@ -177,14 +192,20 @@
                   ></v-img>
                 </div>
                 <v-divider class="mx-4"></v-divider>
-                <v-card-text v-if="userInfo">
+                <v-card-text v-if="userInfo" style="margin-top: -18px">
                   <div class="my-4">{{ myInfo.username }}님 안녕하세요.</div>
                   <div class="my-4">{{ myInfo.age }}살로 보이시네요.</div>
-                  <div class="my-4" v-if="myInfo.gender == 'female'">여성 맞으세요?</div>
-                  <div class="my-4" v-if="myInfo.gender == 'male'">남성 맞으세요?</div>
+                  <div class="my-4" v-if="myInfo.gender == 'female'">
+                    여성 맞으세요?
+                  </div>
+                  <div class="my-4" v-if="myInfo.gender == 'male'">
+                    남성 맞으세요?
+                  </div>
                   <div class="my-4">{{ myInfo.celebrity }} 닮았어요 !</div>
                 </v-card-text>
-                <v-card-text v-if="userInfo == null"> 프로필을 등록해보세요! </v-card-text>
+                <v-card-text v-if="userInfo == null">
+                  프로필을 등록해보세요!
+                </v-card-text>
 
                 <!-- <v-divider class="mx-4"></v-divider> -->
 
@@ -231,7 +252,9 @@
                         <td>{{ index + 1 }}</td>
                         <td>{{ admin.title }}</td>
                         <td>
-                          {{ admin.writeDate.split(" ")[0].replaceAll("-", ".") }}
+                          {{
+                            admin.writeDate.split(" ")[0].replaceAll("-", ".")
+                          }}
                         </td>
                       </tr>
                     </tbody>
@@ -267,7 +290,11 @@
                 </v-card-text>
                 <!-- <v-divider class="mx-4"></v-divider> -->
                 <v-card-actions style="position: absolute; bottom: 0px">
-                  <v-btn color="deep-purple lighten-2" text :to="{ name: 'aptsearch' }">
+                  <v-btn
+                    color="deep-purple lighten-2"
+                    text
+                    :to="{ name: 'aptsearch' }"
+                  >
                     MORE
                   </v-btn>
                 </v-card-actions>
@@ -307,7 +334,14 @@ export default {
     ...mapActions(aptStore, ["aptGetRecentList"]),
   },
   computed: {
-    ...mapState(userStore, ["userInfo", "myImg", "myInfo", "celebrity", "age", "gender"]),
+    ...mapState(userStore, [
+      "userInfo",
+      "myImg",
+      "myInfo",
+      "celebrity",
+      "age",
+      "gender",
+    ]),
     ...mapState(boardStore, ["adminList"]),
     ...mapState(aptStore, ["aptRecentList"]),
   },

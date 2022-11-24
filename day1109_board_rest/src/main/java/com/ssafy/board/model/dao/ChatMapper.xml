@@ -11,7 +11,7 @@
     </select>
     
     <insert id="insertRoom" parameterType="com.ssafy.board.model.dto.ChatRoomDTO">
-        insert into chatroom_tb(roomId,name)
+        insert into chatroom_tb
         values(#{roomId},#{name},#{roomMaker},#{description})
     </insert>
     

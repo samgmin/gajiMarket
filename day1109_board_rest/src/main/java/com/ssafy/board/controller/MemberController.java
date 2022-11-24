@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -268,6 +269,16 @@ public class MemberController {
         }
         else {
             return "사용가능한 별명입니다.";
+        }
+    }
+    
+    @DeleteMapping
+    public String memberdelete(String username, String userid) {
+        if(memberService.deleteMember(username,userid)==1) {
+            return "회원정보 삭제 성공";
+        }
+        else {
+            return "회원정보 삭제 실패";
         }
     }
 }

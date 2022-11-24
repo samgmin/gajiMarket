@@ -19,10 +19,10 @@ const chatStore = {
     createChatRoom({ commit }, payload) {
       console.log(commit);
       console.log(payload);
-      http.post("/chat/room?name=" + payload).then(({ data }) => {
-        let msg = "방 생성 중 문제 발생 ~_~";
+      http.post("/chat/room", payload).then(({ data }) => {
+        let msg = "채팅방 개설에 실패했습니다.";
         if (data === "success") {
-          msg = "방 생성 성공~_~_~_~~";
+          msg = "채팅방이 개설되었습니다.";
           console.log(data);
         }
         alert(msg);

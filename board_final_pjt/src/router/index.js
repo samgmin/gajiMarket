@@ -33,6 +33,7 @@ const routes = [
   {
     path: "/chat",
     name: "chat",
+    beforeEnter: onlyAuthUser,
     component: () => import("@/views/AppChat"),
   },
   {
