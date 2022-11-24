@@ -163,7 +163,13 @@
           <b>분석 결과</b>
         </v-toolbar>
         <v-list style="height: 450px; margin-top: 60px; margin-bottom: 5px">
-          <div>
+          <div class="text-center" style="margin-top: 200px" v-if="loading">
+            <v-progress-circular
+              indeterminate
+              color="purple"
+            ></v-progress-circular>
+          </div>
+          <div v-if="!loading">
             <v-list-item
               class="d-flex justify-center"
               style="margin-top: 20px; margin-bottom: 10px"
@@ -178,7 +184,7 @@
               <v-img
                 v-if="celebrityImage != null"
                 class="pa-12 rounded-circle d-inline-block"
-                :src="celebrityImage.items[0].link"
+                :src="celebrityImage.items[1].link"
                 max-height="250"
                 max-width="250"
               />
@@ -205,16 +211,6 @@
             </v-list-item>
           </div>
         </v-list>
-
-        <!-- <div class="inner-wrap" style="position: fixed">
-          <v-text-field
-            style="overflow-x: hidden; width: 500px"
-            v-model="message"
-            placeholder="보낼 메세지를 입력하세요."
-            solo
-            @keyup="sendMessage"
-          ></v-text-field>
-        </div> -->
       </v-card>
     </v-dialog>
   </div>
@@ -239,6 +235,7 @@ export default {
       fileErrorMessages: "",
       fileRules: [(v) => !!v || "이미지를 첨부해주세요."],
       dialog: false,
+      loading: true,
       preview: "",
     };
   },
@@ -384,6 +381,11 @@ export default {
     },
     celebrity() {
       this.getCelebrityImage(this.celebrity);
+      setTimeout(3000);
+      if (this.celebrity) {
+        console.log("사진 왔따.");
+        this.loading = false;
+      }
     },
   },
 };

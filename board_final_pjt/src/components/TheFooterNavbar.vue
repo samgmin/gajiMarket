@@ -11,7 +11,7 @@
         </v-card-text> -->
 
         <v-card-text class="white--text">
-          {{ new Date().getFullYear() }} — <strong>chacha</strong>
+          {{ new Date().getFullYear() }} — <strong>chacha & sangmin</strong>
         </v-card-text>
       </v-card>
     </v-footer>

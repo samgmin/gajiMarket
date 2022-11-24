@@ -27,7 +27,9 @@
             v-model="category"
             :items="[
               { name: '전체', value: '' },
-              { name: '기타', value: '기타' },
+              { name: '구매', value: '구매' },
+              { name: '판매', value: '판매' },
+              { name: '소통', value: '소통' },
             ]"
             item-text="name"
             item-value="value"

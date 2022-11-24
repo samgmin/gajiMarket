@@ -89,7 +89,6 @@ const boardStore = {
       console.log(commit);
       axios.post("http://localhost:8888/board/board", payload).then(({ data }) => {
         console.log(data);
-        alert(data);
       });
     },
     boardDelete({ commit }, payload) {
@@ -103,7 +102,6 @@ const boardStore = {
       console.log(payload);
       http.put("/board/modify", payload).then(({ data }) => {
         console.log(data);
-        alert(data.msg);
         if (data.msg === "success") {
           commit("BOARD_UPDATE", data.board);
         }
@@ -129,38 +127,29 @@ const boardStore = {
       console.log(payload);
       console.log("commit : ", commit);
       http.post(`/board/comment`, payload).then(({ data }) => {
-        let msg = "댓글 처리 중 문제 발생 ~_~";
         if (data.msg === "success") {
-          msg = "댓글 작성 성공~_~_~_~~";
           console.log(data);
           commit("COMMENT_WRITE", data);
         }
-        alert(msg);
       });
     },
     commentUpdate({ commit }, payload) {
       console.log(payload);
       http.post(`board/comment/update`, payload).then(({ data }) => {
-        let msg = "댓글 처리 중 문제 발생 ~_~";
         if (data.msg === "success") {
-          msg = "댓글 수정 성공~_~_~_~~";
           console.log(data);
           commit("COMMENT_WRITE", data);
         }
-        alert(msg);
       });
     },
     commentDelete({ commit }, payload) {
       console.log(commit);
       console.log(payload);
       http.delete("/board/comment/delete?bno=" + payload.bno + "&cno=" + payload.cno).then(({ data }) => {
-        let msg = "댓글 처리 중 문제 발생 ~_~";
         if (data.msg === "success") {
-          msg = "댓글 삭제 성공~_~_~_~~";
           console.log(data);
           commit("COMMENT_WRITE", data);
         }
-        alert(msg);
       });
     },
   },

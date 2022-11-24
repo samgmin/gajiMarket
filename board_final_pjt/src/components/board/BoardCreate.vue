@@ -15,7 +15,7 @@
                 style="max-width: 100px; padding-top: 25px"
                 name="category"
                 v-model="board.category"
-                :items="['전체', '기타']"
+                :items="['전체', '구매', '판매', '소통']"
                 label="전체"
                 dense
                 solo

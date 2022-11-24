@@ -16,8 +16,8 @@
     </insert>
     
     <insert id="insertMessage" parameterType="com.ssafy.board.model.dto.ChatMessageDTO">
-        insert into chatmessage_tb(roomId,writer,message,date)
-        values(#{roomId},#{writer},#{message},now())
+        insert into chatmessage_tb(roomId,writer,message,date,image)
+        values(#{roomId},#{writer},#{message},now(),#{image})
     </insert>
     
     <select id="selectChatList" parameterType="String" resultType="com.ssafy.board.model.dto.ChatMessageDTO">

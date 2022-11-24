@@ -208,7 +208,7 @@ public class MemberController {
         result.put("myInfo", modifyResult);
 
         if (modifyResult != null) {
-            result.put("msg", "success");
+            result.put("msg", "회원 정보를 수정하였습니다.");
             return new ResponseEntity<Map<String, Object>>(result, HttpStatus.ACCEPTED);
         } else {
             result.put("msg", "fail");

@@ -10,12 +10,14 @@ public class ChatMessageDTO {
     private String writer;
     private String message;
     private String date;
-    public ChatMessageDTO(String roomId, String writer, String message,String date) {
+    private String image;
+    public ChatMessageDTO(String roomId, String writer, String message,String date,String image) {
         super();
         this.roomId = roomId;
         this.writer = writer;
         this.message = message;
         this.date = date;
+        this.image = image;
     }
 
     public ChatMessageDTO() {
@@ -25,7 +27,8 @@ public class ChatMessageDTO {
 
     @Override
     public String toString() {
-        return "ChatMessageDTO [roomId=" + roomId + ", writer=" + writer + ", message=" + message + "]";
+        return "ChatMessageDTO [roomId=" + roomId + ", writer=" + writer + ", message=" + message + ", date=" + date
+                + ", image=" + image + "]";
     }
     
 }

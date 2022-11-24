@@ -132,8 +132,13 @@
           <tr style="padding-top: 100px" v-if="!flag && age">
             <th class="text-left" colspan="1">나이</th>
             <td class="text-left" colspan="11">
-              {{ Math.round(ageconfidence * 10000) / 100 }}% 확률로 {{ age }}살
-              입니다.
+              <v-text-field
+                v-if="age"
+                name="age"
+                v-model="age"
+                readonly
+              ></v-text-field>
+              <v-text-field v-if="!age" readonly></v-text-field>
             </td>
           </tr>
           <tr v-if="flag || !age">
@@ -150,8 +155,13 @@
           <tr id="naver" v-if="!flag && gender">
             <th class="text-left" colspan="1">성별</th>
             <td class="text-left" colspan="11">
-              {{ Math.round(genderconfidence * 10000) / 100 }}% 확률로
-              {{ gender }}입니다.
+              <v-text-field
+                v-if="gender"
+                name="gender"
+                v-model="gender"
+                readonly
+              ></v-text-field>
+              <v-text-field v-if="!gender" readonly></v-text-field>
             </td>
           </tr>
           <tr v-if="flag || !gender">
@@ -165,14 +175,19 @@
               ></v-text-field>
             </td>
           </tr>
-          <tr id="naver" v-if="!flag && celebrity">
+          <tr id="naver" v-if="celebrity">
             <th class="text-left" colspan="1">닮은꼴</th>
             <td class="text-left" colspan="11">
-              {{ Math.round(celebrityconfidence * 10000) / 100 }}% 확률로
-              {{ celebrity }}을(를) 닮았습니다.
+              <v-text-field
+                v-if="celebrity"
+                name="celebrity"
+                v-model="celebrity"
+                readonly
+              ></v-text-field>
+              <v-text-field v-if="!celebrity" readonly></v-text-field>
             </td>
           </tr>
-          <tr v-if="flag || !celebrity">
+          <tr v-if="!celebrity">
             <th class="text-left" colspan="1">닮은꼴</th>
             <td class="text-left" colspan="11">
               <v-text-field
@@ -192,7 +207,7 @@
         <v-btn variant="outline-primary" v-if="flag" @click="flag = !flag"
           ><span style="font-size: 16px">수정</span></v-btn
         >
-        <v-btn variant="outline-primary" v-if="!flag" @click="modifyInfo"
+        <v-btn variant="outline-primary" v-if="!flag" @click="modifyBtn"
           ><span style="font-size: 16px">수정</span></v-btn
         >
         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -201,6 +216,70 @@
         >
       </v-col>
     </v-row>
+
+    <!-- 닮은꼴 분석 결과 dialog -->
+    <v-dialog v-model="dialog" width="600px" height="450px">
+      <v-card style="overflow-x: hidden">
+        <v-toolbar
+          color="#7E57C2"
+          width="600px"
+          dark
+          style="position: fixed; z-index: 3; font-size: 25px"
+        >
+          <b>분석 결과</b>
+        </v-toolbar>
+
+        <v-list style="height: 450px; margin-top: 60px; margin-bottom: 5px">
+          <div class="text-center" style="margin-top: 200px" v-if="loading">
+            <v-progress-circular
+              indeterminate
+              color="purple"
+            ></v-progress-circular>
+          </div>
+          <div v-if="!loading">
+            <v-list-item
+              class="d-flex justify-center"
+              style="margin-top: 20px; margin-bottom: 10px"
+            >
+              <v-img
+                v-if="preview !== ''"
+                class="pa-12 rounded-circle d-inline-block"
+                :src="preview"
+                max-height="250"
+                max-width="250"
+              />&nbsp;&nbsp;&nbsp;&nbsp;
+              <v-img
+                v-if="celebrityImage != null"
+                class="pa-12 rounded-circle d-inline-block"
+                :src="celebrityImage.items[0].link"
+                max-height="250"
+                max-width="250"
+              />
+            </v-list-item>
+            <v-list-item class="d-flex justify-center" style="font-size: 25px">
+              <span>{{ Math.round(ageconfidence * 10000) / 100 }}% 확률로 </span
+              ><span style="background-color: white">{{ age }}살 입니다.</span>
+            </v-list-item>
+            <v-list-item class="d-flex justify-center">
+              <span v-if="gender === 'male'" style="font-size: 25px"
+                >{{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 남성
+                입니다.</span
+              >
+              <span v-if="gender === 'female'" style="font-size: 25px"
+                >{{ Math.round(genderconfidence * 10000) / 100 }}% 확률로 여성
+                입니다.</span
+              >
+            </v-list-item>
+            <v-list-item class="d-flex justify-center">
+              <span style="font-size: 25px"
+                >{{ Math.round(celebrityconfidence * 10000) / 100 }}% 확률로
+                {{ celebrity }}을(를) 닮았습니다.</span
+              >
+            </v-list-item>
+          </div>
+        </v-list>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -216,6 +295,9 @@ export default {
       show: true,
       flag: true,
       preview: "",
+      loading: true,
+      dialog: false,
+      value: 0,
     };
   },
   created() {
@@ -242,7 +324,7 @@ export default {
 
       await this.CFRApi(fd);
     },
-    modifyInfo() {
+    async modifyInfo() {
       let data = {
         userid: this.myInfo.userid,
         username: this.myInfo.username,
@@ -253,19 +335,25 @@ export default {
         celebrity: this.celebrity,
       };
       console.log(data);
-      this.updateInfo(data);
-      this.flag = true;
+      await this.updateInfo(data);
     },
-    modifyImg() {
+    async modifyImg() {
       var fd = new FormData();
       fd.append("username", this.myInfo.username);
       fd.append("uploadFile", this.file);
-      this.updateImg(fd);
+      await this.updateImg(fd);
     },
-    modifyBtn() {
+    async modifyBtn() {
       this.userDataReset();
-      this.modifyInfo();
-      this.modifyImg();
+      await this.modifyInfo();
+      await this.modifyImg();
+      this.userDataReset();
+      let data = {
+        userid: this.userInfo.userid,
+        username: this.userInfo.username,
+      };
+      await this.getMyInfo(data);
+      this.flag = true;
     },
     deleteInfo() {
       let data = {
@@ -311,6 +399,7 @@ export default {
       "userDataReset",
       "userLogout",
       "deleteUserInfo",
+      "getCelebrityImage",
     ]),
   },
   computed: {
@@ -322,6 +411,7 @@ export default {
       "genderconfidence",
       "celebrity",
       "celebrityconfidence",
+      "celebrityImage",
       "myInfo",
       "myImg",
     ]),
@@ -330,6 +420,15 @@ export default {
     file() {
       this.previewFile(this.file);
       this.naverCFRApi();
+      this.dialog = true;
+    },
+    celebrity() {
+      this.getCelebrityImage(this.celebrity);
+      setTimeout(3000);
+      if (this.celebrity) {
+        console.log("사진 왔따.");
+        this.loading = false;
+      }
     },
   },
 };

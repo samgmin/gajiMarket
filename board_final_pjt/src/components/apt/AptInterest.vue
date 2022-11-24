@@ -24,7 +24,8 @@
             <v-card class="ma-4" max-width="374" v-if="aptInterestList.length">
               <v-img
                 height="250"
-                :src="'https://loremflickr.com/320/240/apartment'"
+                width="300"
+                :src="require(`@/assets/apt${index + 1}.jpg`)"
               ></v-img>
 
               <v-card-title>{{ interest.aptname }}</v-card-title>

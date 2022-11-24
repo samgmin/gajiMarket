@@ -145,7 +145,7 @@
                 :src="require('@/assets/sangmin4.jpg')"
                 alt="banner"
                 max-width="500px"
-                style="margin-left: 150px"
+                style="margin-left: 140px"
               />
             </v-col>
           </v-row>
@@ -177,16 +177,18 @@
                   >Profile</v-card-title
                 >
                 <v-divider class="mx-4"></v-divider>
-                <div style="text-align: center; padding-top: 5px">
+                <div style="text-align: center; padding-top: 6px">
                   <v-img
                     v-if="userInfo"
-                    width="200"
+                    max-width="200"
+                    max-height="200"
                     class="pa-12 primary rounded-circle d-inline-block"
                     :src="require(`@/assets/memberImg/${myImg}`)"
                   ></v-img>
                   <v-img
                     v-if="userInfo == null"
-                    width="200"
+                    max-width="200"
+                    max-height="200"
                     class="pa-12 primary rounded-circle d-inline-block"
                     :src="require(`@/assets/mimoticon.gif`)"
                   ></v-img>

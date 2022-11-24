@@ -126,14 +126,31 @@
               class="d-flex justify-end"
               v-if="item.writer === userInfo.username"
             >
-              <span>{{ item.message }}</span>
+              <span
+                >{{ item.message }}&nbsp;
+                <b class="underline-hotpink">{{ item.writer }}</b>
+                &nbsp;
+                <v-img
+                  v-if="item.image != null"
+                  class="pa-4 primary rounded-circle d-inline-block"
+                  :src="require(`@/assets/memberImg/${item.image}`)"
+                  width="30"
+                  style="margin-bottom: -10px"
+                />
+              </span>
             </v-list-item>
             <v-list-item
               class="d-flex justify-start"
               v-if="item.writer !== userInfo.username"
             >
               <span
-                ><b>{{ item.writer }}</b
+                ><v-img
+                  v-if="item.image != null"
+                  class="pa-4 primary rounded-circle d-inline-block"
+                  :src="require(`@/assets/memberImg/${item.image}`)"
+                  width="30"
+                  style="margin-bottom: -10px"
+                />&nbsp; <b class="underline-hotpink">{{ item.writer }}</b
                 >&nbsp;&nbsp;{{ item.message }}</span
               >
             </v-list-item>
@@ -190,7 +207,6 @@ export default {
         description: this.chatdescription,
       };
       this.createChatRoom(data);
-      this.selectChatRoomList();
       this.dialogMake = false;
     },
     enterChatRoom(chatroom) {
@@ -213,6 +229,7 @@ export default {
           roomId: this.nowroomid,
           writer: this.userInfo.username,
           message: this.message,
+          image: this.myImg,
         };
         console.log("메세지", msg);
         this.stompClient.send("/pub/chat/message", JSON.stringify(msg), {});
@@ -266,7 +283,7 @@ export default {
   },
   computed: {
     ...mapState(chatStore, ["roomList", "chatList"]),
-    ...mapState(userStore, ["userInfo"]),
+    ...mapState(userStore, ["userInfo", "myImg"]),
   },
   watch: {
     dialog() {
