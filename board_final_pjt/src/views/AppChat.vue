@@ -111,7 +111,7 @@
 
     <!-- 채팅방 dialog -->
     <v-dialog v-model="dialog" width="500px" height="1000px">
-      <v-card style="overflow-x: hidden" class="chatbox" ref="chatbox">
+      <v-card style="overflow-x: hidden" id="chatbox" ref="chatbox">
         <v-toolbar
           color="#7E57C2"
           width="500px"
@@ -280,10 +280,11 @@ export default {
       this.recvList = this.chatList;
     },
     recvList() {
-      this.$nextTick(() => {
-        let chatbox = this.$refs.chatbox;
+      setTimeout(function () {
+        console.log(this.recvList);
+        let chatbox = document.getElementById("chatbox");
         chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: "smooth" });
-      });
+      }, 10);
     },
   },
 };

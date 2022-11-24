@@ -181,9 +181,9 @@ public class MemberController {
         }
 
         if (signupResult != null) {
-            return new ResponseEntity<String>("success", HttpStatus.ACCEPTED);
+            return new ResponseEntity<String>("회원 가입되었습니다.", HttpStatus.ACCEPTED);
         } else {
-            return new ResponseEntity<String>("error", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("회원 가입에 실패하였습니다.", HttpStatus.BAD_REQUEST);
         }
     }
 
